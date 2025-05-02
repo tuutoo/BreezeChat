@@ -7,7 +7,6 @@ import { SCENES } from "@/lib/scenes";
 export const maxDuration = 30;
 
 const LLAMA_MODEL = "llama-3.3-70b-versatile"
-const MISTRAL_MODEL = "mistral-saba-24b"
 const QWEN_MODEL = "qwen-qwq-32b"
 
 const groq = createGroq({
