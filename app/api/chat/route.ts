@@ -7,15 +7,15 @@ import { SCENES } from "@/lib/scenes";
 export const maxDuration = 30;
 
 const LLAMA_MODEL = "llama-3.3-70b-versatile"
-const DEEPSEEK_MODEL = "deepseek-r1-distill-llama-70b"
+const MISTRAL_MODEL = "mistral-saba-24b"
 const QWEN_MODEL = "qwen-qwq-32b"
 
 const groq = createGroq({
   fetch: async (url, options) => {
     if (options?.body) {
       const body = JSON.parse(options.body as string)
-      if (body?.model === DEEPSEEK_MODEL || body?.model === QWEN_MODEL) {
-        body.reasoning_format = "none"
+      if (body?.model === QWEN_MODEL) {
+        body.reasoning_format = "parsed"
         options.body = JSON.stringify(body)
       }
     }
@@ -62,7 +62,6 @@ export async function POST(req: Request) {
     topP: 0.9,
     messages,
   });
-
   return result.toDataStreamResponse({sendReasoning: false});
 }
 
