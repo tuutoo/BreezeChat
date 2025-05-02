@@ -30,13 +30,11 @@ export const Footer: React.FC<FooterProps> = ({
       links: [
         { text: '实时翻译', url: '#' },
         { text: '场景模式', url: '#' },
-        { text: '历史记录', url: '#' },
       ],
     },
     {
       title: '支持',
       links: [
-        { text: '文档', url: 'https://github.com/neozhu/lingualens' },
         { text: '常见问题', url: 'https://github.com/neozhu/lingualens' },
         { text: '联系我', url: 'https://blazorserver.com/contact' },
       ],
@@ -44,16 +42,15 @@ export const Footer: React.FC<FooterProps> = ({
     {
       title: '关于',
       links: [
-        { text: '公司', url: 'https://blazorserver.com/about' },
-        { text: '隐私政策', url: '#' },
-        { text: '服务条款', url: '#' },
+        { text: '隐私政策', url: '/privacy' },
+        { text: '服务条款', url: '/terms' },
       ],
     },
   ],
   copyright = '© 2025 LinguaLens. 保留所有权利。',
   bottomLinks = [
-    { text: '隐私政策', url: '#' },
-    { text: '服务条款', url: '#' },
+    { text: '隐私政策', url: '/privacy' },
+    { text: '服务条款', url: '/terms' },
   ],
 }: FooterProps) => {
   return (

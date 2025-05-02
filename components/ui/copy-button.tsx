@@ -38,6 +38,7 @@ export function CopyButton({
   src,
   variant = "ghost",
   event,
+  copyMessage,
   ...props
 }: CopyButtonProps) {
   const [hasCopied, setHasCopied] = React.useState(false)
