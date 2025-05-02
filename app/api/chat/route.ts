@@ -8,14 +8,14 @@ export const maxDuration = 30;
 
 const LLAMA_MODEL = "llama-3.3-70b-versatile"
 const DEEPSEEK_MODEL = "deepseek-r1-distill-llama-70b"
-
+const QWEN_MODEL = "qwen-qwq-32b"
 
 const groq = createGroq({
   fetch: async (url, options) => {
     if (options?.body) {
       const body = JSON.parse(options.body as string)
-      if (body?.model === DEEPSEEK_MODEL) {
-        body.reasoning_format = "parsed"
+      if (body?.model === DEEPSEEK_MODEL || body?.model === QWEN_MODEL) {
+        body.reasoning_format = "none"
         options.body = JSON.stringify(body)
       }
     }
@@ -32,7 +32,7 @@ function createSystemPrompt(scene: string) {
   }
 
   return `
-    You are an advanced AI translator assisting in the context of a ${sceneObj.name}. 
+    You are an advanced AI translator assisting in the context of a ${sceneObj.name_en}. 
     
     Here’s how you should approach the translation:
     
@@ -58,6 +58,8 @@ export async function POST(req: Request) {
   const result = streamText({
     model: groq(model),
     system: createSystemPrompt(scene),
+    temperature: 0.3,
+    topP: 0.9,
     messages,
   });
 
