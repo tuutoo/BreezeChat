@@ -24,7 +24,7 @@ export default function TermsOfService() {
       <section className="mt-6">
         <h2 className="text-lg font-semibold mb-2">3. License and Open Source</h2>
         <p className="text-sm text-gray-600">
-          The Service's source code is available under the MIT License. You are free to use, copy, modify, merge, publish, distribute, and sublicense the software in accordance with the MIT terms. A copy of the MIT License can be found in the <a href="/LICENSE" className="text-blue-600 underline">LICENSE</a> file.
+          The Service&apos;s source code is available under the MIT License. You are free to use, copy, modify, merge, publish, distribute, and sublicense the software in accordance with the MIT terms. A copy of the MIT License can be found in the <a href="/LICENSE" className="text-blue-600 underline">LICENSE</a> file.
         </p>
       </section>
 
@@ -52,7 +52,7 @@ export default function TermsOfService() {
       <section className="mt-6 mb-8">
         <h2 className="text-lg font-semibold mb-2">7. Changes to Terms</h2>
         <p className="text-sm text-gray-600">
-          We may update these Terms of Service from time to time. Any changes will be posted on this page with a revised "Last updated" date.
+          We may update these Terms of Service from time to time. Any changes will be posted on this page with a revised &quot;Last updated&quot; date.
         </p>
       </section>
 
