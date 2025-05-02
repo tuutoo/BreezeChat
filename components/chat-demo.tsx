@@ -81,9 +81,9 @@ export default function ChatDemo(props: ChatDemoProps) {
         setMessages={setMessages}
         transcribeAudio={transcribeAudio}
         suggestions={[
-          "What is the weather in San Francisco?",
-          "Explain step-by-step how to solve this math problem: If x² + 6x + 9 = 25, what is x?",
-          "Design a simple algorithm to find the longest palindrome in a string.",
+          "你好，今天的会议在哪里举行？",
+          "Please confirm your availability for the upcoming meeting.",
+          "Können Sie mir bitte den Fehlercode senden?",
         ]}
       />
       <div className="mb-2 flex flex-row gap-4 text-sm text-gray-600 items-center">
