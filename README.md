@@ -14,7 +14,7 @@
 
 ## **Tech Stack**
 
-* **Frontend**: Next.js 14 (App Router)
+* **Frontend**: Next.js 15 (App Router)
 * **UI Components**: Shadcn/UI
 * **State Management**: Zustand (for lightweight state management and history tracking)
 * **AI Translation Service**: Powered by **Google Gemini** or any other AI model, providing accurate translations based on the context and input language.
