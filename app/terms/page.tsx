@@ -10,7 +10,7 @@ export default function TermsOfService() {
       <section className="mt-6">
         <h2 className="text-lg font-semibold mb-2">1. Acceptance of Terms</h2>
         <p className="text-sm text-gray-600">
-          By accessing or using LinguaLens ("the Service"), you agree to be bound by these Terms of Service. If you do not agree with any part of these terms, you may not use the Service.
+          By accessing or using LinguaLens (&quot;the Service&quot;), you agree to be bound by these Terms of Service. If you do not agree with any part of these terms, you may not use the Service.
         </p>
       </section>
 
@@ -31,7 +31,7 @@ export default function TermsOfService() {
       <section className="mt-6">
         <h2 className="text-lg font-semibold mb-2">4. No Warranty</h2>
         <p className="text-sm text-gray-600">
-          The Service is provided "as is", without warranty of any kind, express or implied. The authors and contributors disclaim all warranties, including but not limited to merchantability and fitness for a particular purpose.
+          The Service is provided &quot;as is&quot;, without warranty of any kind, express or implied. The authors and contributors disclaim all warranties, including but not limited to merchantability and fitness for a particular purpose.
         </p>
       </section>
 
