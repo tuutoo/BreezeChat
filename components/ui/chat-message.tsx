@@ -4,7 +4,7 @@ import React, { useMemo, useState } from "react"
 import { cva, type VariantProps } from "class-variance-authority"
 import { motion } from "framer-motion"
 import { Ban, ChevronRight, Code2, Loader2, Terminal } from "lucide-react"
-import type { UIMessage } from "ai"
+
 import { cn } from "@/lib/utils"
 import {
   Collapsible,
@@ -81,13 +81,41 @@ interface ToolResult {
   }
 }
 
+type ToolInvocation = PartialToolCall | ToolCall | ToolResult
 
+interface ReasoningPart {
+  type: "reasoning"
+  reasoning: string
+}
 
+interface ToolInvocationPart {
+  type: "tool-invocation"
+  toolInvocation: ToolInvocation
+}
 
+interface TextPart {
+  type: "text"
+  text: string
+}
 
+// For compatibility with AI SDK types, not used
+interface SourcePart {
+  type: "source"
+}
 
+type MessagePart = TextPart | ReasoningPart | ToolInvocationPart | SourcePart
 
-export interface ChatMessageProps extends UIMessage {
+export interface Message {
+  id: string
+  role: "user" | "assistant" | (string & {})
+  content: string
+  createdAt?: Date
+  experimental_attachments?: Attachment[]
+  toolInvocations?: ToolInvocation[]
+  parts?: MessagePart[]
+}
+
+export interface ChatMessageProps extends Message {
   showTimeStamp?: boolean
   animation?: Animation
   actions?: React.ReactNode
@@ -101,6 +129,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
   animation = "scale",
   actions,
   experimental_attachments,
+  toolInvocations,
   parts,
 }) => {
   const files = useMemo(() => {

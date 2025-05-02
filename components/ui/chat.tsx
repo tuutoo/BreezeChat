@@ -12,7 +12,7 @@ import { ArrowDown, ThumbsDown, ThumbsUp } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useAutoScroll } from "@/hooks/use-auto-scroll"
 import { Button } from "@/components/ui/button"
-import { type UIMessage } from "@/components/ui/chat-message"
+import { type Message } from "@/components/ui/chat-message"
 import { CopyButton } from "@/components/ui/copy-button"
 import { MessageInput } from "@/components/ui/message-input"
 import { MessageList } from "@/components/ui/message-list"
@@ -23,7 +23,7 @@ interface ChatPropsBase {
     event?: { preventDefault?: () => void },
     options?: { experimental_attachments?: FileList }
   ) => void
-  messages: Array<UIMessage>
+  messages: Array<Message>
   input: string
   className?: string
   handleInputChange: React.ChangeEventHandler<HTMLTextAreaElement>
@@ -155,11 +155,12 @@ export function Chat({
   }, [stop, setMessages, messagesRef])
 
   const messageOptions = useCallback(
-    (message: UIMessage) => ({
+    (message: Message) => ({
       actions: onRateResponse ? (
         <>
           <div className="border-r pr-1">
             <CopyButton
+              value={message.content}
               content={message.content}
               copyMessage="Copied response to clipboard!"
             />
@@ -183,6 +184,7 @@ export function Chat({
         </>
       ) : (
         <CopyButton
+          value={message.content}
           content={message.content}
           copyMessage="Copied response to clipboard!"
         />
@@ -210,19 +212,19 @@ export function Chat({
           />
         </ChatMessages>
       ) : null}
-
+    
       <ChatForm
         className="mt-auto"
         isPending={isGenerating || isTyping}
         handleSubmit={handleSubmit}
       >
+        
         {({ files, setFiles }) => (
           <MessageInput
             value={input}
+            placeholder="输入想要翻译的内容..."
             onChange={handleInputChange}
-            allowAttachments
-            files={files}
-            setFiles={setFiles}
+            allowAttachments={false}
             stop={handleStop}
             isGenerating={isGenerating}
             transcribeAudio={transcribeAudio}
@@ -238,7 +240,7 @@ export function ChatMessages({
   messages,
   children,
 }: React.PropsWithChildren<{
-  messages: UIMessage[]
+  messages: Message[]
 }>) {
   const {
     containerRef,

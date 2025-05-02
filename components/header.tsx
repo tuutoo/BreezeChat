@@ -1,17 +1,22 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Github, MoveRight, X, Languages } from "lucide-react";
-import { useState } from "react";
+import {  Languages } from "lucide-react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { ModeToggle } from "./mode-toggle";
 import { ThemeSelector } from "./theme-selector";
 import { useTheme } from 'next-themes';
 
 export const Header = () => {
-
+    const [isMounted, setIsMounted] = useState(false);
     const { theme } = useTheme();
     const githubUrl = 'https://github.com/neozhu/lingualens';
+    useEffect(() => {
+        setIsMounted(true); // Set isMounted to true once the component is mounted on the client-side
+    }, []);
+
+    if (!isMounted) return null;
     return (
         <header className="w-full z-40 fixed top-0 left-0 bg-background">
             <div className="container relative mx-auto min-h-20 flex gap-4 flex-row lg:grid lg:grid-cols-2 items-center">

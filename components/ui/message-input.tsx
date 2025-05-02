@@ -172,7 +172,7 @@ export function MessageInput({
     props.allowAttachments && props.files && props.files.length > 0
 
   useAutosizeTextArea({
-    ref: textAreaRef,
+    ref: textAreaRef as React.RefObject<HTMLTextAreaElement>,
     maxHeight: 240,
     borderWidth: 1,
     dependencies: [props.value, showFileList],
@@ -180,7 +180,7 @@ export function MessageInput({
 
   return (
     <div
-      className="relative flex w-full"
+      className="relative flex flex-column w-full"
       onDragOver={onDragOver}
       onDragLeave={onDragLeave}
       onDrop={onDrop}
@@ -196,7 +196,6 @@ export function MessageInput({
         isVisible={isRecording}
         onStopRecording={stopRecording}
       />
-
       <div className="relative flex w-full items-center space-x-2">
         <div className="relative flex-1">
           <textarea

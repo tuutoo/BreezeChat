@@ -1,19 +1,23 @@
+'use client';
 import Image from "next/image";
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { ChatDemo } from "@/components/chat";
-
+import { useChat } from '@ai-sdk/react';
+import ChatDemo from "@/components/chat-demo";
 export default function Home() {
+  const { messages, input, handleInputChange, handleSubmit } = useChat({});
+ 
   return (
-<main
+
+    <main
       className="
-        pt-20                          /* 推开固定 Header 的高度（5rem） */
-        min-h-[calc(100vh-5rem)]       /* 剩余可视区高度 */
-        grid place-items-center        /* 上下左右居中 */
-        px-4                           /* 小屏留白 */
+        pt-20                          
+        min-h-[calc(100vh-5rem)]      
+        grid place-items-center      
+        px-4                         
       "
     >
       <div className="w-full max-w-[80ch] mb-4">
-        <ChatDemo />
+         <ChatDemo />
       </div>
     </main>
   );
