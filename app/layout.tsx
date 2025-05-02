@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import { GoogleAnalytics } from '@next/third-parties/google'
 import "./globals.css";
 import { Header } from "@/components/header";
@@ -9,21 +8,6 @@ import { cookies } from "next/headers";
 import { fontVariables } from "@/lib/fonts";
 import { cn } from "@/lib/utils";
 import { Footer } from "@/components/footer";
-
-
-const META_THEME_COLORS = {
-  light: "#ffffff",
-  dark: "#09090b",
-}
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "LinguaLens 翻译助手",

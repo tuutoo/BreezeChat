@@ -1,6 +1,7 @@
 // components/Footer.tsx
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image'
 
 interface MenuItem {
   title: string;
@@ -61,7 +62,7 @@ export const Footer: React.FC<FooterProps> = ({
         <div className="grid grid-cols-2 gap-8 lg:grid-cols-6">
           <div className="col-span-2 mb-8 lg:mb-0">
             <Link href={logo.url} className="flex items-center gap-2">
-              <img src={logo.src} alt={logo.alt} className="h-10" />
+              <Image src={logo.src} alt={logo.alt} className="h-10" width="40" height="40" />
               <span className="text-xl font-semibold">{logo.title}</span>
             </Link>
             <p className="mt-4 text-muted-foreground">{tagline}</p>

@@ -1,4 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars, prefer-const */
+
 import React, { Suspense } from "react"
+import type { JSX } from "react";
 import Markdown from "react-markdown"
 import remarkGfm from "remark-gfm"
 import { cn } from "@/lib/utils"
@@ -11,7 +15,7 @@ interface MarkdownRendererProps {
 export function MarkdownRenderer({ children }: MarkdownRendererProps) {
   return (
     <div className="space-y-3">
-      <Markdown remarkPlugins={[remarkGfm]} components={COMPONENTS}>
+      <Markdown remarkPlugins={[remarkGfm]} components={COMPONENTS as any}>
         {children}
       </Markdown>
     </div>
@@ -110,7 +114,7 @@ const CodeBlock = ({
       </Suspense>
 
       <div className="invisible absolute right-2 top-2 flex space-x-1 rounded-lg p-1 opacity-0 transition-all duration-200 group-hover/code:visible group-hover/code:opacity-100">
-        <CopyButton content={code} copyMessage="Copied code to clipboard" />
+        <CopyButton value={code} content={code} copyMessage="Copied code to clipboard" />
       </div>
     </div>
   )

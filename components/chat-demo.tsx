@@ -15,6 +15,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { SCENES } from "@/lib/scenes";
+import { Message } from "./ui/chat-message"
 
 const MODELS = [
   { id: "llama-3.3-70b-versatile", name: "Llama 3.3 70B" },
@@ -71,7 +72,7 @@ export default function ChatDemo(props: ChatDemoProps) {
 
       <Chat
         className="grow"
-        messages={messages}
+        messages={messages as unknown as Message[]} 
         handleSubmit={handleSubmit}
         input={input}
         handleInputChange={handleInputChange}

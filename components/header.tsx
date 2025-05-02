@@ -7,6 +7,7 @@ import Link from "next/link";
 import { ModeToggle } from "./mode-toggle";
 import { ThemeSelector } from "./theme-selector";
 import { useTheme } from 'next-themes';
+import Image from 'next/image'
 
 export const Header = () => {
     const [isMounted, setIsMounted] = useState(false);
@@ -37,7 +38,7 @@ export const Header = () => {
               aria-label="GitHub 仓库"
             >
               
-                <img
+                <Image
                   src={
                     theme === 'dark'
                       ? '/github-mark-white.svg'
@@ -45,6 +46,7 @@ export const Header = () => {
                   }
                   alt="GitHub 仓库"
                   className="w-5 h-5"
+                  width="40" height="40"
                 />
              
             </Link>

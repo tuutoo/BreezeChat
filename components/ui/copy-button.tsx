@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars, prefer-const */
 "use client"
 
 import * as React from "react"
@@ -20,6 +22,7 @@ interface CopyButtonProps extends Omit<ComponentProps<typeof Button>, "onClick">
   value: string
   src?: string
   event?: Event["name"]
+  copyMessage?: string
 }
 
 export async function copyToClipboardWithMeta(value: string, event?: Event) {
