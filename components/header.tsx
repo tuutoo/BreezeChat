@@ -20,11 +20,11 @@ export const Header = () => {
     if (!isMounted) return null;
     return (
         <header className="w-full z-40 fixed top-0 left-0 bg-background">
-            <div className="container relative mx-auto min-h-20 flex gap-4 flex-row lg:grid lg:grid-cols-2 items-center">
-                <div className="justify-start items-center gap-4 lg:flex hidden flex-row">
+            <div className="container relative mx-auto min-h-20 flex gap-4 flex-row grid-cols-2 items-center px-4 sm:px-8 lg:px-16 py-4">
+                <div className="justify-start items-center gap-4  flex  flex-row">
                     <Link href="/" className="flex items-center gap-2">
                         <Languages className="w-6 h-6" />
-                        <span className="text-xl font-semibold">LinguaLens</span>
+                        <span className="sm:grid hidden text-xl font-semibold motion motion-duration-300 motion-translate-x-in-[50%] motion-translate-y-in-[0%] motion-preset-blur-right" >LinguaLens</span>
                     </Link>
                 </div>
                 <div className="flex justify-end w-full gap-4">
