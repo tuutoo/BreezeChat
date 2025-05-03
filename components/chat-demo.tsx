@@ -61,7 +61,7 @@ export default function ChatDemo(props: ChatDemoProps) {
     handleSubmit,
     append,
     stop,
-    isLoading,
+    status,
     setMessages,
   } = useChat({
     ...props,
@@ -95,7 +95,7 @@ export default function ChatDemo(props: ChatDemoProps) {
         handleSubmit={handleSubmit}
         input={input}
         handleInputChange={handleInputChange}
-        isGenerating={isLoading}
+        isGenerating={status==="streaming"}
         stop={stop}
         append={append}
         setMessages={setMessages}
