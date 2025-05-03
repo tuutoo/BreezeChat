@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useChat, type UseChatOptions } from "@ai-sdk/react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
@@ -32,10 +32,28 @@ type ChatDemoProps = {
 export default function ChatDemo(props: ChatDemoProps) {
   const [selectedModel, setSelectedModel] = useState(MODELS[0].id)
   const [selectedScene, setSelectedScene] = useState(SCENES[0].name);
-  const handleSceneClick = (scenePrompt: string) => {
-    setSelectedScene(scenePrompt);
-  };
-  
+
+  useEffect(() => {
+    const storedModel = localStorage.getItem("selectedModel")
+    const storedScene = localStorage.getItem("selectedScene")
+    if (storedModel) setSelectedModel(storedModel)
+    if (storedScene) setSelectedScene(storedScene)
+  }, [])
+
+
+  useEffect(() => {
+    localStorage.setItem("selectedModel", selectedModel)
+  }, [selectedModel])
+
+
+  useEffect(() => {
+    localStorage.setItem("selectedScene", selectedScene)
+  }, [selectedScene])
+
+  const handleSceneClick = (sceneName: string) => {
+    setSelectedScene(sceneName)
+  }
+
   const {
     messages,
     input,
@@ -50,7 +68,7 @@ export default function ChatDemo(props: ChatDemoProps) {
     api: "/api/chat",
     body: {
       model: selectedModel,
-      scene: selectedScene, 
+      scene: selectedScene,
     },
   })
 
@@ -73,7 +91,7 @@ export default function ChatDemo(props: ChatDemoProps) {
 
       <Chat
         className="grow"
-        messages={messages as unknown as Message[]} 
+        messages={messages as unknown as Message[]}
         handleSubmit={handleSubmit}
         input={input}
         handleInputChange={handleInputChange}
@@ -94,19 +112,19 @@ export default function ChatDemo(props: ChatDemoProps) {
         </div>
         <div className="flex flex-row gap-2 flex-wrap ">
           {SCENES.map((scene, idx) => (
-            <Button 
+            <Button
               variant="outline"
-              size="sm" 
+              size="sm"
               key={idx}
               onClick={() => handleSceneClick(scene.name)} // Update the selected scene's prompt
-               
+
             >{selectedScene === scene.name && (
-              <Check  /> // Show checkmark if selected
+              <Check /> // Show checkmark if selected
             )}
-              {scene.name} 
+              {scene.name}
             </Button>
           ))}
-          </div>
+        </div>
       </div>
     </div>
   )
