@@ -26,38 +26,51 @@ const groq = createGroq({
 function createSystemPrompt(scene: string) {
   const sceneObj = SCENES.find((s) => s.name === scene);
 
+  // Base instructions for all translations
+  const baseInstructions = `
+You are a smart translation assistant.
+- Detect the input language:
+  • If it's in Chinese, output only the English translation.
+  • If it's in any other language (e.g., English, German, French), output only the Chinese translation.
+- Do not add explanations, commentary, or extra text—only the translated output.
+`;
+
   if (!sceneObj) {
-    return `You are a helpful assistant. Translate the following text. If it's in Chinese, translate it to English. If it's in any other language, translate it to Chinese.`;
+    return `
+${baseInstructions}
+Translate the following text:
+`;
   }
 
+  // Enriched scene-specific instructions
   return `
-    You are an advanced AI translator assisting in the context of a ${sceneObj.name_en}. 
-    
-    Here’s how you should approach the translation:
-    
-    - **Input Language Detection**: If the input is in Chinese, translate it into English. If the input is in any other language (e.g., English, German, French), translate it into Chinese.
-    - **Tone**: Ensure that the tone of the translation matches the context described below.
-    - **Formality**: Pay attention to the level of formality. Some contexts may require formal language, while others may allow for a more casual tone.
-    - **Clarity**: Be clear and concise, especially for professional or technical contexts.
-    - **Conciseness**: If the context requires it (e.g., meetings), focus on being brief and to the point.
-    - **Empathy and Approachability**: In certain contexts (e.g., customer communication), maintain a friendly, empathetic, and approachable tone.
-    - **Technical Jargon**: If translating technical content (e.g., in support requests or discussions about requirements), ensure that the terminology is accurate and clear.
+${baseInstructions}
+Scenario: ${sceneObj.name_en}
+Description: ${sceneObj.description}
 
-    Here’s a brief description of the scene:
-    - **Context**: ${sceneObj.description}
+Additional guidelines:
+- Follow the tone, formality, and structure implied by this scenario.
+- Use vocabulary and sentence patterns appropriate to the context.
+- Respect any special formatting (e.g., greetings and closings for emails, headings for minutes).
+- Keep the translation clear, concise, and natural.
 
-    Translate the following text while considering the above guidelines.`;
+Prompt blueprint:
+${sceneObj.prompt}
+
+Translate the following text:
+`;
 }
 
 
 export async function POST(req: Request) {
   
   const { messages,model=LLAMA_MODEL,scene  } = await req.json();
-  console.log(messages,model,scene);
+  const systemPrompt=createSystemPrompt(scene);
+  console.log(messages,model,systemPrompt);
   const result = streamText({
     model: groq(model),
-    system: createSystemPrompt(scene),
-    temperature: 0.3,
+    system: systemPrompt,
+    temperature: 0.2,
     topP: 0.9,
     messages,
   });

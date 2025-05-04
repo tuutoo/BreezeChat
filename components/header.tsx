@@ -24,7 +24,7 @@ export const Header = () => {
                 <div className="justify-start items-center gap-4  flex  flex-row">
                     <Link href="/" className="flex items-center gap-2">
                         <Languages className="w-6 h-6" />
-                        <span className="sm:grid hidden text-xl font-semibold motion motion-duration-300 motion-translate-x-in-[50%] motion-translate-y-in-[0%] motion-preset-blur-right" >LinguaLens</span>
+                        <span className="sm:grid hidden text-xl font-semibold motion motion-duration-500 motion-translate-x-in-[50%] motion-translate-y-in-[0%] motion-preset-blur-right" >LinguaLens</span>
                     </Link>
                 </div>
                 <div className="flex justify-end w-full gap-4">

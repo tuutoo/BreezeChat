@@ -23,34 +23,34 @@ export const Footer: React.FC<FooterProps> = ({
     title: 'LinguaLens',
     url: '/',
   },
-  tagline = '智能双向翻译助手，支持多场景风格切换',
+  tagline = 'AI translation assistant with multi-scenario style switching',
   menuItems = [
     {
-      title: '功能',
+      title: 'Features',
       links: [
-        { text: '实时翻译', url: '#' },
-        { text: '场景模式', url: '#' },
+        { text: 'Translation', url: '#' },
+        { text: 'Scene Modes', url: '#' },
       ],
     },
     {
-      title: '支持',
+      title: 'Support',
       links: [
-        { text: '常见问题', url: 'https://github.com/neozhu/lingualens' },
-        { text: '联系我', url: 'https://blazorserver.com/contact' },
+        { text: 'FAQ', url: 'https://github.com/neozhu/lingualens' },
+        { text: 'Contact Me', url: 'https://blazorserver.com/contact' },
       ],
     },
     {
-      title: '关于',
+      title: 'About',
       links: [
-        { text: '隐私政策', url: '/privacy' },
-        { text: '服务条款', url: '/terms' },
+        { text: 'Privacy Policy', url: '/privacy' },
+        { text: 'Terms of Service', url: '/terms' },
       ],
     },
   ],
-  copyright = '© 2025 LinguaLens. 保留所有权利。',
+  copyright = '© 2025 LinguaLens. All rights reserved.',
   bottomLinks = [
-    { text: '隐私政策', url: '/privacy' },
-    { text: '服务条款', url: '/terms' },
+    { text: 'Privacy Policy', url: '/privacy' },
+    { text: 'Terms of Service', url: '/terms' },
   ],
 }: FooterProps) => {
   return (

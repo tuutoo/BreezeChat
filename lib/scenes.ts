@@ -1,12 +1,12 @@
 // lib/scenes.ts
 export interface Scene {
-  /** 中文场景名称 */
+  /** Scene name in Chinese */
   name: string;
-  /** 英文场景名称 */
+  /** Scene name in English */
   name_en: string;
-  /** 场景描述 */
+  /** Scene description */
   description: string;
-  /** 生成提示 */
+  /** Generation prompt */
   prompt: string;
 }
 
@@ -14,38 +14,38 @@ export const SCENES: Scene[]  = [
   {
     name: "日常沟通",
     name_en: "Daily Communication",
-    description: "This is for a friendly, polite, and concise conversation context.",
-    prompt: "You are participating in a daily communication. Your responses should be friendly, polite, and concise. Translate the following text."
+    description: "Casual, friendly exchanges between colleagues or friends, using common words and simple grammar.",
+    prompt: "Translate the text in a casual, friendly tone using common words and simple grammar."
   },
   {
     name: "邮件",
     name_en: "Email",
-    description: "This is for a professional email context, where the tone should be polite and formal.",
-    prompt: "You are a professional assistant drafting an email. Your responses should be polite, formal, and well-structured. Translate the following text."
+    description: "Professional emails with a formal and polite tone, using common email greetings and closings (e.g., Hi …,” and “Best regards, [Your Name]”).",
+    prompt: "Translate the text as a formal, well-structured email. Include a standard greeting at the top (e.g., “Hi …,”) and a closing at the end (e.g., “Best regards, [Your Name]”)."
   },
   {
     name: "Teams对话",
     name_en: "Teams Chat",
-    description: "This is for a Teams conversation context, where the tone should be professional but friendly.",
-    prompt: "You are participating in a Teams conversation. Your responses should be professional but friendly. Translate the following text."
+    description: "Casual chats with colleagues that are friendly, approachable, conversational, and clear without overly formal language.",
+    prompt: "Translate the text in a friendly, approachable tone suitable for colleague chats—keep it clear and natural, not too formal."
   },
   {
-    name: "寻求支持",
-    name_en: "Support Request",
-    description: "This is for technical support requests, where you should provide clear and helpful solutions.",
-    prompt: "You are providing technical support. Your responses should be clear, concise, and helpful. Translate the following text."
+    name: "技术支持",
+    name_en: "Technical Support",
+    description: "Technical support for Salesforce and SAP issues, providing clear, concise, and helpful solutions.",
+    prompt: "Translate the text as technical support guidance for Salesforce or SAP—keep it clear, concise, and solution-focused."
+  },
+  {
+    name: "会议邀请",
+    name_en: "Meeting Invitation",
+    description: "Convert input into a polished, formal meeting invitation that clearly presents the greeting, date, time, venue, agenda items, participants, and closing remarks.",
+    prompt: "Rewrite and translate the following text into a formal meeting invitation. Structure it with a salutation, date, time, venue, agenda, list of attendees, and a closing remark—ensure it flows naturally and includes all key details."
   },
   {
     name: "讨论需求",
     name_en: "Requirement Discussion",
     description: "This is for discussing user requirements, where you need to gather detailed information.",
     prompt: "You are discussing user requirements. Your responses should be detailed and thorough. Translate the following text."
-  },
-  {
-    name: "团队协作",
-    name_en: "Team Collaboration",
-    description: "This is for team collaboration, where you should maintain a supportive and motivating tone.",
-    prompt: "You are collaborating with your team. Your responses should be supportive, motivating, and foster collaboration. Translate the following text."
   },
   {
     name: "客户沟通",
@@ -56,20 +56,8 @@ export const SCENES: Scene[]  = [
   {
     name: "会议纪要",
     name_en: "Meeting Minutes",
-    description: "This is for taking meeting notes, where the information should be summarized concisely.",
-    prompt: "You are summarizing a meeting. Your responses should be concise, clear, and to the point, summarizing key discussions and actions. Translate the following text."
-  },
-  {
-    name: "会议邀请",
-    name_en: "Meeting Invitation",
-    description: "This is for sending meeting invitations, where you should be clear, formal, and include necessary details.",
-    prompt: "You are sending a meeting invitation. Your responses should be formal, clear, and include all necessary details. Translate the following text."
-  },
-  {
-    name: "活动策划",
-    name_en: "Event Planning",
-    description: "This is for planning events, where creativity and attention to detail are essential.",
-    prompt: "You are planning an event. Your responses should be creative, well-structured, and include all necessary details. Translate the following text."
+    description: "Convert input into structured, concise meeting minutes that highlight the summary, key decisions, and action items.",
+    prompt: "Rewrite and translate the following text into meeting minutes format. Use clear headings for Summary, Decisions, and Action Items; present points succinctly and in logical order."
   }
   ];
   

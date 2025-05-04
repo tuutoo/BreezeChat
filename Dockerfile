@@ -1,40 +1,43 @@
-# —— 第一阶段：安装依赖并构建 —— 
+# ---- Stage 1: Install dependencies and build ----
 FROM node:22-alpine AS builder
 
-# 声明可被覆盖的镜像地址参数（默认使用淘宝镜像）
+# Declare an overridable registry URL argument (defaults to Taobao mirror)
 ARG NPM_REGISTRY_URL=https://registry.npmmirror.com/
-# 将其写入 npm 配置
+# Configure npm to use the specified registry
 ENV NPM_CONFIG_REGISTRY=${NPM_REGISTRY_URL}
 
 WORKDIR /app
 
-# 复制依赖定义
+# Copy dependency definitions
 COPY package*.json ./
 
-# 安装依赖（会走国内镜像）
+# Install dependencies (will use the domestic mirror)
 RUN npm ci
 
-# 复制项目其余文件并构建
+# Copy the rest of the project files and build
 COPY . .
 RUN npm run build
 
 
-# —— 第二阶段：生产镜像 —— 
+# ---- Stage 2: Production image ----
 FROM node:22-alpine AS runner
 
-# 保持生产环境配置
+# Set production environment
 ENV NODE_ENV=production
-# 继续使用同样的镜像源
+# Continue using the same registry URL
 ARG NPM_REGISTRY_URL
 ENV NPM_CONFIG_REGISTRY=${NPM_REGISTRY_URL}
 
 WORKDIR /app
 
-# 拷贝构建产物
+# Copy build artifacts from the builder stage
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/package*.json ./
 
+# Expose application port
 EXPOSE 3000
+
+# Start the application
 CMD ["npm", "start"]
