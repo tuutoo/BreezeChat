@@ -28,8 +28,8 @@ export const Footer: React.FC<FooterProps> = ({
     {
       title: 'Features',
       links: [
-        { text: 'Translation', url: '#' },
-        { text: 'Scene Modes', url: '#' },
+        { text: 'Translation', url: 'https://github.com/neozhu/lingualens' },
+        { text: 'Scene Modes', url: '/scene' },
       ],
     },
     {
