@@ -37,7 +37,7 @@ You are a smart translation assistant.
     \`;`;
 
   return (
-    <div className="mt-20 max-w-3xl mx-auto p-6 bg-background shadow rounded-lg">
+    <div className="max-w-3xl mx-auto p-6 bg-background">
       <h1 className="text-2xl font-bold mb-6">System Prompt Generator and Scene Descriptions</h1>
 
       <section className="mb-8">
@@ -49,7 +49,7 @@ You are a smart translation assistant.
         Prompt content is configured in <code className="text-blue-500">api/chat/route.ts</code>; update that file to adjust the prompts.
         </p>
         <pre className="px-4 py-5">
-          <code className="relative font-mono text-sm leading-none" data-language="javascript"> 
+          <code className="relative block font-mono text-sm leading-normal whitespace-pre-wrap break-words" data-language="javascript"> 
                 {functionCode}
           </code>
         </pre>

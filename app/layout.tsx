@@ -68,7 +68,16 @@ export default async function RootLayout({
         >
           <ActiveThemeProvider initialTheme={activeThemeValue}>
             <Header></Header>
-            {children}
+            <main
+              className="
+              pt-20                          
+              min-h-[calc(100vh-5rem)]      
+              grid place-items-center      
+              px-4                         
+            "
+            >
+              {children}
+            </main>
             <Footer />
             <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID!} />
           </ActiveThemeProvider>
