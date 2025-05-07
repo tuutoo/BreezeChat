@@ -119,7 +119,7 @@ export default function ChatDemo(props: ChatDemoProps) {
           "Können Sie mir bitte den Fehlercode senden?",
         ]}
       />
-      <div className="mb-2 w-full">
+      <div className="mb-2 relative w-full">
         {/* left fade */}
         <div className={cn("absolute left-12 top-0 bottom-0 w-12 z-10 bg-gradient-to-r from-background to-transparent pointer-events-none",
           current==1 && "hidden")} />
