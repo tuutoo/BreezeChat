@@ -2,10 +2,8 @@
 
 import { useEffect, useState } from "react"
 import { useChat, type UseChatOptions } from "@ai-sdk/react"
-import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { transcribeAudio } from "@/lib/utils/audio"
-import { Check } from "lucide-react";
 import { Chat } from "@/components/ui/chat"
 import {
   Select,
@@ -15,7 +13,11 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { SCENES } from "@/lib/scenes";
-import { Message } from "./ui/chat-message"
+import { Message } from "@/components/ui/chat-message"
+import { Carousel, CarouselContent, CarouselItem,CarouselPrevious,CarouselNext  } from "@/components/ui/carousel"
+import { type CarouselApi } from "@/components/ui/carousel"
+import { Badge } from "@/components/ui/badge"
+import { set } from "zod"
 
 const MODELS = [
   { id: "llama-3.3-70b-versatile", name: "Llama 3.3 70B" },
@@ -30,9 +32,11 @@ type ChatDemoProps = {
 }
 
 export default function ChatDemo(props: ChatDemoProps) {
+  const [api, setApi] = useState<CarouselApi>()
   const [selectedModel, setSelectedModel] = useState(MODELS[0].id)
   const [selectedScene, setSelectedScene] = useState(SCENES[0].name);
-
+  const [count, setCount] = useState(0);
+  const [current, setCurrent] = useState(0);
   useEffect(() => {
     const storedModel = localStorage.getItem("selectedModel")
     const storedScene = localStorage.getItem("selectedScene")
@@ -50,6 +54,15 @@ export default function ChatDemo(props: ChatDemoProps) {
     localStorage.setItem("selectedScene", selectedScene)
   }, [selectedScene])
 
+  useEffect(() => {
+    if (!api) return;
+    setCount(api.scrollSnapList().length);
+    setCurrent(api.selectedScrollSnap()+1);
+    api.on("select", () => {
+      setCurrent(api.selectedScrollSnap()+1);
+    })
+   
+  }, [api])
   const handleSceneClick = (sceneName: string) => {
     setSelectedScene(sceneName)
   }
@@ -73,7 +86,7 @@ export default function ChatDemo(props: ChatDemoProps) {
   })
 
   return (
-    <div className={cn("flex", "flex-col", "flex-1", "w-full")}>
+    <div className={cn("flex","flex-col", "w-full")}>
       <div className={cn("flex", "justify-end", "mb-2")}>
         <Select value={selectedModel} onValueChange={setSelectedModel}>
           <SelectTrigger className="w-[180px]">
@@ -90,7 +103,7 @@ export default function ChatDemo(props: ChatDemoProps) {
       </div>
 
       <Chat
-        className="grow"
+        className="w-full"
         messages={messages as unknown as Message[]}
         handleSubmit={handleSubmit}
         input={input}
@@ -106,25 +119,34 @@ export default function ChatDemo(props: ChatDemoProps) {
           "Können Sie mir bitte den Fehlercode senden?",
         ]}
       />
-      <div className="mb-2 flex flex-row gap-4 text-sm text-gray-600 items-center">
-        <div className="flex-none">
-          应用场景:
-        </div>
-        <div className="flex flex-row gap-2 flex-wrap ">
+      <div className="mb-2 w-full">
+        {/* left fade */}
+        <div className={cn("absolute left-12 top-0 bottom-0 w-12 z-10 bg-gradient-to-r from-background to-transparent pointer-events-none",
+          current==1 && "hidden")} />
+    
+        <Carousel setApi={setApi} opts={{
+          align: "start", 
+          dragFree:true
+          }} className="w-full px-12 h-12 flex items-center">
+          <CarouselContent className="-ml-1">
           {SCENES.map((scene, idx) => (
-            <Button
-              variant="outline"
-              size="sm"
-              key={idx}
-              onClick={() => handleSceneClick(scene.name)} // Update the selected scene's prompt
-
-            >{selectedScene === scene.name && (
-              <Check /> // Show checkmark if selected
-            )}
-              {scene.name}
-            </Button>
+            <CarouselItem key={scene.name} className="pl-3 basis-auto flex items-center" onClick={() => handleSceneClick(scene.name)} >
+               <Badge variant={selectedScene === scene.name ? "default" : "secondary"} 
+                      className="cursor-pointer counded-lg px-3 py-1 white-space-nowrap"
+               >
+                {scene.name}
+               </Badge>
+             
+            </CarouselItem>
           ))}
-        </div>
+          </CarouselContent>
+          <CarouselPrevious className="left-0 z-20" />
+          <CarouselNext className="right-0 z-20"/>
+          {/* right fade */}
+          <div className={cn("absolute right-12 top-0 bottom-0 w-12 z-10 bg-gradient-to-l from-background to-transparent pointer-events-none",
+            current==count && "hidden")} />
+          </Carousel>
+       
       </div>
     </div>
   )

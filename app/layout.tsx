@@ -72,7 +72,7 @@ export default async function RootLayout({
               className="
               pt-20                          
               min-h-[calc(100vh-5rem)]      
-              grid place-items-center      
+              flex justify-center  items-center    
               px-4                         
             "
             >
