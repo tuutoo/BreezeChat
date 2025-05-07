@@ -17,7 +17,7 @@ import { Message } from "@/components/ui/chat-message"
 import { Carousel, CarouselContent, CarouselItem,CarouselPrevious,CarouselNext  } from "@/components/ui/carousel"
 import { type CarouselApi } from "@/components/ui/carousel"
 import { Badge } from "@/components/ui/badge"
-import { set } from "zod"
+
 
 const MODELS = [
   { id: "llama-3.3-70b-versatile", name: "Llama 3.3 70B" },
@@ -130,7 +130,7 @@ export default function ChatDemo(props: ChatDemoProps) {
           }} className="w-full px-12 h-12 flex items-center">
           <CarouselContent className="-ml-1">
           {SCENES.map((scene, idx) => (
-            <CarouselItem key={scene.name} className="pl-3 basis-auto flex items-center" onClick={() => handleSceneClick(scene.name)} >
+            <CarouselItem key={idx} className="pl-3 basis-auto flex items-center" onClick={() => handleSceneClick(scene.name)} >
                <Badge variant={selectedScene === scene.name ? "default" : "secondary"} 
                       className="cursor-pointer counded-lg px-3 py-1 white-space-nowrap"
                >
