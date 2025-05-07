@@ -12,7 +12,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install dependencies (will use the domestic mirror)
-RUN npm ci
+RUN npm install
 
 # Copy the rest of the project files and build
 COPY . .
