@@ -109,20 +109,20 @@ export const SCENES: Scene[] = [
     prompt: "Your task is to translate the marketing copy. The translation MUST be persuasive, engaging, and culturally relevant to the target language audience. Focus on conveying the intended message and emotional appeal, not just a literal translation. Use language that motivates action or creates a positive brand perception. Adapt slogans or taglines creatively to resonate in the target language."
   },
   {
-    name: "法律文件（初稿/理解辅助）",
+    name: "法律文件",
     name_en: "Legal Document (Draft/Understanding Aid)",
     description: "For translating legal documents like contracts or terms of service. Emphasizes precision and formal legal terminology. Note: AI translation for legal docs is for understanding/drafting, not a substitute for professional legal translators.",
     prompt: "Your task is to translate the provided legal text. Maintain extreme precision and use formal legal terminology appropriate for the target language. This translation is for informational or drafting purposes and is not a substitute for certified human translation for binding legal use. Translate clauses and terms as accurately as possible, preserving the original meaning and intent. AVOID paraphrasing legal terms unless a direct equivalent is unavailable and an explanation is necessary (though you should aim for direct equivalents)."
   },
   {
-    name: "学术论文/摘要",
-    name_en: "Academic Paper/Abstract",
+    name: "学术论文",
+    name_en: "Academic Paper",
     description: "For translating research papers, abstracts, or scholarly articles. Requires formal language, precise terminology, and an objective tone.",
     prompt: "Your task is to translate the academic text (e.g., research paper, abstract, scholarly article). Maintain a formal, objective tone and use precise academic terminology relevant to the subject matter. Ensure clarity in conveying complex ideas and research findings. Adhere to standard academic writing conventions in the target language."
   },
   {
-    name: "学习笔记/摘要",
-    name_en: "Study Notes/Summaries",
+    name: "学习笔记",
+    name_en: "Study Notes",
     description: "For personal study notes, summaries of lectures or readings. Can be less formal but clarity and accurate representation of key information are important.",
     prompt: "Your task is to translate study notes or a summary of learning material. Focus on accurately conveying the key information, concepts, and definitions. Maintain the original structure if it involves bullet points, headings, or numbered lists. The tone can be slightly less formal than academic papers but MUST be clear and easy to understand for review purposes."
   },
@@ -131,12 +131,6 @@ export const SCENES: Scene[] = [
     name_en: "News Article",
     description: "For translating news reports or articles. Maintain an objective and informative tone, accurately conveying facts.",
     prompt: "Your task is to translate the news article text. Maintain an objective, informative, and neutral tone. Ensure clarity and accuracy in conveying facts, events, and quoted statements. Preserve the general structure of journalistic writing (e.g., headline, lead paragraph, body)."
-  },
-  {
-    name: "在线课程内容",
-    name_en: "Online Course Content",
-    description: "For translating materials from online courses, such as lecture transcripts, quiz questions, or discussion forum prompts. Clarity and educational value are key.",
-    prompt: "Your task is to translate content from an online course (e.g., lecture transcript, module description, quiz question). Ensure the translation is clear, accurate, and pedagogically sound. Use terminology consistent with educational materials. If translating questions, ensure they remain unambiguous and test the same concept."
   }
 ];
 
