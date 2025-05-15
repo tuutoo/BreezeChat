@@ -26,8 +26,14 @@ export const SCENES: Scene[] = [
   {
     name: "Teams对话",
     name_en: "Teams Chat",
-    description: "Casual chats with colleagues that are friendly, approachable, conversational, and clear without overly formal language.",
-    prompt: "Your task is to translate the provided text for a Teams chat context. Adopt a friendly, approachable, and conversational tone, as if speaking to a colleague. The language MUST be clear, natural, and concise. AVOID overly formal language, but maintain professionalism."
+    description: "For translating casual conversations between colleagues in a Teams chat. Use a friendly, approachable, and conversational style. Keep the language clear, natural, and professional, while avoiding overly formal expressions.",
+    prompt: "Your task is to translate the following text for use in a Teams chat between colleagues. Use a friendly, approachable, and conversational tone, as if you are speaking directly to a coworker. Ensure the language is clear, natural, and concise. Avoid overly formal wording, but maintain a sense of professionalism appropriate for a workplace setting."
+  },
+  {
+    name: "新闻资讯",
+    name_en: "News Article",
+    description: "For translating news reports or informational articles. Maintain objectivity, neutrality, and accuracy. Follow journalistic writing conventions and ensure all information is conveyed clearly and faithfully.",
+    prompt: "You are tasked with translating the following news article. Use clear, objective, and neutral language, faithfully representing all facts, events, and direct quotations. Ensure the translation is accurate, easy to understand, and preserves the structure of the original article, including the headline, lead, and body paragraphs. Avoid adding personal opinions or interpretations. Retain journalistic style and conventions throughout the translation."
   },
   {
     name: "技术支持",
@@ -125,13 +131,6 @@ export const SCENES: Scene[] = [
     name_en: "Study Notes",
     description: "For personal study notes, summaries of lectures or readings. Can be less formal but clarity and accurate representation of key information are important.",
     prompt: "Your task is to translate study notes or a summary of learning material. Focus on accurately conveying the key information, concepts, and definitions. Maintain the original structure if it involves bullet points, headings, or numbered lists. The tone can be slightly less formal than academic papers but MUST be clear and easy to understand for review purposes."
-  },
-  {
-    name: "新闻资讯",
-    name_en: "News Article",
-    description: "For translating news reports or articles. Maintain an objective and informative tone, accurately conveying facts.",
-    prompt: "Your task is to translate the news article text. Maintain an objective, informative, and neutral tone. Ensure clarity and accuracy in conveying facts, events, and quoted statements. Preserve the general structure of journalistic writing (e.g., headline, lead paragraph, body)."
   }
 ];
 
-  
