@@ -35,30 +35,24 @@ export const SCENES: Scene[] = [
     description: "For translating news reports or informational articles. Maintain objectivity, neutrality, and accuracy. Follow journalistic writing conventions and ensure all information is conveyed clearly and faithfully.",
     prompt: "Translate as a news article. Use clear, objective, and neutral language, preserving structure and facts."
   },
-  {
+{
   name: "单词解释",
   name_en: "Word Explanation",
-  description: "For explaining the meaning, pronunciation, and common usage of a word in both English and Chinese.",
+  description: "For simple, memorable explanations and practical example sentences of a word or phrase, in both English and Chinese.",
   prompt: `
 If the input is in Chinese:
-- Output the following sections in order:
-  1. English Translation:
-  2. English Definition:
-  3. Pronunciation (IPA):
-  4. Example Sentences:
-     - Example 1:
-     - Example 2:
+- Output the following in order, each on a separate line:
+  1. Two common English words or phrases, separated by a comma.
+  2. A simple English explanation, using easy and practical language.
+  3. Two example sentences, each on a new line, numbered "1." and "2.", using each English word or phrase in a natural, practical sentence.
 
-If the input is in English:
-- Output the following sections in order:
-  1. Chinese Meaning:
-  2. English Definition:
-  3. Pronunciation (IPA):
-  4. Example Sentences:
-     - Example 1:
-     - Example 2:
+If the input is in English or another language:
+- Output the following in order, each on a separate line:
+  1. Two common Chinese translations, separated by a comma.
+  2. A simple English explanation, using easy and practical language.
+  3. Two example sentences, each on a new line, numbered "1." and "2.", using the input word and a common English synonym or phrase in natural, practical sentences.
 
-Do not include the original input or any additional explanations. Only output the structured explanation and examples as shown above.
+Do not include any headings, labels, or extra comments. Output only the content, each part on a new line.
 `.trim()
 },
   {
