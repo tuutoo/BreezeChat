@@ -36,6 +36,32 @@ export const SCENES: Scene[] = [
     prompt: "Translate as a news article. Use clear, objective, and neutral language, preserving structure and facts."
   },
   {
+  name: "单词解释",
+  name_en: "Word Explanation",
+  description: "For explaining the meaning, pronunciation, and common usage of a word in both English and Chinese.",
+  prompt: `
+If the input is in Chinese:
+- Output the following sections in order:
+  1. English Translation:
+  2. English Definition:
+  3. Pronunciation (IPA):
+  4. Example Sentences:
+     - Example 1:
+     - Example 2:
+
+If the input is in English:
+- Output the following sections in order:
+  1. Chinese Meaning:
+  2. English Definition:
+  3. Pronunciation (IPA):
+  4. Example Sentences:
+     - Example 1:
+     - Example 2:
+
+Do not include the original input or any additional explanations. Only output the structured explanation and examples as shown above.
+`.trim()
+},
+  {
     name: "社交媒体帖子",
     name_en: "Social Media Post (X/Reddit)",
     description: "For engaging posts on X (Twitter) or Reddit.",
@@ -65,32 +91,6 @@ export const SCENES: Scene[] = [
     description: "For structured and concise meeting minutes.",
     prompt: "Translate as formal meeting minutes with headings, summary, decisions, and action items."
   },
-  {
-  name: "单词解释",
-  name_en: "Word Explanation",
-  description: "For explaining the meaning, pronunciation, and common usage of a word in both English and Chinese.",
-  prompt: `
-If the input is in Chinese:
-- Output the following sections in order:
-  1. English Translation:
-  2. English Definition:
-  3. Pronunciation (IPA):
-  4. Example Sentences:
-     - Example 1:
-     - Example 2:
-
-If the input is in English:
-- Output the following sections in order:
-  1. Chinese Meaning:
-  2. English Definition:
-  3. Pronunciation (IPA):
-  4. Example Sentences:
-     - Example 1:
-     - Example 2:
-
-Do not include the original input or any additional explanations. Only output the structured explanation and examples as shown above.
-`.trim()
-},
   {
     name: "学习笔记",
     name_en: "Study Notes",
