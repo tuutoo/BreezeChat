@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
         "Cache-Control": "no-store",
       },
     });
-  } catch (e) {
+  } catch {
     return new Response("TTS Error", { status: 500 });
   }
 }
