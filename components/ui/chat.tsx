@@ -16,6 +16,7 @@ import { useAutoScroll } from "@/hooks/use-auto-scroll"
 import { Button } from "@/components/ui/button"
 import { type Message } from "@/components/ui/chat-message"
 import { CopyButton } from "@/components/ui/copy-button"
+import { ReadAloudButton } from "@/components/ui/read-aloud-button"
 import { MessageInput } from "@/components/ui/message-input"
 import { MessageList } from "@/components/ui/message-list"
 import { PromptSuggestions } from "@/components/ui/prompt-suggestions"
@@ -161,10 +162,16 @@ export function Chat({
       actions: onRateResponse ? (
         <>
           <div className="border-r pr-1">
+
             <CopyButton
               value={message.content}
               content={message.content}
               copyMessage="Copied response to clipboard!"
+              className="
+            h-6 w-6
+            text-zinc-700 hover:bg-zinc-100 hover:text-zinc-900
+            dark:text-zinc-50 dark:hover:bg-zinc-700 dark:hover:text-zinc-50
+            "
             />
           </div>
           <Button
@@ -183,13 +190,33 @@ export function Chat({
           >
             <ThumbsDown className="h-4 w-4" />
           </Button>
+          <ReadAloudButton
+            text={message.content}
+            className="h-6 w-6 text-zinc-50 hover:bg-zinc-700 hover:text-zinc-50"
+          />
         </>
       ) : (
-        <CopyButton
-          value={message.content}
-          content={message.content}
-          copyMessage="Copied response to clipboard!"
-        />
+        <div className="d-flex items-center space-x-2">
+          <CopyButton
+            value={message.content}
+            content={message.content}
+            copyMessage="Copied response to clipboard!"
+            className="
+            h-6 w-6
+            text-zinc-700 hover:bg-zinc-100 hover:text-zinc-900
+            dark:text-zinc-50 dark:hover:bg-zinc-700 dark:hover:text-zinc-50
+            "
+          />
+          <ReadAloudButton
+            text={message.content}
+            className="
+            h-6 w-6
+            text-zinc-700 hover:bg-zinc-100 hover:text-zinc-900
+            dark:text-zinc-50 dark:hover:bg-zinc-700 dark:hover:text-zinc-50
+            "
+          />
+        </div>
+
       ),
     }),
     [onRateResponse]
@@ -214,13 +241,13 @@ export function Chat({
           />
         </ChatMessages>
       ) : null}
-    
+
       <ChatForm
         className="mt-auto"
         isPending={isGenerating || isTyping}
         handleSubmit={handleSubmit}
       >
-        
+
         {({ files, setFiles }) => (
           <MessageInput
             value={input}

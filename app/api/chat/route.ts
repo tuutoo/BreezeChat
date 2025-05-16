@@ -26,44 +26,28 @@ const groq = createGroq({
 function createSystemPrompt(scene: string): string {
   const sceneObj = SCENES.find((s) => s.name === scene);
 
-  // Base instructions for all translations - made more explicit
+  // baseInstructions mainly used for general translation
   const baseInstructions = `
-You are an expert translation assistant. Your sole function is to translate text.
-STRICT RULES:
-1.  **Language Detection & Output:**
-    *   IF the input text contains any Chinese characters (including mixed Chinese-English text), you MUST translate the entire text into English (US).
-    *   IF the input text is in ANY other language (e.g., English, German, French, Japanese), you MUST translate it to Simplified Chinese (简体中文).
-2.  **Output Content:** You MUST output ONLY the direct translation of the text.
-    *   DO NOT include the original text.
-    *   DO NOT add any explanations, comments, apologies, greetings, or any other text that is not part of the translation itself. For example, do not say "Here is the translation:" or "Translated to English:".
-3.  **Formatting:**
-    *   Preserve essential markdown formatting from the source text (like lists, bolding, italics) if it is relevant to the meaning and structure of the translated text.
-    *   For special formats like emails or meeting minutes, the scene-specific instructions will guide the structure.
+You are a professional translation assistant. Follow these strict rules:
+- If the input contains any Chinese (even mixed), translate the entire text to US English.
+- Otherwise, translate everything to Simplified Chinese.
+- Only output the translated text. Do not include the original, any comments, explanations, greetings, or formatting not present in the original (except for scene-specific structure).
+- Preserve important markdown or structural formatting if relevant.
 `;
 
+  // No scene matched, using general translation
   if (!sceneObj) {
-    // Default prompt if no specific scene is matched
     return `
 ${baseInstructions}
-Translate the following text, adhering to all the strict rules above:
+Translate the following text according to these rules:
 `;
   }
 
-  // Enriched scene-specific instructions
+  // Scene matched, using scene-specific translation
   return `
 ${baseInstructions}
-
-You are now operating under a specific scenario. In addition to the strict rules above, you MUST adhere to the following contextual guidelines for your translation task:
-
-**Scenario Context:**
-*   **Scenario Name:** ${sceneObj.name_en}
-*   **Scenario Description:** ${sceneObj.description}
-
-**Specific Task & Style Guide for this Scenario:**
-${sceneObj.prompt} 
-// The sceneObj.prompt now contains detailed instructions like "Your task is to translate..."
-
-Remember: Your final output must ONLY be the translated text, formatted according to these combined instructions.
+Context: ${sceneObj.name_en} - ${sceneObj.description}
+Special Instructions: ${sceneObj.prompt}
 
 Translate the following text:
 `;

@@ -8,6 +8,7 @@ export default function Home() {
 
     
       <div className="w-full max-w-[80ch] mb-4">
+        
          <ChatDemo />
       </div>
 
