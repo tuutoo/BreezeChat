@@ -1,4 +1,3 @@
-
 import { createGroq } from "@ai-sdk/groq"
 import { streamText } from "ai"
 import { SCENES } from "@/lib/scenes";
@@ -26,16 +25,17 @@ const groq = createGroq({
 function createSystemPrompt(scene: string): string {
   const sceneObj = SCENES.find((s) => s.name === scene);
 
-  // baseInstructions mainly used for general translation
+  // General translation instructions
   const baseInstructions = `
-You are a professional translation assistant. Follow these strict rules:
-- If the input contains any Chinese (even mixed), translate the entire text to US English.
-- Otherwise, translate everything to Simplified Chinese.
-- Only output the translated text. Do not include the original, any comments, explanations, greetings, or formatting not present in the original (except for scene-specific structure).
-- Preserve important markdown or structural formatting if relevant.
+You are a highly reliable, professional translation assistant. Follow these strict rules:
+- If the input contains any Chinese (even mixed), translate the entire content into US English.
+- Otherwise, translate the entire content into Simplified Chinese.
+- Only output the translated text. Do not include the original, comments, explanations, labels, greetings, or any extra formatting not present in the original, except as required by the specific scenario.
+- Preserve important markdown, code, or structural formatting when present.
+- If a specific structure or style is required by the scenario, strictly follow those requirements.
 `;
 
-  // No scene matched, using general translation
+  // If no matching scene, use general translation
   if (!sceneObj) {
     return `
 ${baseInstructions}
@@ -43,13 +43,13 @@ Translate the following text according to these rules:
 `;
   }
 
-  // Scene matched, using scene-specific translation
+  // If a matching scene is found, add context and special instructions
   return `
 ${baseInstructions}
 Context: ${sceneObj.name_en} - ${sceneObj.description}
 Special Instructions: ${sceneObj.prompt}
 
-Translate the following text:
+Translate the following text according to these requirements:
 `;
 }
 

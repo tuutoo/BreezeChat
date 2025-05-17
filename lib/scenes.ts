@@ -15,51 +15,51 @@ export const SCENES: Scene[] = [
     name: "日常沟通",
     name_en: "Daily Communication",
     description: "Casual, friendly exchanges between colleagues or friends, using common vocabulary and simple grammar.",
-    prompt: "Translate as daily casual conversation, using common vocabulary, simple grammar, and a friendly tone."
+    prompt: "Translate the input as a daily, casual conversation suitable for colleagues or friends, using common vocabulary, simple grammar, and a friendly tone. Ensure the result sounds natural, like what a native speaker would say in a relaxed setting. Avoid formal, stiff, or overly technical expressions. Only use casual and commonly used words."
   },
   {
     name: "邮件",
     name_en: "Email",
     description: "For professional business email communication.",
-    prompt: "Translate as a formal business email, including greeting and closing. Use a polite and professional tone."
+    prompt: "Translate as a formal business email, starting with a suitable greeting and ending with an appropriate professional closing. Use clear, polite, and professional language throughout."
   },
   {
     name: "Teams对话",
     name_en: "Teams Chat",
     description: "For friendly and efficient workplace chat between colleagues.",
-    prompt: "Translate as a Teams chat message between colleagues. Use a friendly, polite, and direct style—clear and natural, like talking to a coworker you know well. Avoid overly formal or excessive pleasantries."
+    prompt: "Translate as a Teams chat message between colleagues. Use a friendly, polite, and direct tone that sounds natural, clear, and efficient, as if talking to a coworker you know well. Avoid formal language and unnecessary pleasantries."
   },
   {
     name: "新闻资讯",
     name_en: "News Article",
     description: "For translating news reports or informational articles. Maintain objectivity, neutrality, and accuracy. Follow journalistic writing conventions and ensure all information is conveyed clearly and faithfully.",
-    prompt: "Translate as a news article. Use clear, objective, and neutral language, preserving structure and facts."
+    prompt: "Translate as a news article. Use clear, objective, and neutral language, faithfully preserving the original structure and all factual information. Follow journalistic writing conventions. Do not add opinions or commentary."
   },
   {
     name: "单词解释",
     name_en: "Word Explanation",
     description: "For simple, memorable explanations and practical example sentences of a word or phrase, in both English and Chinese.",
     prompt: `
-If the input is in Chinese:
-- Output the following in order, each on a separate line:
-  1. Two common English words or phrases, separated by a comma.
-  2. A simple English explanation, using easy and practical language.
-  3. Two example sentences, each on a new line, numbered "1." and "2.", using each English word or phrase in a natural, practical sentence.
+If the input is in Chinese, follow steps A; otherwise (for English or other languages), follow steps B.
 
-If the input is in English or another language:
-- Output the following in order, each on a separate line:
-  1. Two common Chinese translations, separated by a comma.
-  2. A simple English explanation, using easy and practical language.
-  3. Two example sentences, each on a new line, numbered "1." and "2.", using the input word and a common English synonym or phrase in natural, practical sentences.
+A. For Chinese input:
+1. Output two common English translations or synonyms, separated by a comma.
+2. Output a simple English explanation using easy and practical language.
+3. Output two example sentences (each on a new line, numbered 1. and 2.) that use each English word or phrase naturally in everyday context.
 
-Do not include any headings, labels, or extra comments. Output only the content, each part on a new line.
+B. For English or other language input:
+1. Output two common Chinese translations, separated by a comma.
+2. Output a simple English explanation using easy and practical language.
+3. Output two example sentences (each on a new line, numbered 1. and 2.) that use the input word and a common English synonym or phrase naturally in everyday context.
+
+Only output the requested content, nothing else. Do not include any headings, labels, or extra comments. Do not add extra punctuation at the end of each line unless required by the example sentences.
 `.trim()
   },
   {
     name: "技术文档",
     name_en: "Technical Documentation",
-    description: "For translating developer-oriented technical documentation or API references. Maintain a professional and accurate tone, ensure consistent terminology, and present information in a clear, structured way for developers.",
-    prompt: "Translate as developer technical documentation or API documentation. Use clear, concise, and professional language. Accurately translate technical terms and code-related content. Maintain logical structure and formatting suitable for developer reference. Avoid unnecessary explanation or embellishment."
+    description: "For translating developer technical documentation or API references. Use a professional tone, consistent terminology, and clear, structured presentation.",
+    prompt: "Translate as developer-oriented technical documentation or API reference. Use clear, concise, and professional language throughout. Ensure all technical terms and code elements are translated accurately and consistently. Preserve the logical structure and formatting suitable for developer reference."
   },
   {
     name: "社交媒体帖子",
@@ -70,14 +70,14 @@ Do not include any headings, labels, or extra comments. Output only the content,
   {
     name: "技术支持",
     name_en: "Technical Support",
-    description: "For technical support communication or instructions, mainly for Salesforce, JavaScript, .NET, and SAP.",
-    prompt: "Translate as technical support guidance, mainly related to Salesforce, JavaScript, .NET, or SAP. Be clear, concise, and solution-focused."
+    description: "For technical support communication in systems like TOPdesk.",
+    prompt: "Translate as technical support communication for systems like TOPdesk, focusing on Salesforce, JavaScript, .NET, or SAP. Use clear, concise, and solution-focused language with a professional and approachable tone. Do not include a greeting or closing; address the issue or request directly."
   },
   {
     name: "会议邀请",
     name_en: "Meeting Invitation",
     description: "For formal meeting invitation messages.",
-    prompt: "Translate as a formal meeting invitation, including greeting, purpose, date, time, venue, agenda, participants, and closing."
+    prompt: "Translate as a formal meeting invitation. Include a polite greeting, clearly state the meeting purpose, date, time, venue, agenda, and participants, and end with an appropriate closing."
   },
   {
     name: "讨论需求",
@@ -88,13 +88,13 @@ Do not include any headings, labels, or extra comments. Output only the content,
   {
     name: "会议纪要",
     name_en: "Meeting Minutes",
-    description: "For translating meeting minutes with a clear and structured format. Focus on key points, summaries, decisions, and action items for clarity and easy reference.",
+    description: "For translating meeting minutes with a clear and structured format.",
     prompt: "Translate as formal meeting minutes. Use clear headings and a structured format. Summarize key points, record decisions, and list action items for follow-up."
   },
   {
     name: "演示文稿",
     name_en: "Presentation Slides",
-    description: "For translating content intended for presentation slides. Focus on clarity, brevity, and impactful messaging. Suitable for slide headings, bullet points, and concise summaries.",
+    description: "For content used in presentation slides.",
     prompt: "Translate for presentation slides. Use clear and concise language, short bullet points, and impactful statements that are easy to read on slides."
   }
 ];
