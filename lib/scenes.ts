@@ -35,11 +35,11 @@ export const SCENES: Scene[] = [
     description: "For translating news reports or informational articles. Maintain objectivity, neutrality, and accuracy. Follow journalistic writing conventions and ensure all information is conveyed clearly and faithfully.",
     prompt: "Translate as a news article. Use clear, objective, and neutral language, preserving structure and facts."
   },
-{
-  name: "单词解释",
-  name_en: "Word Explanation",
-  description: "For simple, memorable explanations and practical example sentences of a word or phrase, in both English and Chinese.",
-  prompt: `
+  {
+    name: "单词解释",
+    name_en: "Word Explanation",
+    description: "For simple, memorable explanations and practical example sentences of a word or phrase, in both English and Chinese.",
+    prompt: `
 If the input is in Chinese:
 - Output the following in order, each on a separate line:
   1. Two common English words or phrases, separated by a comma.
@@ -54,7 +54,13 @@ If the input is in English or another language:
 
 Do not include any headings, labels, or extra comments. Output only the content, each part on a new line.
 `.trim()
-},
+  },
+  {
+    name: "技术文档",
+    name_en: "Technical Documentation",
+    description: "For translating developer-oriented technical documentation or API references. Maintain a professional and accurate tone, ensure consistent terminology, and present information in a clear, structured way for developers.",
+    prompt: "Translate as developer technical documentation or API documentation. Use clear, concise, and professional language. Accurately translate technical terms and code-related content. Maintain logical structure and formatting suitable for developer reference. Avoid unnecessary explanation or embellishment."
+  },
   {
     name: "社交媒体帖子",
     name_en: "Social Media Post (X/Reddit)",
@@ -82,20 +88,14 @@ Do not include any headings, labels, or extra comments. Output only the content,
   {
     name: "会议纪要",
     name_en: "Meeting Minutes",
-    description: "For structured and concise meeting minutes.",
-    prompt: "Translate as formal meeting minutes with headings, summary, decisions, and action items."
-  },
-  {
-    name: "学习笔记",
-    name_en: "Study Notes",
-    description: "For summaries and personal study notes.",
-    prompt: "Translate as study notes or a summary. Use clear, structured language with bullet points or headings if needed."
+    description: "For translating meeting minutes with a clear and structured format. Focus on key points, summaries, decisions, and action items for clarity and easy reference.",
+    prompt: "Translate as formal meeting minutes. Use clear headings and a structured format. Summarize key points, record decisions, and list action items for follow-up."
   },
   {
     name: "演示文稿",
     name_en: "Presentation Slides",
-    description: "For content used in presentation slides.",
-    prompt: "Translate for presentation slides. Use clear, concise bullet points or short impactful statements."
-  },
+    description: "For translating content intended for presentation slides. Focus on clarity, brevity, and impactful messaging. Suitable for slide headings, bullet points, and concise summaries.",
+    prompt: "Translate for presentation slides. Use clear and concise language, short bullet points, and impactful statements that are easy to read on slides."
+  }
 ];
 
