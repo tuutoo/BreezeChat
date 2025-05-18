@@ -11,6 +11,7 @@
 * **Multilingual Support**: Currently supports translations between Chinese and several other languages, including English, French, German, etc.
 * **Customizable User Interface**: Easily switch between different scenes for translations, ensuring the tone and style fit the specific use case.
 * **User-Friendly Design**: Built with **Next.js** and **ShadCN UI**, making the interface simple and intuitive.
+* **Supports Gemini 2.5 Flash Preview 04-17**: You can choose the Gemini 2.5 Flash Preview 04-17 model, which provides excellent translation quality.
 
 ## **Tech Stack**
 
@@ -30,13 +31,17 @@
 
 ## **Scenes**
 
-The translation process adapts based on the following scenes:
+Below are the translation scenes I believe are most commonly used in the workplace:
 
-* **Online Meetings**: Translations are formal, concise, and professional.
-* **Emails**: Tone is polite, formal, and well-structured.
-* **Teams Conversations**: Translations are professional but friendly.
-* **Technical Support**: Translations are clear, concise, and focused on providing helpful solutions.
-* **Requirement Discussions**: Translations are detailed and thorough.
+- **Daily Communication**: Casual, friendly exchanges between colleagues or friends, using common vocabulary and simple grammar.
+- **Email**: For professional business email communication.
+- **News Article**: For translating news reports or informational articles. Maintains objectivity, neutrality, and accuracy.
+- **Word Explanation**: For simple, memorable explanations and practical example sentences of a word or phrase, in both English and Chinese.
+- **Technical Documentation**: For translating developer technical documentation or API references. Uses a professional tone, consistent terminology, and clear, structured presentation.
+- **Social Media Post (X/Reddit)**: For engaging posts on X (Twitter) or Reddit.
+- **Technical Support**: For technical support communication in systems like TOPdesk, focusing on Salesforce, JavaScript, .NET, or SAP.
+- **Meeting Invitation**: For formal meeting invitation messages.
+- **Requirement Discussion**: For discussions about## **Scenes**
 
 ## **Getting Started**
 
@@ -63,9 +68,12 @@ npm install
 
 Create a `.env.local` file in the root directory and add your environment-specific variables, such as API keys for the AI translation service.
 
+> **Note:** These API keys can be obtained for free by registering an account, or you can use a paid account if you need higher usage limits.
+
+
 ```bash
-NEXT_PUBLIC_GOOGLE_GENAI_API_KEY=your_google_api_key
-NEXT_PUBLIC_APP_URL=http://localhost:3000
+GOOGLE_GENERATIVE_AI_API_KEY=your_google_api_key
+GROQ_API_KEY=your_groq_api_key
 ```
 
 ### **4. Run the project**
@@ -79,6 +87,54 @@ npm run dev
 ```
 
 Visit `http://localhost:3000` in your browser to access the app.
+
+## **Docker Deployment**
+
+You can deploy **LinguaLens** using Docker for easy setup and consistent environments.
+
+### **1. Pull the latest code**
+
+```bash
+git pull
+```
+
+### **2. Build the Docker image**
+
+```bash
+sudo docker build . -t lingualens:ver
+```
+
+Replace `ver` with your desired version tag (e.g., `v0.24`).
+
+### **3. (Optional) Use Docker Compose**
+
+Below is an example `docker-compose.yml` file for running LinguaLens:
+
+```yaml
+version: '3.8'
+
+services:
+  lingualens:
+    image: lingualens:v0.24
+    # Map external port 4010 to internal port 3000
+    ports:
+      - "4010:3000"
+    # Set environment variables
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_GA_ID=<your tag id>
+      - GROQ_API_KEY=<your api key>
+      - GOOGLE_GENERATIVE_AI_API_KEY=<your api key>
+    restart: unless-stopped
+```
+
+### **4. Start the service**
+
+```bash
+sudo docker compose up -d
+```
+
+Visit `http://localhost:4010` in your browser to access the app running in Docker.
 
 ## **Usage**
 
