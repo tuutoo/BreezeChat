@@ -24,12 +24,6 @@ export const SCENES: Scene[] = [
     prompt: "Translate as a formal business email, starting with a suitable greeting and ending with an appropriate professional closing. Use clear, polite, and professional language throughout."
   },
   {
-    name: "Teams对话",
-    name_en: "Teams Chat",
-    description: "For friendly and efficient workplace chat between colleagues.",
-    prompt: "Translate as a Teams chat message between colleagues. Use a friendly, polite, and direct tone that sounds natural, clear, and efficient, as if talking to a coworker you know well. Avoid formal language and unnecessary pleasantries."
-  },
-  {
     name: "新闻资讯",
     name_en: "News Article",
     description: "For translating news reports or informational articles. Maintain objectivity, neutrality, and accuracy. Follow journalistic writing conventions and ensure all information is conveyed clearly and faithfully.",
