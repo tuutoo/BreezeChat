@@ -1,12 +1,15 @@
 import { createGroq } from "@ai-sdk/groq"
 import { streamText } from "ai"
 import { SCENES } from "@/lib/scenes";
+import { google } from '@ai-sdk/google'; // Import Google Gemini provider
+
 
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
 
-const LLAMA_MODEL = "llama-3.3-70b-versatile"
+// const LLAMA_MODEL = "llama-3.3-70b-versatile"
 const QWEN_MODEL = "qwen-qwq-32b"
+const GEMINI_MODEL = "gemini-2.5-flash-preview-04-17"
 
 const groq = createGroq({
   fetch: async (url, options) => {
@@ -55,18 +58,24 @@ Translate the following text according to these requirements:
 
 
 export async function POST(req: Request) {
-  
-  const { messages,model=LLAMA_MODEL,scene  } = await req.json();
-  const systemPrompt=createSystemPrompt(scene);
-  console.log(messages,model,systemPrompt);
+  const { messages, model = GEMINI_MODEL, scene } = await req.json();
+  const systemPrompt = createSystemPrompt(scene);
+  console.log(messages, model, systemPrompt);
+
+  // Select provider based on model
+  const provider =
+    model === GEMINI_MODEL
+      ? google(model) // Use Gemini provider if GEMINI_MODEL is selected
+      : groq(model); // Otherwise use Groq
+
   const result = streamText({
-    model: groq(model),
+    model: provider,
     system: systemPrompt,
     temperature: 0.2,
     topP: 0.9,
     messages,
   });
-  return result.toDataStreamResponse({sendReasoning: false});
+  return result.toDataStreamResponse({ sendReasoning: false });
 }
 
 

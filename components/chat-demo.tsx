@@ -20,12 +20,10 @@ import { Badge } from "@/components/ui/badge"
 
 
 const MODELS = [
+  { id: "gemini-2.5-flash-preview-04-17", name: "Gemini 2.5 Flash" },
   { id: "llama-3.3-70b-versatile", name: "Llama 3.3 70B" },
   { id: "compound-beta", name: "Compound Beta" },
-  { id: "meta-llama/llama-4-maverick-17b-128e-instruct", name: "Llama 4 17B" },
   { id: "qwen-qwq-32b", name: "Qwen 32B" },
-  { id: "gemma2-9b-it", name: "Gemma 2 9B" },
-  { id: "mistral-saba-24b", name: "Mistral 24B" },
 ]
 
 type ChatDemoProps = {
