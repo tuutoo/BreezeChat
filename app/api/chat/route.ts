@@ -2,6 +2,7 @@ import { createGroq } from "@ai-sdk/groq"
 import { streamText } from "ai"
 import { SCENES } from "@/lib/scenes";
 import { google } from '@ai-sdk/google'; // Import Google Gemini provider
+import { openai } from '@ai-sdk/openai';
 
 
 // Allow streaming responses up to 30 seconds
@@ -10,6 +11,7 @@ export const maxDuration = 30;
 // const LLAMA_MODEL = "llama-3.3-70b-versatile"
 const QWEN_MODEL = "qwen-qwq-32b"
 const GEMINI_MODEL = "gemini-2.5-flash-preview-04-17"
+const GPT_4_MODEL = "gpt-4o-mini"
 
 const groq = createGroq({
   fetch: async (url, options) => {
@@ -66,7 +68,9 @@ export async function POST(req: Request) {
   const provider =
     model === GEMINI_MODEL
       ? google(model) // Use Gemini provider if GEMINI_MODEL is selected
-      : groq(model); // Otherwise use Groq
+      : model === GPT_4_MODEL
+        ? openai(model) // Use OpenAI provider if GPT_4_MODEL is selected
+        : groq(model); // Otherwise use Groq
 
   const result = streamText({
     model: provider,
