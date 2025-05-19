@@ -161,7 +161,7 @@ const COMPONENTS = {
   h4: withClass("h4", "font-semibold text-base"),
   h5: withClass("h5", "font-medium"),
   strong: withClass("strong", "font-semibold"),
-  a: withClass("a", "text-primary underline underline-offset-2"),
+  a: withClass("a", "underline underline-offset-2"),
   blockquote: withClass("blockquote", "border-l-2 border-primary pl-4"),
   code: ({ children, className, node, ...rest }: any) => {
     const match = /language-(\w+)/.exec(className || "")
