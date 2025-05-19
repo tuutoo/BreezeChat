@@ -66,12 +66,20 @@ export async function POST(req: Request) {
   //console.log(messages, model, systemPrompt);
 
   // Select provider based on model
-  const providerMap: Record<string, (model: string) => any> = {
-    [GEMINI_MODEL]: google,
-    [GPT_4_MODEL]: openai,
-    [MISTRAL_MODEL]: mistral,
-  };
-  const provider = (providerMap[model] || groq)(model);
+  let provider;
+  switch (model) {
+    case GEMINI_MODEL:
+      provider = google(model);
+      break;
+    case GPT_4_MODEL:
+      provider = openai(model);
+      break;
+    case MISTRAL_MODEL:
+      provider = mistral(model);
+      break;
+    default:
+      provider = groq(model);
+  }
 
   const result = streamText({
     model: provider,
