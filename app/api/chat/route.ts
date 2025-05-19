@@ -1,9 +1,9 @@
 import { createGroq } from "@ai-sdk/groq"
-import { streamText } from "ai"
+import { streamText, generateText  } from "ai"
 import { SCENES } from "@/lib/scenes";
 import { google } from '@ai-sdk/google'; // Import Google Gemini provider
 import { openai } from '@ai-sdk/openai';
-
+import { mistral } from '@ai-sdk/mistral';
 
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
@@ -12,6 +12,7 @@ export const maxDuration = 30;
 const QWEN_MODEL = "qwen-qwq-32b"
 const GEMINI_MODEL = "gemini-2.5-flash-preview-04-17"
 const GPT_4_MODEL = "gpt-4o-mini"
+const MISTRAL_MODEL = "mistral-small-latest"
 
 const groq = createGroq({
   fetch: async (url, options) => {
@@ -33,9 +34,9 @@ function createSystemPrompt(scene: string): string {
   // General translation instructions
   const baseInstructions = `
 You are a highly reliable, professional translation assistant. Follow these strict rules:
-- If the input contains any Chinese (even mixed), translate the entire content into US English.
-- Otherwise, translate the entire content into Simplified Chinese.
-- Only output the translated text. Do not include the original, comments, explanations, labels, greetings, or any extra formatting not present in the original, except as required by the specific scenario.
+- If the input contains any Chinese (including mixed with English), translate the entire content into US English.
+- If the input is in any other language (not containing Chinese), translate the entire content into Simplified Chinese.
+- Output only the translated text. Do not include the original text, comments, explanations, labels, greetings, or any unnecessary formatting, unless specifically required by the scenario.
 - Preserve important markdown, code, or structural formatting when present.
 - If a specific structure or style is required by the scenario, strictly follow those requirements.
 `;
@@ -62,15 +63,15 @@ Translate the following text according to these requirements:
 export async function POST(req: Request) {
   const { messages, model = GEMINI_MODEL, scene } = await req.json();
   const systemPrompt = createSystemPrompt(scene);
-  console.log(messages, model, systemPrompt);
+  //console.log(messages, model, systemPrompt);
 
   // Select provider based on model
-  const provider =
-    model === GEMINI_MODEL
-      ? google(model) // Use Gemini provider if GEMINI_MODEL is selected
-      : model === GPT_4_MODEL
-        ? openai(model) // Use OpenAI provider if GPT_4_MODEL is selected
-        : groq(model); // Otherwise use Groq
+  const providerMap: Record<string, (model: string) => any> = {
+    [GEMINI_MODEL]: google,
+    [GPT_4_MODEL]: openai,
+    [MISTRAL_MODEL]: mistral,
+  };
+  const provider = (providerMap[model] || groq)(model);
 
   const result = streamText({
     model: provider,
