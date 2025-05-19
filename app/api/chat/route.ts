@@ -1,5 +1,5 @@
 import { createGroq } from "@ai-sdk/groq"
-import { streamText, generateText  } from "ai"
+import { streamText  } from "ai"
 import { SCENES } from "@/lib/scenes";
 import { google } from '@ai-sdk/google'; // Import Google Gemini provider
 import { openai } from '@ai-sdk/openai';
