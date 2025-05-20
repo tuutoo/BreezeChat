@@ -3,7 +3,7 @@ import { streamText  } from "ai"
 import { SCENES } from "@/lib/scenes";
 import { google } from '@ai-sdk/google'; // Import Google Gemini provider
 import { openai } from '@ai-sdk/openai';
-import { mistral } from '@ai-sdk/mistral';
+
 
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
@@ -12,7 +12,7 @@ export const maxDuration = 30;
 const QWEN_MODEL = "qwen-qwq-32b"
 const GEMINI_MODEL = "gemini-2.5-flash-preview-04-17"
 const GPT_4_MODEL = "gpt-4o-mini"
-const MISTRAL_MODEL = "mistral-small-latest"
+
 
 const groq = createGroq({
   fetch: async (url, options) => {
@@ -74,9 +74,6 @@ export async function POST(req: Request) {
     case GPT_4_MODEL:
       provider = openai(model);
       break;
-    case MISTRAL_MODEL:
-      provider = mistral(model);
-      break;
     default:
       provider = groq(model);
   }
@@ -88,6 +85,7 @@ export async function POST(req: Request) {
     topP: 0.9,
     messages,
   });
+  console.log("result", result);
   return result.toDataStreamResponse({ sendReasoning: false });
 }
 
