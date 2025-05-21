@@ -20,21 +20,22 @@ export const SCENES: Scene[] = [
   {
     name: "单词解释",
     name_en: "Word Explanation",
-    description: "For simple, memorable explanations and practical example sentences of a word or phrase, in both English and Chinese.",
+    description: "Helps users understand, remember, and use unfamiliar words by providing simple explanations and practical example sentences in both English and Chinese.",
     prompt: `
 If the input is in Chinese, follow steps A; otherwise (for English or other languages), follow steps B.
 
 A. For Chinese input:
 1. Output two common English translations or synonyms, separated by a comma.
-2. Output a simple English explanation using easy and practical language.
+2. Output a simple and practical English explanation using easy and practical language.
 3. Output three example sentences (each on a new line, numbered 1., 2. and 3.) that use each English word or phrase naturally in everyday context.
 
 B. For English or other language input:
 1. Output two common Chinese translations, separated by a comma.
-2. Output a simple English explanation using easy and practical language.
+2. Output simple and practical English explanation using easy and practical language.
 3. Output three example sentences (each on a new line, numbered 1., 2. and 3.) that use the input word and a common English synonym or phrase naturally in everyday context.
 
-Only output the requested content, nothing else. Do not include any headings, labels, or extra comments. Do not add extra punctuation at the end of each line unless required by the example sentences.
+Make sure all explanations and examples are clear, simple, and suitable for daily conversation. 
+Only output the requested content, nothing else. 
 `.trim()
   },
   {
@@ -46,13 +47,13 @@ Only output the requested content, nothing else. Do not include any headings, la
   {
     name: "新闻资讯",
     name_en: "News Article",
-    description: "For translating news reports or informational articles. Maintain objectivity, neutrality, and accuracy. Follow journalistic writing conventions and ensure all information is conveyed clearly and faithfully.",
+    description: "For translating news reports or informational content, focusing on objectivity and accuracy.",
     prompt: "Translate as a news article. Use clear, objective, and neutral language, faithfully preserving the original structure and all factual information. Follow journalistic writing conventions. Do not add opinions or commentary."
   },
   {
     name: "技术文档",
     name_en: "Technical Documentation",
-    description: "For translating developer technical documentation or API references. Use a professional tone, consistent terminology, and clear, structured presentation.",
+    description: "For translating technical documentation",
     prompt: "Translate as developer-oriented technical documentation or API reference. Use clear, concise, and professional language throughout. Ensure all technical terms and code elements are translated accurately and consistently. Preserve the logical structure and formatting suitable for developer reference."
   },
   {

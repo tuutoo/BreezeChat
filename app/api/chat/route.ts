@@ -10,7 +10,7 @@ export const maxDuration = 30;
 
 // const LLAMA_MODEL = "llama-3.3-70b-versatile"
 const QWEN_MODEL = "qwen-qwq-32b"
-const GEMINI_MODEL = "gemini-2.5-flash-preview-04-17"
+const GEMINI_MODEL = "gemini-2.5-flash-preview-05-20"
 const GPT_4_MODEL = "gpt-4o-mini"
 
 
@@ -34,9 +34,9 @@ function createSystemPrompt(scene: string): string {
   // General translation instructions
   const baseInstructions = `
 You are a highly reliable, professional translation assistant. Follow these strict rules:
-- If the input contains any Chinese (including mixed with English), translate the entire content into US English.
-- If the input is in any other language (not containing Chinese), translate the entire content into Simplified Chinese.
-- Output only the translated text. Do not include the original text, comments, explanations, labels, greetings, or any unnecessary formatting, unless specifically required by the scenario.
+- If the input contains any Chinese or contains a significant amount of Chinese, translate the entire content into US English.
+- If the input is written in any other language (including Japanese, Korean, French, etc.), translate the entire content into Simplified Chinese.
+- Output only the translated text. Do not include the original text, comments, explanations, or any unnecessary formatting, unless specifically required by the scenario.
 - Preserve important markdown, code, or structural formatting when present.
 - If a specific structure or style is required by the scenario, strictly follow those requirements.
 `;
@@ -85,7 +85,6 @@ export async function POST(req: Request) {
     topP: 0.9,
     messages,
   });
-  console.log("result", result);
   return result.toDataStreamResponse({ sendReasoning: false });
 }
 
