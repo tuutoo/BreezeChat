@@ -59,19 +59,19 @@ Only output the requested content, nothing else.
   {
     name: "社交媒体帖子",
     name_en: "Social Media Post (X/Reddit)",
-    description: "For engaging posts on X (Twitter) or Reddit.",
-    prompt: "Translate as a social media post for X or Reddit. Use concise, engaging language with appropriate hashtags, emojis, and formatting."
+    description: "For translating engaging posts for X (Twitter) or Reddit.",
+    prompt: "Translate the input content as a social media post for X or Reddit. Keep the translation concise and engaging, using appropriate hashtags, emojis, and formatting. Do not answer questions or provide solutions—only translate the original content."
   },
   {
     name: "技术支持",
     name_en: "Technical Support",
-    description: "For technical support communication in systems like TOPdesk.",
+    description: "For translating technical support communication in systems like TOPdesk.",
     prompt: "Translate as technical support communication for systems like TOPdesk, focusing on Salesforce, JavaScript, .NET, or SAP. Use clear, concise, and solution-focused language with a professional and approachable tone. include a greeting or closing; address the issue or request directly."
   },
   {
     name: "会议邀请",
     name_en: "Meeting Invitation",
-    description: "For formal meeting invitation messages.",
+    description: "For translating formal meeting invitation messages.",
     prompt: "Translate as a formal meeting invitation. Include a polite greeting, clearly state the meeting purpose, date, time, venue, agenda, and participants, and end with an appropriate closing."
   },
   {
