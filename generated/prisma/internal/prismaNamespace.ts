@@ -394,8 +394,6 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 
 export const ModelName = {
-  ApiType: 'ApiType',
-  PromptTemplate: 'PromptTemplate',
   Scene: 'Scene',
   Model: 'Model'
 } as const
@@ -413,158 +411,10 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "apiType" | "promptTemplate" | "scene" | "model"
+    modelProps: "scene" | "model"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
-    ApiType: {
-      payload: Prisma.$ApiTypePayload<ExtArgs>
-      fields: Prisma.ApiTypeFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.ApiTypeFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiTypePayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.ApiTypeFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiTypePayload>
-        }
-        findFirst: {
-          args: Prisma.ApiTypeFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiTypePayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.ApiTypeFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiTypePayload>
-        }
-        findMany: {
-          args: Prisma.ApiTypeFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiTypePayload>[]
-        }
-        create: {
-          args: Prisma.ApiTypeCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiTypePayload>
-        }
-        createMany: {
-          args: Prisma.ApiTypeCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.ApiTypeCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiTypePayload>[]
-        }
-        delete: {
-          args: Prisma.ApiTypeDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiTypePayload>
-        }
-        update: {
-          args: Prisma.ApiTypeUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiTypePayload>
-        }
-        deleteMany: {
-          args: Prisma.ApiTypeDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.ApiTypeUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateManyAndReturn: {
-          args: Prisma.ApiTypeUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiTypePayload>[]
-        }
-        upsert: {
-          args: Prisma.ApiTypeUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiTypePayload>
-        }
-        aggregate: {
-          args: Prisma.ApiTypeAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateApiType>
-        }
-        groupBy: {
-          args: Prisma.ApiTypeGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.ApiTypeGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.ApiTypeCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.ApiTypeCountAggregateOutputType> | number
-        }
-      }
-    }
-    PromptTemplate: {
-      payload: Prisma.$PromptTemplatePayload<ExtArgs>
-      fields: Prisma.PromptTemplateFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.PromptTemplateFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptTemplatePayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.PromptTemplateFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptTemplatePayload>
-        }
-        findFirst: {
-          args: Prisma.PromptTemplateFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptTemplatePayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.PromptTemplateFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptTemplatePayload>
-        }
-        findMany: {
-          args: Prisma.PromptTemplateFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptTemplatePayload>[]
-        }
-        create: {
-          args: Prisma.PromptTemplateCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptTemplatePayload>
-        }
-        createMany: {
-          args: Prisma.PromptTemplateCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.PromptTemplateCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptTemplatePayload>[]
-        }
-        delete: {
-          args: Prisma.PromptTemplateDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptTemplatePayload>
-        }
-        update: {
-          args: Prisma.PromptTemplateUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptTemplatePayload>
-        }
-        deleteMany: {
-          args: Prisma.PromptTemplateDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.PromptTemplateUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateManyAndReturn: {
-          args: Prisma.PromptTemplateUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptTemplatePayload>[]
-        }
-        upsert: {
-          args: Prisma.PromptTemplateUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptTemplatePayload>
-        }
-        aggregate: {
-          args: Prisma.PromptTemplateAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregatePromptTemplate>
-        }
-        groupBy: {
-          args: Prisma.PromptTemplateGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.PromptTemplateGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.PromptTemplateCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.PromptTemplateCountAggregateOutputType> | number
-        }
-      }
-    }
     Scene: {
       payload: Prisma.$ScenePayload<ExtArgs>
       fields: Prisma.SceneFieldRefs
@@ -752,33 +602,6 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
-export const ApiTypeScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  description: 'description',
-  fields: 'fields',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type ApiTypeScalarFieldEnum = (typeof ApiTypeScalarFieldEnum)[keyof typeof ApiTypeScalarFieldEnum]
-
-
-export const PromptTemplateScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  nameEn: 'nameEn',
-  description: 'description',
-  content: 'content',
-  category: 'category',
-  isActive: 'isActive',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type PromptTemplateScalarFieldEnum = (typeof PromptTemplateScalarFieldEnum)[keyof typeof PromptTemplateScalarFieldEnum]
-
-
 export const SceneScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -796,6 +619,7 @@ export type SceneScalarFieldEnum = (typeof SceneScalarFieldEnum)[keyof typeof Sc
 export const ModelScalarFieldEnum = {
   id: 'id',
   name: 'name',
+  description: 'description',
   provider: 'provider',
   isActive: 'isActive',
   createdAt: 'createdAt',
@@ -813,28 +637,12 @@ export const SortOrder = {
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
-export const JsonNullValueInput = {
-  JsonNull: JsonNull
-} as const
-
-export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
-
-
 export const QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
 } as const
 
 export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
-
-
-export const JsonNullValueFilter = {
-  DbNull: DbNull,
-  JsonNull: JsonNull,
-  AnyNull: AnyNull
-} as const
-
-export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 
 
 export const NullsOrder = {
@@ -866,16 +674,9 @@ export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMod
 
 
 /**
- * Reference to a field of type 'Json'
+ * Reference to a field of type 'Boolean'
  */
-export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
-    
-
-
-/**
- * Reference to a field of type 'QueryMode'
- */
-export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -890,13 +691,6 @@ export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel
  * Reference to a field of type 'DateTime[]'
  */
 export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
-    
-
-
-/**
- * Reference to a field of type 'Boolean'
- */
-export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -988,8 +782,6 @@ export interface PrismaClientOptions {
   omit?: GlobalOmitConfig
 }
 export type GlobalOmitConfig = {
-  apiType?: Prisma.ApiTypeOmit
-  promptTemplate?: Prisma.PromptTemplateOmit
   scene?: Prisma.SceneOmit
   model?: Prisma.ModelOmit
 }

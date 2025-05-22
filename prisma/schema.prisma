@@ -14,34 +14,11 @@ generator client {
   output   = "../generated/prisma"
 }
 
-// API 类型定义
-model ApiType {
-  id          String   @id @default(cuid())
-  name        String   @unique
-  description String?
-  fields      Json     // 存储字段定义
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-}
-
-// Prompt 模板
-model PromptTemplate {
-  id          String   @id @default(cuid())
-  name        String   @unique
-  nameEn      String   // 英文名称
-  description String
-  content     String   // prompt 内容
-  category    String   // 分类，如 "translation", "chat" 等
-  isActive    Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-}
-
 // 场景配置
 model Scene {
   id          String   @id @default(cuid())
   name        String   @unique
-  nameEn      String   // 英文名称
+  nameEn      String // 英文名称
   description String
   prompt      String
   isActive    Boolean  @default(true)
@@ -53,7 +30,8 @@ model Scene {
 model Model {
   id          String   @id @default(cuid())
   name        String   @unique
-  provider    String   // 如 "groq", "openai", "google" 等
+  description String?
+  provider    String // 如 "groq", "openai", "google" 等
   isActive    Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt

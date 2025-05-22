@@ -59,7 +59,7 @@ export default function ModelsPage() {
     if (!modelToDelete) return
 
     try {
-      const response = await fetch(`/api/config/models?id=${modelToDelete.id}`, {
+      const response = await fetch(`/api/config/models?name=${modelToDelete.name}`, {
         method: 'DELETE',
       })
 
@@ -85,7 +85,7 @@ export default function ModelsPage() {
 
   const handleToggleActive = async (model: Model) => {
     try {
-      const response = await fetch(`/api/config/models?id=${model.id}`, {
+      const response = await fetch(`/api/config/models?name=${model.name}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -123,7 +123,7 @@ export default function ModelsPage() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(selectedModel ? { ...data, id: selectedModel.id } : data),
+        body: JSON.stringify(selectedModel ? { ...data, name: selectedModel.name } : data),
       })
 
       if (!response.ok) {

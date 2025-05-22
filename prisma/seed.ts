@@ -30,12 +30,14 @@ async function main() {
     await prisma.model.upsert({
       where: { name: model.name },
       update: {
-        provider: model.id.split('-')[0], // 简单地从 ID 中提取提供商
+        name: model.name,
+        provider: model.name.split('-')[0], // 简单地从 ID 中提取提供商
         isActive: true
       },
       create: {
         name: model.name,
-        provider: model.id.split('-')[0],
+        description: model.description,
+        provider: model.name.split('-')[0],
         isActive: true
       }
     })

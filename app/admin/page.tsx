@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Settings, Database, Layers } from "lucide-react"
+import { Database, Layers } from "lucide-react"
 import Link from "next/link"
 
 export default function AdminPage() {
@@ -10,7 +10,7 @@ export default function AdminPage() {
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-6">系统管理</h1>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-2">
         <Link href="/admin/models">
           <Card className="hover:bg-accent/50 transition-colors cursor-pointer">
             <CardHeader>
@@ -38,7 +38,6 @@ export default function AdminPage() {
             </CardHeader>
           </Card>
         </Link>
-
       </div>
     </div>
   )

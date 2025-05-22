@@ -26,8 +26,8 @@ export * as $Enums from './enums'
  * @example
  * ```
  * const prisma = new PrismaClient()
- * // Fetch zero or more ApiTypes
- * const apiTypes = await prisma.apiType.findMany()
+ * // Fetch zero or more Scenes
+ * const scenes = await prisma.scene.findMany()
  * ```
  * 
  * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client).
@@ -41,16 +41,6 @@ export { Prisma }
 path.join(__dirname, "libquery_engine-debian-openssl-1.1.x.so.node")
 path.join(process.cwd(), "generated/prisma/libquery_engine-debian-openssl-1.1.x.so.node")
 
-/**
- * Model ApiType
- * 
- */
-export type ApiType = Prisma.ApiTypeModel
-/**
- * Model PromptTemplate
- * 
- */
-export type PromptTemplate = Prisma.PromptTemplateModel
 /**
  * Model Scene
  * 

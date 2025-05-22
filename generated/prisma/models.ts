@@ -7,8 +7,6 @@
  *
  * 🟢 You can import this file directly.
  */
-export type * from './models/ApiType'
-export type * from './models/PromptTemplate'
 export type * from './models/Scene'
 export type * from './models/Model'
 export type * from './commonInputTypes'

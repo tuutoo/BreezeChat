@@ -113,6 +113,43 @@ export function ModelTable({ models, onEdit, onDelete, onToggleActive }: ModelTa
       ),
     },
     {
+      accessorKey: 'description',
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => {
+              const currentSort = column.getIsSorted()
+              if (!currentSort) {
+                column.toggleSorting(false)
+              } else if (currentSort === 'asc') {
+                column.toggleSorting(true)
+              } else {
+                column.clearSorting()
+              }
+            }}
+            className="w-[300px] justify-start"
+          >
+            模型描述
+            {column.getIsSorted() ? (
+              column.getIsSorted() === 'asc' ? (
+                <ArrowUp className="ml-2 h-4 w-4" />
+              ) : (
+                <ArrowDown className="ml-2 h-4 w-4" />
+              )
+            ) : (
+              <ArrowUpDown className="ml-2 h-4 w-4 opacity-50" />
+            )}
+          </Button>
+        )
+      },
+      cell: ({ row }) => (
+        <div className="w-[300px] truncate" title={row.getValue('description')}>
+          {row.getValue('description')}
+        </div>
+      ),
+    },
+    {
       accessorKey: 'provider',
       header: ({ column }) => {
         return (

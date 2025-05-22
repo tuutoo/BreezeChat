@@ -17,6 +17,7 @@ import * as z from 'zod'
 
 const modelSchema = z.object({
   name: z.string().min(1, '请输入模型名称'),
+  description: z.string().optional(),
   provider: z.string().min(1, '请输入提供商'),
   isActive: z.boolean().default(true),
 })
@@ -45,6 +46,7 @@ export function ModelDialog({
     resolver: zodResolver(modelSchema),
     defaultValues: {
       name: '',
+      description: '',
       provider: '',
       isActive: true,
     },
@@ -54,12 +56,14 @@ export function ModelDialog({
     if (model) {
       reset({
         name: model.name,
+        description: model.description || '',
         provider: model.provider,
         isActive: model.isActive,
       })
     } else {
       reset({
         name: '',
+        description: '',
         provider: '',
         isActive: true,
       })
@@ -86,6 +90,18 @@ export function ModelDialog({
             />
             {errors.name && (
               <p className="text-sm text-red-500">{errors.name.message}</p>
+            )}
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="description">模型描述</Label>
+            <Input
+              id="description"
+              {...register('description')}
+              placeholder="请输入模型描述（可选）"
+            />
+            {errors.description && (
+              <p className="text-sm text-red-500">{errors.description.message}</p>
             )}
           </div>
 

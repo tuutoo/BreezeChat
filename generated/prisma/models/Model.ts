@@ -26,6 +26,7 @@ export type AggregateModel = {
 export type ModelMinAggregateOutputType = {
   id: string | null
   name: string | null
+  description: string | null
   provider: string | null
   isActive: boolean | null
   createdAt: Date | null
@@ -35,6 +36,7 @@ export type ModelMinAggregateOutputType = {
 export type ModelMaxAggregateOutputType = {
   id: string | null
   name: string | null
+  description: string | null
   provider: string | null
   isActive: boolean | null
   createdAt: Date | null
@@ -44,6 +46,7 @@ export type ModelMaxAggregateOutputType = {
 export type ModelCountAggregateOutputType = {
   id: number
   name: number
+  description: number
   provider: number
   isActive: number
   createdAt: number
@@ -55,6 +58,7 @@ export type ModelCountAggregateOutputType = {
 export type ModelMinAggregateInputType = {
   id?: true
   name?: true
+  description?: true
   provider?: true
   isActive?: true
   createdAt?: true
@@ -64,6 +68,7 @@ export type ModelMinAggregateInputType = {
 export type ModelMaxAggregateInputType = {
   id?: true
   name?: true
+  description?: true
   provider?: true
   isActive?: true
   createdAt?: true
@@ -73,6 +78,7 @@ export type ModelMaxAggregateInputType = {
 export type ModelCountAggregateInputType = {
   id?: true
   name?: true
+  description?: true
   provider?: true
   isActive?: true
   createdAt?: true
@@ -155,6 +161,7 @@ export type ModelGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
 export type ModelGroupByOutputType = {
   id: string
   name: string
+  description: string | null
   provider: string
   isActive: boolean
   createdAt: Date
@@ -185,6 +192,7 @@ export type ModelWhereInput = {
   NOT?: Prisma.ModelWhereInput | Prisma.ModelWhereInput[]
   id?: Prisma.StringFilter<"Model"> | string
   name?: Prisma.StringFilter<"Model"> | string
+  description?: Prisma.StringNullableFilter<"Model"> | string | null
   provider?: Prisma.StringFilter<"Model"> | string
   isActive?: Prisma.BoolFilter<"Model"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Model"> | Date | string
@@ -194,6 +202,7 @@ export type ModelWhereInput = {
 export type ModelOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  description?: Prisma.SortOrderInput | Prisma.SortOrder
   provider?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -206,6 +215,7 @@ export type ModelWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.ModelWhereInput | Prisma.ModelWhereInput[]
   OR?: Prisma.ModelWhereInput[]
   NOT?: Prisma.ModelWhereInput | Prisma.ModelWhereInput[]
+  description?: Prisma.StringNullableFilter<"Model"> | string | null
   provider?: Prisma.StringFilter<"Model"> | string
   isActive?: Prisma.BoolFilter<"Model"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Model"> | Date | string
@@ -215,6 +225,7 @@ export type ModelWhereUniqueInput = Prisma.AtLeast<{
 export type ModelOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  description?: Prisma.SortOrderInput | Prisma.SortOrder
   provider?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -230,6 +241,7 @@ export type ModelScalarWhereWithAggregatesInput = {
   NOT?: Prisma.ModelScalarWhereWithAggregatesInput | Prisma.ModelScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Model"> | string
   name?: Prisma.StringWithAggregatesFilter<"Model"> | string
+  description?: Prisma.StringNullableWithAggregatesFilter<"Model"> | string | null
   provider?: Prisma.StringWithAggregatesFilter<"Model"> | string
   isActive?: Prisma.BoolWithAggregatesFilter<"Model"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Model"> | Date | string
@@ -239,6 +251,7 @@ export type ModelScalarWhereWithAggregatesInput = {
 export type ModelCreateInput = {
   id?: string
   name: string
+  description?: string | null
   provider: string
   isActive?: boolean
   createdAt?: Date | string
@@ -248,6 +261,7 @@ export type ModelCreateInput = {
 export type ModelUncheckedCreateInput = {
   id?: string
   name: string
+  description?: string | null
   provider: string
   isActive?: boolean
   createdAt?: Date | string
@@ -257,6 +271,7 @@ export type ModelUncheckedCreateInput = {
 export type ModelUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   provider?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -266,6 +281,7 @@ export type ModelUpdateInput = {
 export type ModelUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   provider?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -275,6 +291,7 @@ export type ModelUncheckedUpdateInput = {
 export type ModelCreateManyInput = {
   id?: string
   name: string
+  description?: string | null
   provider: string
   isActive?: boolean
   createdAt?: Date | string
@@ -284,6 +301,7 @@ export type ModelCreateManyInput = {
 export type ModelUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   provider?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -293,6 +311,7 @@ export type ModelUpdateManyMutationInput = {
 export type ModelUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   provider?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -302,6 +321,7 @@ export type ModelUncheckedUpdateManyInput = {
 export type ModelCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  description?: Prisma.SortOrder
   provider?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -311,6 +331,7 @@ export type ModelCountOrderByAggregateInput = {
 export type ModelMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  description?: Prisma.SortOrder
   provider?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -320,10 +341,15 @@ export type ModelMaxOrderByAggregateInput = {
 export type ModelMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  description?: Prisma.SortOrder
   provider?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type NullableStringFieldUpdateOperationsInput = {
+  set?: string | null
 }
 
 
@@ -331,6 +357,7 @@ export type ModelMinOrderByAggregateInput = {
 export type ModelSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
+  description?: boolean
   provider?: boolean
   isActive?: boolean
   createdAt?: boolean
@@ -340,6 +367,7 @@ export type ModelSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
 export type ModelSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
+  description?: boolean
   provider?: boolean
   isActive?: boolean
   createdAt?: boolean
@@ -349,6 +377,7 @@ export type ModelSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
 export type ModelSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
+  description?: boolean
   provider?: boolean
   isActive?: boolean
   createdAt?: boolean
@@ -358,13 +387,14 @@ export type ModelSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
 export type ModelSelectScalar = {
   id?: boolean
   name?: boolean
+  description?: boolean
   provider?: boolean
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type ModelOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "provider" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["model"]>
+export type ModelOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "description" | "provider" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["model"]>
 
 export type $ModelPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Model"
@@ -372,6 +402,7 @@ export type $ModelPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     name: string
+    description: string | null
     provider: string
     isActive: boolean
     createdAt: Date
@@ -801,6 +832,7 @@ export interface Prisma__ModelClient<T, Null = never, ExtArgs extends runtime.Ty
 export interface ModelFieldRefs {
   readonly id: Prisma.FieldRef<"Model", 'String'>
   readonly name: Prisma.FieldRef<"Model", 'String'>
+  readonly description: Prisma.FieldRef<"Model", 'String'>
   readonly provider: Prisma.FieldRef<"Model", 'String'>
   readonly isActive: Prisma.FieldRef<"Model", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"Model", 'DateTime'>

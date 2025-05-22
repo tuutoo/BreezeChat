@@ -24,6 +24,7 @@ export async function POST(request: Request) {
     const model = await prisma.model.create({
       data: {
         name: data.name,
+        description: data.description,
         provider: data.provider,
         isActive: data.isActive ?? true,
       },
@@ -42,17 +43,17 @@ export async function PUT(request: Request) {
   try {
     const data = await request.json()
 
-    if (!data.id) {
+    if (!data.name) {
       return NextResponse.json(
-        { error: 'Model ID is required' },
+        { error: 'Model name is required' },
         { status: 400 }
       )
     }
 
     const model = await prisma.model.update({
-      where: { id: data.id },
+      where: { name: data.name },
       data: {
-        name: data.name,
+        description: data.description,
         provider: data.provider,
         isActive: data.isActive,
       },
@@ -70,17 +71,17 @@ export async function PUT(request: Request) {
 export async function DELETE(request: Request) {
   try {
     const { searchParams } = new URL(request.url)
-    const id = searchParams.get('id')
+    const name = searchParams.get('name')
 
-    if (!id) {
+    if (!name) {
       return NextResponse.json(
-        { error: 'Model ID is required' },
+        { error: 'Model name is required' },
         { status: 400 }
       )
     }
 
     await prisma.model.delete({
-      where: { id },
+      where: { name },
     })
     return NextResponse.json({ message: 'Model deleted successfully' })
   } catch (error) {
