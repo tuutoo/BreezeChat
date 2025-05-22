@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Model } from '@/generated/prisma/client'
+import { Model, Provider } from '@/generated/prisma/client'
 import { ModelTable } from '@/components/ui/model-table'
 import { Button } from '@/components/ui/button'
 import { Plus } from 'lucide-react'
@@ -10,12 +10,17 @@ import { ConfirmDialog } from '@/components/ui/confirm-dialog'
 import { useToast } from '@/components/ui/use-toast'
 import { Toaster } from '@/components/ui/toaster'
 
+// 扩展 Model 类型以包含 provider
+interface ModelWithProvider extends Model {
+  provider: Provider | null
+}
+
 export default function ModelsPage() {
-  const [models, setModels] = useState<Model[]>([])
+  const [models, setModels] = useState<ModelWithProvider[]>([])
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false)
-  const [selectedModel, setSelectedModel] = useState<Model | null>(null)
-  const [modelToDelete, setModelToDelete] = useState<Model | null>(null)
+  const [selectedModel, setSelectedModel] = useState<ModelWithProvider | null>(null)
+  const [modelToDelete, setModelToDelete] = useState<ModelWithProvider | null>(null)
   const { toast } = useToast()
 
   const fetchModels = async () => {
@@ -45,12 +50,12 @@ export default function ModelsPage() {
     setIsDialogOpen(true)
   }
 
-  const handleEdit = (model: Model) => {
+  const handleEdit = (model: ModelWithProvider) => {
     setSelectedModel(model)
     setIsDialogOpen(true)
   }
 
-  const handleDelete = (model: Model) => {
+  const handleDelete = (model: ModelWithProvider) => {
     setModelToDelete(model)
     setIsConfirmDialogOpen(true)
   }
@@ -83,7 +88,7 @@ export default function ModelsPage() {
     }
   }
 
-  const handleToggleActive = async (model: Model) => {
+  const handleToggleActive = async (model: ModelWithProvider) => {
     try {
       const response = await fetch(`/api/config/models?name=${model.name}`, {
         method: 'PUT',

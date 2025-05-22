@@ -1,30 +1,16 @@
 import { createGroq } from "@ai-sdk/groq"
 import { streamText  } from "ai"
-import { google } from '@ai-sdk/google'; // Import Google Gemini provider
-import { openai } from '@ai-sdk/openai';
-import { prisma } from '@/lib/prisma';
+import { google } from '@ai-sdk/google'
+import { openai } from '@ai-sdk/openai'
+import { prisma } from '@/lib/prisma'
 
 // Allow streaming responses up to 30 seconds
-export const maxDuration = 30;
+export const maxDuration = 30
 
 // const LLAMA_MODEL = "llama-3.3-70b-versatile"
 const QWEN_MODEL = "qwen-qwq-32b"
 const GEMINI_MODEL = "gemini-2.5-flash-preview-05-20"
 const GPT_4_MODEL = "gpt-4o-mini"
-
-const groq = createGroq({
-  fetch: async (url, options) => {
-    if (options?.body) {
-      const body = JSON.parse(options.body as string)
-      if (body?.model === QWEN_MODEL) {
-        body.reasoning_format = "parsed"
-        options.body = JSON.stringify(body)
-      }
-    }
-
-    return fetch(url, options)
-  },
-})
 
 async function createSystemPrompt(scene: string): Promise<string> {
   // 从数据库获取场景信息
@@ -61,21 +47,52 @@ Translate the following text according to these requirements:
 }
 
 export async function POST(req: Request) {
-  const { messages, model = GEMINI_MODEL, scene } = await req.json();
-  const systemPrompt = await createSystemPrompt(scene);
-  //console.log(messages, model, systemPrompt);
+  const { messages, model: modelName, scene } = await req.json();
 
-  // Select provider based on model
+  // 获取模型和提供商信息
+  const model = await prisma.model.findUnique({
+    where: { name: modelName },
+    include: { provider: true }
+  });
+
+  if (!model || !model.provider) {
+    return new Response(
+      JSON.stringify({ error: 'Model not found or provider not configured' }),
+      { status: 404 }
+    );
+  }
+
+  const systemPrompt = await createSystemPrompt(scene);
+
+  // 根据提供商选择对应的客户端
   let provider;
-  switch (model) {
-    case GEMINI_MODEL:
-      provider = google(model);
+  switch (model.provider.name) {
+    case 'google':
+      provider = google(model.modelId, { apiKey: model.provider.apiKey });
       break;
-    case GPT_4_MODEL:
-      provider = openai(model);
+    case 'openai':
+      provider = openai(model.modelId, { apiKey: model.provider.apiKey });
+      break;
+    case 'groq':
+      provider = createGroq({
+        apiKey: model.provider.apiKey,
+        fetch: async (url, options) => {
+          if (options?.body) {
+            const body = JSON.parse(options.body as string)
+            if (body?.model === model.modelId) {
+              body.reasoning_format = "parsed"
+              options.body = JSON.stringify(body)
+            }
+          }
+          return fetch(url, options)
+        },
+      })(model.modelId);
       break;
     default:
-      provider = groq(model);
+      return new Response(
+        JSON.stringify({ error: 'Unsupported provider' }),
+        { status: 400 }
+      );
   }
 
   const result = streamText({

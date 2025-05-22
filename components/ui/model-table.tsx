@@ -23,7 +23,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Switch } from '@/components/ui/switch'
 import { useState, useEffect } from 'react'
-import { Model } from '@/generated/prisma/client'
+import { Model, Provider } from '@/generated/prisma/client'
 import { ArrowUpDown, ChevronLeft, ChevronRight, Search, Pencil, Trash2, ArrowUp, ArrowDown } from 'lucide-react'
 import {
   Select,
@@ -50,11 +50,16 @@ function useDebounce<T>(value: T, delay: number): T {
   return debouncedValue
 }
 
+// 扩展 Model 类型以包含 provider
+interface ModelWithProvider extends Model {
+  provider: Provider | null
+}
+
 interface ModelTableProps {
-  models: Model[]
-  onEdit: (model: Model) => void
-  onDelete: (model: Model) => void
-  onToggleActive: (model: Model) => void
+  models: ModelWithProvider[]
+  onEdit: (model: ModelWithProvider) => void
+  onDelete: (model: ModelWithProvider) => void
+  onToggleActive: (model: ModelWithProvider) => void
 }
 
 export function ModelTable({ models, onEdit, onDelete, onToggleActive }: ModelTableProps) {
@@ -74,7 +79,7 @@ export function ModelTable({ models, onEdit, onDelete, onToggleActive }: ModelTa
     setGlobalFilter(debouncedSearchValue)
   }, [debouncedSearchValue])
 
-  const columns: ColumnDef<Model>[] = [
+  const columns: ColumnDef<ModelWithProvider>[] = [
     {
       accessorKey: 'name',
       header: ({ column }) => {
@@ -181,8 +186,8 @@ export function ModelTable({ models, onEdit, onDelete, onToggleActive }: ModelTa
         )
       },
       cell: ({ row }) => (
-        <div className="w-[150px] truncate" title={row.getValue('provider')}>
-          {row.getValue('provider')}
+        <div className="w-[150px] truncate" title={row.original.provider?.name || ''}>
+          {row.original.provider?.name || ''}
         </div>
       ),
     },

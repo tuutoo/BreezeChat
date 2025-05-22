@@ -4,8 +4,8 @@ import { prisma } from '@/lib/prisma'
 export async function GET() {
   try {
     const models = await prisma.model.findMany({
-      orderBy: {
-        createdAt: 'desc',
+      include: {
+        provider: true,
       },
     })
     return NextResponse.json(models)
@@ -18,17 +18,23 @@ export async function GET() {
   }
 }
 
-export async function POST(request: Request) {
+export async function POST(req: Request) {
   try {
-    const data = await request.json()
+    const { name, description, providerId, modelId, isActive } = await req.json()
+
     const model = await prisma.model.create({
       data: {
-        name: data.name,
-        description: data.description,
-        provider: data.provider,
-        isActive: data.isActive ?? true,
+        name,
+        description,
+        providerId,
+        modelId,
+        isActive,
+      },
+      include: {
+        provider: true,
       },
     })
+
     return NextResponse.json(model)
   } catch (error) {
     console.error('Error creating model:', error)
@@ -39,25 +45,23 @@ export async function POST(request: Request) {
   }
 }
 
-export async function PUT(request: Request) {
+export async function PUT(req: Request) {
   try {
-    const data = await request.json()
-
-    if (!data.name) {
-      return NextResponse.json(
-        { error: 'Model name is required' },
-        { status: 400 }
-      )
-    }
+    const { name, description, providerId, modelId, isActive } = await req.json()
 
     const model = await prisma.model.update({
-      where: { name: data.name },
+      where: { name },
       data: {
-        description: data.description,
-        provider: data.provider,
-        isActive: data.isActive,
+        description,
+        providerId,
+        modelId,
+        isActive,
+      },
+      include: {
+        provider: true,
       },
     })
+
     return NextResponse.json(model)
   } catch (error) {
     console.error('Error updating model:', error)
@@ -68,9 +72,9 @@ export async function PUT(request: Request) {
   }
 }
 
-export async function DELETE(request: Request) {
+export async function DELETE(req: Request) {
   try {
-    const { searchParams } = new URL(request.url)
+    const { searchParams } = new URL(req.url)
     const name = searchParams.get('name')
 
     if (!name) {
@@ -83,7 +87,8 @@ export async function DELETE(request: Request) {
     await prisma.model.delete({
       where: { name },
     })
-    return NextResponse.json({ message: 'Model deleted successfully' })
+
+    return new NextResponse(null, { status: 204 })
   } catch (error) {
     console.error('Error deleting model:', error)
     return NextResponse.json(

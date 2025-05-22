@@ -27,11 +27,23 @@ model Scene {
 }
 
 // 模型配置
+model Provider {
+  id            String   @id
+  name          String   @unique
+  envApiKeyName String   @unique
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  models        Model[]
+}
+
 model Model {
   id          String   @id @default(cuid())
   name        String   @unique
   description String?
-  provider    String // 如 "groq", "openai", "google" 等
+  providerId  String   // 关联的提供商 ID
+  provider    Provider @relation(fields: [providerId], references: [id])
+  modelId     String   // 提供商内部的模型 ID，例如：gpt-4, qwen-32b
   isActive    Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt

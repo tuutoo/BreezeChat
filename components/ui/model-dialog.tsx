@@ -1,7 +1,7 @@
 'use client'
 
-import { useEffect } from 'react'
-import { Model } from '@/generated/prisma/client'
+import { useEffect, useState } from 'react'
+import { Model, Provider } from '@/generated/prisma/client'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -11,14 +11,22 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { useForm } from 'react-hook-form'
+import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 const modelSchema = z.object({
   name: z.string().min(1, '请输入模型名称'),
   description: z.string().optional(),
-  provider: z.string().min(1, '请输入提供商'),
+  providerId: z.string().min(1, '请选择提供商'),
+  modelId: z.string().min(1, '请输入模型ID'),
   isActive: z.boolean().default(true),
 })
 
@@ -37,34 +45,58 @@ export function ModelDialog({
   model,
   onSubmit,
 }: ModelDialogProps) {
+  const [providers, setProviders] = useState<Provider[]>([])
+
   const {
     register,
     handleSubmit,
     reset,
+    control,
     formState: { errors },
   } = useForm<ModelFormData>({
     resolver: zodResolver(modelSchema),
     defaultValues: {
       name: '',
       description: '',
-      provider: '',
+      providerId: '',
+      modelId: '',
       isActive: true,
     },
   })
+
+  useEffect(() => {
+    // 获取提供商列表
+    const fetchProviders = async () => {
+      try {
+        const response = await fetch('/api/config/providers')
+        if (!response.ok) {
+          throw new Error('Failed to fetch providers')
+        }
+        const data = await response.json()
+        setProviders(data)
+      } catch (error) {
+        console.error('Error fetching providers:', error)
+      }
+    }
+
+    fetchProviders()
+  }, [])
 
   useEffect(() => {
     if (model) {
       reset({
         name: model.name,
         description: model.description || '',
-        provider: model.provider,
+        providerId: model.providerId,
+        modelId: model.modelId,
         isActive: model.isActive,
       })
     } else {
       reset({
         name: '',
         description: '',
-        provider: '',
+        providerId: '',
+        modelId: '',
         isActive: true,
       })
     }
@@ -106,14 +138,42 @@ export function ModelDialog({
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="provider">提供商</Label>
-            <Input
-              id="provider"
-              {...register('provider')}
-              placeholder="请输入提供商"
+            <Label htmlFor="providerId">提供商</Label>
+            <Controller
+              name="providerId"
+              control={control}
+              render={({ field }) => (
+                <Select
+                  value={field.value}
+                  onValueChange={field.onChange}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="请选择提供商" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {providers.map((provider) => (
+                      <SelectItem key={provider.id} value={provider.id}>
+                        {provider.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
             />
-            {errors.provider && (
-              <p className="text-sm text-red-500">{errors.provider.message}</p>
+            {errors.providerId && (
+              <p className="text-sm text-red-500">{errors.providerId.message}</p>
+            )}
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="modelId">模型ID</Label>
+            <Input
+              id="modelId"
+              {...register('modelId')}
+              placeholder="请输入模型ID"
+            />
+            {errors.modelId && (
+              <p className="text-sm text-red-500">{errors.modelId.message}</p>
             )}
           </div>
 

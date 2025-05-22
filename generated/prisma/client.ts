@@ -47,6 +47,11 @@ path.join(process.cwd(), "generated/prisma/libquery_engine-debian-openssl-1.1.x.
  */
 export type Scene = Prisma.SceneModel
 /**
+ * Model Provider
+ * 
+ */
+export type Provider = Prisma.ProviderModel
+/**
  * Model Model
  * 
  */
