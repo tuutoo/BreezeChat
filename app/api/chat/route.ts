@@ -1,9 +1,8 @@
 import { createGroq } from "@ai-sdk/groq"
 import { streamText  } from "ai"
-import { SCENES } from "@/lib/scenes";
 import { google } from '@ai-sdk/google'; // Import Google Gemini provider
 import { openai } from '@ai-sdk/openai';
-
+import { prisma } from '@/lib/prisma';
 
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
@@ -12,7 +11,6 @@ export const maxDuration = 30;
 const QWEN_MODEL = "qwen-qwq-32b"
 const GEMINI_MODEL = "gemini-2.5-flash-preview-05-20"
 const GPT_4_MODEL = "gpt-4o-mini"
-
 
 const groq = createGroq({
   fetch: async (url, options) => {
@@ -28,8 +26,11 @@ const groq = createGroq({
   },
 })
 
-function createSystemPrompt(scene: string): string {
-  const sceneObj = SCENES.find((s) => s.name === scene);
+async function createSystemPrompt(scene: string): Promise<string> {
+  // 从数据库获取场景信息
+  const sceneObj = await prisma.scene.findUnique({
+    where: { name: scene }
+  });
 
   // General translation instructions
   const baseInstructions = `
@@ -52,17 +53,16 @@ Translate the following text according to these rules:
   // If a matching scene is found, add context and special instructions
   return `
 ${baseInstructions}
-Context: ${sceneObj.name_en} - ${sceneObj.description}
+Context: ${sceneObj.nameEn} - ${sceneObj.description}
 Special Instructions: ${sceneObj.prompt}
 
 Translate the following text according to these requirements:
 `;
 }
 
-
 export async function POST(req: Request) {
   const { messages, model = GEMINI_MODEL, scene } = await req.json();
-  const systemPrompt = createSystemPrompt(scene);
+  const systemPrompt = await createSystemPrompt(scene);
   //console.log(messages, model, systemPrompt);
 
   // Select provider based on model
