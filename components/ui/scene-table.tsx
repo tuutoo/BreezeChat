@@ -53,7 +53,7 @@ function useDebounce<T>(value: T, delay: number): T {
 interface SceneTableProps {
   scenes: Scene[]
   onEdit: (scene: Scene) => void
-  onDelete: (id: string) => void
+  onDelete: (scene: Scene) => void
   onToggleActive: (scene: Scene) => void
 }
 
@@ -190,7 +190,7 @@ export function SceneTable({ scenes, onEdit, onDelete, onToggleActive }: SceneTa
             <Button
               variant="ghost"
               size="icon"
-              onClick={() => onDelete(scene.id)}
+              onClick={() => onDelete(scene)}
             >
               <Trash2 className="h-4 w-4" />
             </Button>

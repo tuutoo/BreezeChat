@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
+import { toast } from '@/components/ui/use-toast'
 
 interface SceneDialogProps {
   open: boolean
@@ -56,9 +57,18 @@ export function SceneDialog({ open, onOpenChange, scene, onSubmit }: SceneDialog
     setIsSubmitting(true)
     try {
       await onSubmit({ name, nameEn, description, prompt, isActive })
+      toast({
+        title: "成功",
+        description: `场景已${scene ? '更新' : '创建'}`,
+      })
       onOpenChange(false)
     } catch (error) {
       console.error('Failed to save scene:', error)
+      toast({
+        title: "错误",
+        description: "保存场景失败",
+        variant: "destructive",
+      })
     } finally {
       setIsSubmitting(false)
     }

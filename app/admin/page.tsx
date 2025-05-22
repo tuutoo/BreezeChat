@@ -6,12 +6,17 @@ import { SceneDialog } from '@/components/ui/scene-dialog'
 import { SceneTable } from '@/components/ui/scene-table'
 import { Button } from '@/components/ui/button'
 import { Plus } from 'lucide-react'
+import { toast } from '@/components/ui/use-toast'
+import { ConfirmDialog } from '@/components/ui/confirm-dialog'
+import { Toaster } from '@/components/ui/toaster'
 
 export default function AdminPage() {
   const [scenes, setScenes] = useState<Scene[]>([])
   const [selectedScene, setSelectedScene] = useState<Scene | undefined>()
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
+  const [sceneToDelete, setSceneToDelete] = useState<Scene | null>(null)
 
   useEffect(() => {
     loadScenes()
@@ -24,6 +29,11 @@ export default function AdminPage() {
       setScenes(data)
     } catch (error) {
       console.error('Failed to load scenes:', error)
+      toast({
+        title: "错误",
+        description: "加载场景列表失败",
+        variant: "destructive",
+      })
     } finally {
       setIsLoading(false)
     }
@@ -39,18 +49,35 @@ export default function AdminPage() {
     setIsDialogOpen(true)
   }
 
-  const handleDelete = async (id: string) => {
-    if (!confirm('确定要删除这个场景吗？')) return
+  const handleDelete = async (scene: Scene) => {
+    setSceneToDelete(scene)
+    setIsDeleteDialogOpen(true)
+  }
+
+  const confirmDelete = async () => {
+    if (!sceneToDelete) return
 
     try {
-      const response = await fetch(`/api/config/scenes?id=${id}`, {
+      const response = await fetch(`/api/config/scenes?id=${sceneToDelete.id}`, {
         method: 'DELETE',
       })
       if (response.ok) {
         await loadScenes()
+        toast({
+          title: "成功",
+          description: "场景已删除",
+        })
       }
     } catch (error) {
       console.error('Failed to delete scene:', error)
+      toast({
+        title: "错误",
+        description: "删除场景失败",
+        variant: "destructive",
+      })
+    } finally {
+      setSceneToDelete(null)
+      setIsDeleteDialogOpen(false)
     }
   }
 
@@ -73,9 +100,18 @@ export default function AdminPage() {
 
       if (response.ok) {
         await loadScenes()
+        toast({
+          title: "成功",
+          description: `场景已${scene.isActive ? '禁用' : '启用'}`,
+        })
       }
     } catch (error) {
       console.error('Failed to toggle scene status:', error)
+      toast({
+        title: "错误",
+        description: "更新场景状态失败",
+        variant: "destructive",
+      })
     }
   }
 
@@ -140,6 +176,17 @@ export default function AdminPage() {
         scene={selectedScene}
         onSubmit={handleSubmit}
       />
+
+      <ConfirmDialog
+        open={isDeleteDialogOpen}
+        onOpenChange={setIsDeleteDialogOpen}
+        title="删除场景"
+        description="确定要删除这个场景吗？此操作无法撤销。"
+        onConfirm={confirmDelete}
+        confirmText="删除"
+      />
+
+      <Toaster />
     </div>
   )
 }
