@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import {  Languages } from "lucide-react";
+import { Languages, Settings } from "lucide-react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { ModeToggle } from "./mode-toggle";
@@ -26,6 +26,12 @@ export const Header = () => {
                         <Languages className="w-6 h-6" />
                         <span className="sm:grid hidden text-xl font-semibold motion motion-duration-500 motion-translate-x-in-[50%] motion-translate-y-in-[0%] motion-preset-blur-right" >LinguaLens</span>
                     </Link>
+                    <Link href="/admin">
+                        <Button variant="ghost" size="sm" className="gap-2">
+                            <Settings className="h-4 w-4" />
+                            系统管理
+                        </Button>
+                    </Link>
                 </div>
                 <div className="flex justify-end w-full gap-4">
                     <ThemeSelector />
@@ -37,7 +43,7 @@ export const Header = () => {
               rel="noopener noreferrer"
               aria-label="GitHub 仓库"
             >
-              
+
                 <Image
                   src={
                     theme === 'dark'
@@ -48,7 +54,7 @@ export const Header = () => {
                   className="w-5 h-5"
                   width="40" height="40"
                 />
-             
+
             </Link>
           </Button>
                 </div>

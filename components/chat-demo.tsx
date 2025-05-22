@@ -19,7 +19,7 @@ import { type CarouselApi } from "@/components/ui/carousel"
 import { Badge } from "@/components/ui/badge"
 import { MODELS } from "@/lib/models"
 
- 
+
 
 type ChatDemoProps = {
   initialMessages?: UseChatOptions["initialMessages"]
@@ -27,7 +27,7 @@ type ChatDemoProps = {
 
 export default function ChatDemo(props: ChatDemoProps) {
   const [api, setApi] = useState<CarouselApi>()
-  const [selectedModel, setSelectedModel] = useState(MODELS[0].id)
+  const [selectedModel, setSelectedModel] = useState(MODELS[0].name)
   const [selectedScene, setSelectedScene] = useState(SCENES[0].name);
   const [count, setCount] = useState(0);
   const [current, setCurrent] = useState(0);
@@ -55,7 +55,7 @@ export default function ChatDemo(props: ChatDemoProps) {
     api.on("select", () => {
       setCurrent(api.selectedScrollSnap()+1);
     })
-   
+
   }, [api])
   const handleSceneClick = (sceneName: string) => {
     setSelectedScene(sceneName)
@@ -88,7 +88,7 @@ export default function ChatDemo(props: ChatDemoProps) {
           </SelectTrigger>
           <SelectContent>
             {MODELS.map((model) => (
-              <SelectItem key={model.id} value={model.id}>
+              <SelectItem key={model.name} value={model.name}>
                 {model.name}
               </SelectItem>
             ))}
@@ -117,20 +117,20 @@ export default function ChatDemo(props: ChatDemoProps) {
         {/* left fade */}
         <div className={cn("absolute left-12 top-0 bottom-0 w-12 z-10 bg-gradient-to-r from-background to-transparent pointer-events-none",
           current==1 && "hidden")} />
-    
+
         <Carousel setApi={setApi} opts={{
-          align: "start", 
+          align: "start",
           dragFree:true
           }} className="w-full px-12 h-12 flex items-center">
           <CarouselContent className="-ml-1">
           {SCENES.map((scene, idx) => (
             <CarouselItem key={idx} className="pl-3 basis-auto flex items-center" onClick={() => handleSceneClick(scene.name)} >
-               <Badge variant={selectedScene === scene.name ? "default" : "secondary"} 
+               <Badge variant={selectedScene === scene.name ? "default" : "secondary"}
                       className="cursor-pointer counded-lg px-3 py-1 white-space-nowrap"
                >
                 {scene.name}
                </Badge>
-             
+
             </CarouselItem>
           ))}
           </CarouselContent>
@@ -140,7 +140,7 @@ export default function ChatDemo(props: ChatDemoProps) {
           <div className={cn("absolute right-12 top-0 bottom-0 w-12 z-10 bg-gradient-to-l from-background to-transparent pointer-events-none",
             current==count && "hidden")} />
           </Carousel>
-       
+
       </div>
     </div>
   )
