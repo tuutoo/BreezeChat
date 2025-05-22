@@ -1,29 +1,18 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars, prefer-const */
 "use client"
 
 import * as React from "react"
-import { DropdownMenuTriggerProps } from "@radix-ui/react-dropdown-menu"
 import { CheckIcon, ClipboardIcon } from "lucide-react"
 import { NpmCommands } from "lib/unist"
 
 import { Event, trackEvent } from "@/lib/events"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import type { ComponentProps } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-
-interface CopyButtonProps extends Omit<ComponentProps<typeof Button>, "onClick"> {
-  value: string
-  src?: string
-  event?: Event["name"]
-  copyMessage?: string
-}
 
 export async function copyToClipboardWithMeta(value: string, event?: Event) {
   navigator.clipboard.writeText(value)
@@ -35,12 +24,15 @@ export async function copyToClipboardWithMeta(value: string, event?: Event) {
 export function CopyButton({
   value,
   className,
-  src,
-  variant = "ghost",
   event,
-  copyMessage,
-  ...props
-}: CopyButtonProps) {
+  variant = "ghost",
+  ...rest
+}: {
+  value: string;
+  className?: string;
+  event?: Event["name"];
+  variant?: "ghost" | "link" | "default" | "destructive" | "outline" | "secondary";
+}) {
   const [hasCopied, setHasCopied] = React.useState(false)
 
   React.useEffect(() => {
@@ -71,7 +63,7 @@ export function CopyButton({
         )
         setHasCopied(true)
       }}
-      {...props}
+      {...rest}
     >
       <span className="sr-only">Copy</span>
       {hasCopied ? <CheckIcon /> : <ClipboardIcon />}
@@ -79,18 +71,15 @@ export function CopyButton({
   )
 }
 
-interface CopyWithClassNamesProps extends DropdownMenuTriggerProps {
-  value: string
-  classNames: string
-  className?: string
-}
-
 export function CopyWithClassNames({
   value,
   classNames,
   className,
-  ...props
-}: CopyWithClassNamesProps) {
+}: {
+  value: string;
+  classNames: string;
+  className?: string;
+}) {
   const [hasCopied, setHasCopied] = React.useState(false)
 
   React.useEffect(() => {
@@ -135,15 +124,13 @@ export function CopyWithClassNames({
   )
 }
 
-interface CopyNpmCommandButtonProps extends DropdownMenuTriggerProps {
-  commands: Required<NpmCommands>
-}
-
 export function CopyNpmCommandButton({
   commands,
   className,
-  ...props
-}: CopyNpmCommandButtonProps) {
+}: {
+  commands: Required<NpmCommands>;
+  className?: string;
+}) {
   const [hasCopied, setHasCopied] = React.useState(false)
 
   React.useEffect(() => {

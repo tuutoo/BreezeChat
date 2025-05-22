@@ -2,13 +2,13 @@ import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 
 // 获取单个提供商
-export async function GET(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
+export async function GET(req: Request) {
+  const { pathname } = new URL(req.url)
+  const id = pathname.split('/').filter(Boolean).pop()
+
   try {
     const provider = await prisma.provider.findUnique({
-      where: { id: params.id },
+      where: { id: id },
       include: {
         models: true,
       },
@@ -32,10 +32,10 @@ export async function GET(
 }
 
 // 更新提供商
-export async function PUT(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
+export async function PUT(req: Request) {
+  const { pathname } = new URL(req.url)
+  const id = pathname.split('/').filter(Boolean).pop()
+
   try {
     const { name, envApiKeyName, isActive } = await req.json()
 
@@ -48,7 +48,7 @@ export async function PUT(
     }
 
     const provider = await prisma.provider.update({
-      where: { id: params.id },
+      where: { id: id },
       data: {
         name,
         envApiKeyName,
@@ -67,13 +67,13 @@ export async function PUT(
 }
 
 // 删除提供商
-export async function DELETE(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(req: Request) {
+  const { pathname } = new URL(req.url)
+  const id = pathname.split('/').filter(Boolean).pop()
+
   try {
     await prisma.provider.delete({
-      where: { id: params.id },
+      where: { id: id },
     })
 
     return new NextResponse(null, { status: 204 })

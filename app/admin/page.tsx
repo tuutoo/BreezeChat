@@ -1,8 +1,7 @@
 'use client'
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Database, Layers, Settings, Bot } from "lucide-react"
+import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Database, Settings, Bot } from "lucide-react"
 import Link from "next/link"
 
 export default function AdminPage() {

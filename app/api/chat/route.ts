@@ -8,9 +8,6 @@ import { prisma } from '@/lib/prisma'
 export const maxDuration = 30
 
 // const LLAMA_MODEL = "llama-3.3-70b-versatile"
-const QWEN_MODEL = "qwen-qwq-32b"
-const GEMINI_MODEL = "gemini-2.5-flash-preview-05-20"
-const GPT_4_MODEL = "gpt-4o-mini"
 
 async function createSystemPrompt(scene: string): Promise<string> {
   // 从数据库获取场景信息
@@ -64,18 +61,21 @@ export async function POST(req: Request) {
 
   const systemPrompt = await createSystemPrompt(scene);
 
+  // 获取 API Key
+  const apiKey = process.env[model.provider.envApiKeyName];
+
   // 根据提供商选择对应的客户端
   let provider;
   switch (model.provider.name) {
     case 'google':
-      provider = google(model.modelId, { apiKey: model.provider.apiKey });
+      provider = google(model.modelId);
       break;
     case 'openai':
-      provider = openai(model.modelId, { apiKey: model.provider.apiKey });
+      provider = openai(model.modelId);
       break;
     case 'groq':
       provider = createGroq({
-        apiKey: model.provider.apiKey,
+        apiKey,
         fetch: async (url, options) => {
           if (options?.body) {
             const body = JSON.parse(options.body as string)

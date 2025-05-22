@@ -43,7 +43,6 @@ interface Model {
 
 export default function ProvidersPage() {
   const [providers, setProviders] = useState<Provider[]>([])
-  const [isLoading, setIsLoading] = useState(true)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false)
   const [editingProvider, setEditingProvider] = useState<Provider | null>(null)
@@ -71,8 +70,6 @@ export default function ProvidersPage() {
         description: '获取提供商列表失败',
         variant: 'destructive',
       })
-    } finally {
-      setIsLoading(false)
     }
   }
 

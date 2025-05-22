@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Model, Provider } from '@/generated/prisma/client'
 import { ModelTable } from '@/components/ui/model-table'
 import { Button } from '@/components/ui/button'
@@ -23,7 +23,7 @@ export default function ModelsPage() {
   const [modelToDelete, setModelToDelete] = useState<ModelWithProvider | null>(null)
   const { toast } = useToast()
 
-  const fetchModels = async () => {
+  const fetchModels = useCallback(async () => {
     try {
       const response = await fetch('/api/config/models')
       if (!response.ok) {
@@ -39,11 +39,11 @@ export default function ModelsPage() {
         variant: 'destructive',
       })
     }
-  }
+  }, [toast])
 
   useEffect(() => {
     fetchModels()
-  }, [])
+  }, [fetchModels])
 
   const handleCreate = () => {
     setSelectedModel(null)

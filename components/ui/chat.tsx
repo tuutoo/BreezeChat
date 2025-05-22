@@ -165,8 +165,6 @@ export function Chat({
 
             <CopyButton
               value={message.content}
-              content={message.content}
-              copyMessage="Copied response to clipboard!"
               className="
             h-6 w-6
             text-zinc-700 hover:bg-zinc-100 hover:text-zinc-900
@@ -199,8 +197,6 @@ export function Chat({
         <div className="d-flex items-center space-x-2">
           <CopyButton
             value={message.content}
-            content={message.content}
-            copyMessage="Copied response to clipboard!"
             className="
             h-6 w-6
             text-zinc-700 hover:bg-zinc-100 hover:text-zinc-900
