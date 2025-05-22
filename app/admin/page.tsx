@@ -3,9 +3,9 @@
 import { useState, useEffect } from 'react'
 import { Scene } from '@/generated/prisma/client'
 import { SceneDialog } from '@/components/ui/scene-dialog'
+import { SceneTable } from '@/components/ui/scene-table'
 import { Button } from '@/components/ui/button'
-import { Plus, Pencil, Trash2, Power } from 'lucide-react'
-import { Switch } from '@/components/ui/switch'
+import { Plus } from 'lucide-react'
 
 export default function AdminPage() {
   const [scenes, setScenes] = useState<Scene[]>([])
@@ -54,6 +54,31 @@ export default function AdminPage() {
     }
   }
 
+  const handleToggleActive = async (scene: Scene) => {
+    try {
+      const response = await fetch('/api/config/scenes', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: scene.id,
+          name: scene.name,
+          nameEn: scene.nameEn,
+          description: scene.description,
+          prompt: scene.prompt,
+          isActive: !scene.isActive,
+        }),
+      })
+
+      if (response.ok) {
+        await loadScenes()
+      }
+    } catch (error) {
+      console.error('Failed to toggle scene status:', error)
+    }
+  }
+
   const handleSubmit = async (data: {
     name: string
     nameEn: string
@@ -85,31 +110,6 @@ export default function AdminPage() {
     }
   }
 
-  const handleToggleActive = async (scene: Scene) => {
-    try {
-      const response = await fetch('/api/config/scenes', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          id: scene.id,
-          name: scene.name,
-          nameEn: scene.nameEn,
-          description: scene.description,
-          prompt: scene.prompt,
-          isActive: !scene.isActive,
-        }),
-      })
-
-      if (response.ok) {
-        await loadScenes()
-      }
-    } catch (error) {
-      console.error('Failed to toggle scene status:', error)
-    }
-  }
-
   if (isLoading) {
     return <div className="container mx-auto p-4">加载中...</div>
   }
@@ -124,44 +124,14 @@ export default function AdminPage() {
         </Button>
       </div>
 
-      {/* 场景管理 */}
       <section className="mb-8">
         <h2 className="text-xl font-semibold mb-4">场景配置</h2>
-        <div className="grid gap-4">
-          {scenes.map(scene => (
-            <div key={scene.id} className="border p-4 rounded-lg">
-              <div className="flex justify-between items-start">
-                <div>
-                  <div className="flex items-center gap-2">
-                    <h3 className="font-medium">{scene.name} ({scene.nameEn})</h3>
-                    <Switch
-                      checked={scene.isActive}
-                      onCheckedChange={() => handleToggleActive(scene)}
-                      className="ml-2"
-                    />
-                  </div>
-                  <p className="text-sm text-gray-600 mt-1">{scene.description}</p>
-                </div>
-                <div className="flex gap-2">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => handleEdit(scene)}
-                  >
-                    <Pencil className="w-4 h-4" />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => handleDelete(scene.id)}
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </Button>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+        <SceneTable
+          scenes={scenes}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+          onToggleActive={handleToggleActive}
+        />
       </section>
 
       <SceneDialog
