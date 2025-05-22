@@ -42,7 +42,8 @@ export default function ChatDemo(props: ChatDemoProps) {
         }
         const modelsData = await modelsResponse.json()
         setModels(modelsData)
-        if (modelsData.length > 0) {
+        // 只在 localStorage 没有值时设置默认
+        if (!localStorage.getItem('selectedModel') && modelsData.length > 0) {
           setSelectedModel(modelsData[0].name)
         }
 
@@ -53,7 +54,7 @@ export default function ChatDemo(props: ChatDemoProps) {
         }
         const scenesData = await scenesResponse.json()
         setScenes(scenesData)
-        if (scenesData.length > 0) {
+        if (!localStorage.getItem('selectedScene') && scenesData.length > 0) {
           setSelectedScene(scenesData[0].name)
         }
       } catch (error) {
@@ -116,13 +117,22 @@ export default function ChatDemo(props: ChatDemoProps) {
     <div className={cn("flex", "flex-col", "w-full")}>
       <div className={cn("flex", "justify-end", "mb-2")}>
         <Select value={selectedModel} onValueChange={setSelectedModel} disabled={isLoading}>
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder={isLoading ? "加载中..." : "选择模型"} />
+          <SelectTrigger className="w-[220px]">
+            <SelectValue placeholder={isLoading ? "加载中..." : "选择模型"}>
+              {models.find((m) => m.name === selectedModel)?.name || ''}
+            </SelectValue>
           </SelectTrigger>
           <SelectContent>
             {models.map((model) => (
-              <SelectItem key={model.name} value={model.name}>
-                {model.description || model.name}
+              <SelectItem key={model.name} value={model.name} className="py-2 px-2 group">
+                <div className="flex flex-col text-left">
+                  <span className="font-medium text-sm">{model.name}</span>
+                  <span
+                    className="text-xs text-muted-foreground max-w-[180px] whitespace-normal break-all"
+                  >
+                    {model.description}
+                  </span>
+                </div>
               </SelectItem>
             ))}
           </SelectContent>
