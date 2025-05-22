@@ -1,5 +1,5 @@
 import { useCallback, useRef, useState } from "react"
-import { toast } from "sonner"
+import { toast } from "@/components/ui/use-toast"
 
 type UseCopyToClipboardProps = {
   text: string
@@ -17,7 +17,10 @@ export function useCopyToClipboard({
     navigator.clipboard
       .writeText(text)
       .then(() => {
-        toast.success(copyMessage)
+        toast({
+          title: "成功",
+          description: copyMessage,
+        })
         setIsCopied(true)
         if (timeoutRef.current) {
           clearTimeout(timeoutRef.current)
@@ -28,7 +31,11 @@ export function useCopyToClipboard({
         }, 2000)
       })
       .catch(() => {
-        toast.error("Failed to copy to clipboard.")
+        toast({
+          title: "错误",
+          description: "Failed to copy to clipboard.",
+          variant: "destructive",
+        })
       })
   }, [text, copyMessage])
 
