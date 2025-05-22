@@ -74,6 +74,8 @@ Create a `.env.local` file in the root directory and add your environment-specif
 ```bash
 GOOGLE_GENERATIVE_AI_API_KEY=your_google_api_key
 GROQ_API_KEY=your_groq_api_key
+OPENAI_API_KEY=<your API key>
+MISTRAL_API_KEY=<your API key>
 ```
 
 ### **4. Run the project**
@@ -125,6 +127,8 @@ services:
       - NEXT_PUBLIC_GA_ID=<your tag id>
       - GROQ_API_KEY=<your api key>
       - GOOGLE_GENERATIVE_AI_API_KEY=<your api key>
+      - OPENAI_API_KEY=<your API key>
+      - MISTRAL_API_KEY=<your API key>
     restart: unless-stopped
 ```
 
