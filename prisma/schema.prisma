@@ -27,24 +27,13 @@ model Scene {
 }
 
 // 模型配置
-model Provider {
-  id            String   @id
-  name          String   @unique
-  envApiKeyName String   @unique
-  isActive      Boolean  @default(true)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  models        Model[]
-}
-
 model Model {
-  id          String   @id @default(cuid())
-  name        String   @unique
-  description String?
-  providerId  String   // 关联的提供商 ID
-  provider    Provider @relation(fields: [providerId], references: [id])
-  modelId     String   // 提供商内部的模型 ID，例如：gpt-4, qwen-32b
-  isActive    Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id           String   @id @default(cuid())
+  name         String   @unique
+  description  String?
+  providerName String // 提供商名称，对应 providers.ts 中的 providerName
+  modelId      String // 提供商内部的模型 ID，例如：gpt-4, qwen-32b
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }

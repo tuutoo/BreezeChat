@@ -1,34 +1,29 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
-import { Model, Provider } from '@/generated/prisma/client'
+import { useState, useEffect } from 'react'
+import { Model } from '@/generated/prisma/client'
+import { ModelDialog } from '@/components/ui/model-dialog'
 import { ModelTable } from '@/components/ui/model-table'
 import { Button } from '@/components/ui/button'
 import { Plus } from 'lucide-react'
-import { ModelDialog } from '@/components/ui/model-dialog'
-import { ConfirmDialog } from '@/components/ui/confirm-dialog'
-import { useToast } from '@/components/ui/use-toast'
+import { toast } from '@/components/ui/use-toast'
 import { Toaster } from '@/components/ui/toaster'
-
-// 扩展 Model 类型以包含 provider
-interface ModelWithProvider extends Model {
-  provider: Provider | null
-}
+import { ConfirmDialog } from '@/components/ui/confirm-dialog'
 
 export default function ModelsPage() {
-  const [models, setModels] = useState<ModelWithProvider[]>([])
+  const [models, setModels] = useState<Model[]>([])
   const [isDialogOpen, setIsDialogOpen] = useState(false)
-  const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false)
-  const [selectedModel, setSelectedModel] = useState<ModelWithProvider | null>(null)
-  const [modelToDelete, setModelToDelete] = useState<ModelWithProvider | null>(null)
-  const { toast } = useToast()
+  const [selectedModel, setSelectedModel] = useState<Model | null>(null)
+  const [modelToDelete, setModelToDelete] = useState<Model | null>(null)
 
-  const fetchModels = useCallback(async () => {
+  useEffect(() => {
+    fetchModels()
+  }, [])
+
+  const fetchModels = async () => {
     try {
       const response = await fetch('/api/config/models')
-      if (!response.ok) {
-        throw new Error('Failed to fetch models')
-      }
+      if (!response.ok) throw new Error('Failed to fetch models')
       const data = await response.json()
       setModels(data)
     } catch (error) {
@@ -39,25 +34,49 @@ export default function ModelsPage() {
         variant: 'destructive',
       })
     }
-  }, [toast])
-
-  useEffect(() => {
-    fetchModels()
-  }, [fetchModels])
-
-  const handleCreate = () => {
-    setSelectedModel(null)
-    setIsDialogOpen(true)
   }
 
-  const handleEdit = (model: ModelWithProvider) => {
+  const handleSave = async (data: any) => {
+    try {
+      const url = selectedModel
+        ? `/api/config/models?name=${selectedModel.name}`
+        : '/api/config/models'
+      const method = selectedModel ? 'PUT' : 'POST'
+
+      const response = await fetch(url, {
+        method,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      })
+
+      if (!response.ok) throw new Error('Failed to save model')
+
+      toast({
+        title: '成功',
+        description: `模型已${selectedModel ? '更新' : '创建'}`,
+      })
+
+      fetchModels()
+      setIsDialogOpen(false)
+    } catch (error) {
+      console.error('Error saving model:', error)
+      toast({
+        title: '错误',
+        description: '保存模型失败',
+        variant: 'destructive',
+      })
+    }
+  }
+
+  const handleEdit = (model: Model) => {
     setSelectedModel(model)
     setIsDialogOpen(true)
   }
 
-  const handleDelete = (model: ModelWithProvider) => {
+  const handleDelete = (model: Model) => {
     setModelToDelete(model)
-    setIsConfirmDialogOpen(true)
   }
 
   const handleConfirmDelete = async () => {
@@ -68,9 +87,7 @@ export default function ModelsPage() {
         method: 'DELETE',
       })
 
-      if (!response.ok) {
-        throw new Error('Failed to delete model')
-      }
+      if (!response.ok) throw new Error('Failed to delete model')
 
       toast({
         title: '成功',
@@ -85,10 +102,12 @@ export default function ModelsPage() {
         description: '删除模型失败',
         variant: 'destructive',
       })
+    } finally {
+      setModelToDelete(null)
     }
   }
 
-  const handleToggleActive = async (model: ModelWithProvider) => {
+  const handleToggleActive = async (model: Model) => {
     try {
       const response = await fetch(`/api/config/models?name=${model.name}`, {
         method: 'PUT',
@@ -101,9 +120,7 @@ export default function ModelsPage() {
         }),
       })
 
-      if (!response.ok) {
-        throw new Error('Failed to update model')
-      }
+      if (!response.ok) throw new Error('Failed to update model')
 
       toast({
         title: '成功',
@@ -121,44 +138,13 @@ export default function ModelsPage() {
     }
   }
 
-  const handleSubmit = async (data: Partial<Model>) => {
-    try {
-      const response = await fetch('/api/config/models', {
-        method: selectedModel ? 'PUT' : 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(selectedModel ? { ...data, name: selectedModel.name } : data),
-      })
-
-      if (!response.ok) {
-        throw new Error('Failed to save model')
-      }
-
-      toast({
-        title: '成功',
-        description: `模型已${selectedModel ? '更新' : '创建'}`,
-      })
-
-      setIsDialogOpen(false)
-      fetchModels()
-    } catch (error) {
-      console.error('Error saving model:', error)
-      toast({
-        title: '错误',
-        description: '保存模型失败',
-        variant: 'destructive',
-      })
-    }
-  }
-
   return (
     <div className="container mx-auto py-10">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold">模型管理</h1>
-        <Button onClick={handleCreate}>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold">模型管理</h1>
+        <Button onClick={() => setIsDialogOpen(true)}>
           <Plus className="mr-2 h-4 w-4" />
-          新建模型
+          添加模型
         </Button>
       </div>
 
@@ -173,16 +159,15 @@ export default function ModelsPage() {
         open={isDialogOpen}
         onOpenChange={setIsDialogOpen}
         model={selectedModel}
-        onSubmit={handleSubmit}
+        onSubmit={handleSave}
       />
 
       <ConfirmDialog
-        open={isConfirmDialogOpen}
-        onOpenChange={setIsConfirmDialogOpen}
-        title="确认删除"
-        description={`确定要删除模型 "${modelToDelete?.name}" 吗？此操作不可恢复。`}
+        open={!!modelToDelete}
+        onOpenChange={(open) => !open && setModelToDelete(null)}
+        title="删除模型"
+        description={`确定要删除模型 "${modelToDelete?.name}" 吗？`}
         onConfirm={handleConfirmDelete}
-        confirmText="删除"
       />
 
       <Toaster />

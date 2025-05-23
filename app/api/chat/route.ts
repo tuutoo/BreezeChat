@@ -2,7 +2,7 @@ import { createGroq } from "@ai-sdk/groq"
 import { streamText  } from "ai"
 import { google } from '@ai-sdk/google'
 import { openai } from '@ai-sdk/openai'
-import { prisma } from '@/lib/prisma'
+import { PROVIDERS } from '@/lib/providers'
 
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30
@@ -10,11 +10,6 @@ export const maxDuration = 30
 // const LLAMA_MODEL = "llama-3.3-70b-versatile"
 
 async function createSystemPrompt(scene: string): Promise<string> {
-  // 从数据库获取场景信息
-  const sceneObj = await prisma.scene.findUnique({
-    where: { name: scene }
-  });
-
   // General translation instructions
   const baseInstructions = `
 You are a highly reliable, professional translation assistant. Always identify the primary language of the input text based on comprehensive analysis of syntax, vocabulary, and linguistic patterns. Follow these strict rules:
@@ -25,68 +20,60 @@ You are a highly reliable, professional translation assistant. Always identify t
 - If a specific structure or style is required by the scenario, strictly follow those requirements.
 `;
 
-  // If no matching scene, use general translation
-  if (!sceneObj) {
-    return `
-${baseInstructions}
-Translate the following text according to these rules:
-`;
-  }
-
-  // If a matching scene is found, add context and special instructions
   return `
 ${baseInstructions}
-Context: ${sceneObj.nameEn} - ${sceneObj.description}
-Special Instructions: ${sceneObj.prompt}
-
-Translate the following text according to these requirements:
+Translate the following text according to these rules:
 `;
 }
 
 export async function POST(req: Request) {
   const { messages, model: modelName, scene } = await req.json();
 
-  // 获取模型和提供商信息
-  const model = await prisma.model.findUnique({
-    where: { name: modelName },
-    include: { provider: true }
-  });
+  // 获取提供商信息
+  const provider = PROVIDERS.find(p => p.providerName === modelName.split('-')[0]);
 
-  if (!model || !model.provider) {
+  if (!provider) {
     return new Response(
-      JSON.stringify({ error: 'Model not found or provider not configured' }),
+      JSON.stringify({ error: 'Provider not found' }),
       { status: 404 }
+    );
+  }
+
+  // 获取 API Key
+  const apiKey = process.env[provider.providerKeyName];
+
+  if (!apiKey) {
+    return new Response(
+      JSON.stringify({ error: `API key not found for provider ${provider.providerName}` }),
+      { status: 401 }
     );
   }
 
   const systemPrompt = await createSystemPrompt(scene);
 
-  // 获取 API Key
-  const apiKey = process.env[model.provider.envApiKeyName];
-
   // 根据提供商选择对应的客户端
-  let provider;
-  switch (model.provider.name) {
+  let aiProvider;
+  switch (provider.providerName) {
     case 'google':
-      provider = google(model.modelId);
+      aiProvider = google(modelName);
       break;
     case 'openai':
-      provider = openai(model.modelId);
+      aiProvider = openai(modelName);
       break;
     case 'groq':
-      provider = createGroq({
+      aiProvider = createGroq({
         apiKey,
         fetch: async (url, options) => {
           if (options?.body) {
             const body = JSON.parse(options.body as string)
-            if (body?.model === model.modelId) {
+            if (body?.model === modelName) {
               body.reasoning_format = "parsed"
               options.body = JSON.stringify(body)
             }
           }
           return fetch(url, options)
         },
-      })(model.modelId);
+      })(modelName);
       break;
     default:
       return new Response(
@@ -96,7 +83,7 @@ export async function POST(req: Request) {
   }
 
   const result = streamText({
-    model: provider,
+    model: aiProvider,
     system: systemPrompt,
     temperature: 0.2,
     topP: 0.9,

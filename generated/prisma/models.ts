@@ -8,6 +8,5 @@
  * 🟢 You can import this file directly.
  */
 export type * from './models/Scene'
-export type * from './models/Provider'
 export type * from './models/Model'
 export type * from './commonInputTypes'
