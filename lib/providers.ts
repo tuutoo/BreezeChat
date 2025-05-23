@@ -6,14 +6,14 @@ export interface Provider {
 export const PROVIDERS: Provider[] = [
   {
     providerName: "google",
-    envKey: "GOOGLE_API_KEY"
+    envKey: "GOOGLE_GENERATIVE_AI_API_KEY"
   },
   {
     providerName: "openai",
     envKey: "OPENAI_API_KEY"
   },
   {
-    providerName: "groq1",
+    providerName: "groq",
     envKey: "GROQ_API_KEY"
   },
   {
