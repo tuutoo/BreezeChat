@@ -15,6 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { toast } from '@/components/ui/use-toast'
 
 interface ModelDialogProps {
   open: boolean
@@ -57,8 +58,40 @@ export function ModelDialog({
     }
   }, [model])
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const validateProviderKey = async (providerName: string) => {
+    try {
+      const response = await fetch(`/api/config/validate-provider?providerName=${providerName}`)
+      const data = await response.json()
+
+      if (!response.ok) {
+        toast({
+          title: '错误',
+          description: data.error || '验证提供商配置失败',
+          variant: 'destructive',
+        })
+        return false
+      }
+      return true
+    } catch (error) {
+      console.error('Error validating provider:', error)
+      toast({
+        title: '错误',
+        description: '验证提供商配置失败',
+        variant: 'destructive',
+      })
+      return false
+    }
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+
+    // 验证提供商配置
+    const isValid = await validateProviderKey(formData.providerName)
+    if (!isValid) {
+      return
+    }
+
     onSubmit(formData)
   }
 
@@ -97,6 +130,7 @@ export function ModelDialog({
               onValueChange={(value) =>
                 setFormData({ ...formData, providerName: value })
               }
+              required
             >
               <SelectTrigger>
                 <SelectValue placeholder="选择提供商" />

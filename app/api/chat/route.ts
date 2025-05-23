@@ -20,7 +20,7 @@ You are a highly reliable, professional translation assistant. Always identify t
 - If a specific structure or style is required by the scenario, strictly follow those requirements.
 `;
 
-  return `
+    return `
 ${baseInstructions}
 Translate the following text according to these rules:
 `;

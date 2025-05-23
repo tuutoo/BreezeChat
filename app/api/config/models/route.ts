@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { PROVIDERS } from '@/lib/providers'
 
 export async function GET() {
   try {
@@ -18,15 +17,6 @@ export async function GET() {
 export async function POST(req: Request) {
   try {
     const { name, description, providerName, modelId, isActive } = await req.json()
-
-    // 验证提供商是否存在
-    const provider = PROVIDERS.find(p => p.providerName === providerName)
-    if (!provider) {
-      return NextResponse.json(
-        { error: 'Invalid provider name' },
-        { status: 400 }
-      )
-    }
 
     const model = await prisma.model.create({
       data: {
@@ -51,15 +41,6 @@ export async function POST(req: Request) {
 export async function PUT(req: Request) {
   try {
     const { name, description, providerName, modelId, isActive } = await req.json()
-
-    // 验证提供商是否存在
-    const provider = PROVIDERS.find(p => p.providerName === providerName)
-    if (!provider) {
-      return NextResponse.json(
-        { error: 'Invalid provider name' },
-        { status: 400 }
-      )
-    }
 
     const model = await prisma.model.update({
       where: { name },
