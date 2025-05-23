@@ -8,15 +8,18 @@ ENV NPM_CONFIG_REGISTRY=${NPM_REGISTRY_URL}
 
 WORKDIR /app
 
+# Install pnpm
+RUN corepack enable && corepack prepare pnpm@latest --activate
+
 # Copy dependency definitions
-COPY package*.json ./
+COPY package.json pnpm-lock.yaml .npmrc ./
 
 # Install dependencies (will use the domestic mirror)
-RUN npm install
+RUN pnpm install --frozen-lockfile
 
 # Copy the rest of the project files and build
 COPY . .
-RUN npm run build
+RUN pnpm run build
 
 
 # ---- Stage 2: Production image ----
@@ -30,14 +33,19 @@ ENV NPM_CONFIG_REGISTRY=${NPM_REGISTRY_URL}
 
 WORKDIR /app
 
+# Install pnpm
+RUN corepack enable && corepack prepare pnpm@latest --activate
+
 # Copy build artifacts from the builder stage
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/public ./public
-COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/package.json ./
+COPY --from=builder /app/pnpm-lock.yaml ./
+COPY --from=builder /app/.npmrc ./
 
 # Expose application port
 EXPOSE 3000
 
 # Start the application
-CMD ["npm", "start"]
+CMD ["pnpm", "start"]

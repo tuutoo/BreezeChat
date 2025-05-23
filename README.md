@@ -70,12 +70,23 @@ Create a `.env.local` file in the root directory and add your environment-specif
 
 > **Note:** These API keys can be obtained for free by registering an account, or you can use a paid account if you need higher usage limits.
 
-
 ```bash
 GOOGLE_GENERATIVE_AI_API_KEY=your_google_api_key
 GROQ_API_KEY=your_groq_api_key
 OPENAI_API_KEY=<your API key>
 MISTRAL_API_KEY=<your API key>
+DATABASE_URL=postgresql://<username>:<password>@<host>:<port>/<database>?schema=public
+```
+
+- `<username>`：数据库用户名
+- `<password>`：数据库密码
+- `<host>`：数据库主机地址（如 `localhost` 或容器名）
+- `<port>`：数据库端口（PostgreSQL 默认 5432）
+- `<database>`：数据库名称
+
+**示例：**
+```env
+DATABASE_URL=postgresql://postgres:mysecretpassword@localhost:5432/lingualens?schema=public
 ```
 
 ### **4. Run the project**
@@ -124,6 +135,7 @@ services:
     # Set environment variables
     environment:
       - NODE_ENV=production
+      - DATABASE_URL=postgresql://postgres:mysecretpassword@db:5432/lingualens?schema=public
       - NEXT_PUBLIC_GA_ID=<your tag id>
       - GROQ_API_KEY=<your api key>
       - GOOGLE_GENERATIVE_AI_API_KEY=<your api key>
@@ -148,7 +160,7 @@ Visit `http://localhost:4010` in your browser to access the app running in Docke
 
 ## **Contributing**
 
-We welcome contributions to **LinguaLens**! If you’d like to improve the project, please follow these steps:
+We welcome contributions to **LinguaLens**! If you'd like to improve the project, please follow these steps:
 
 1. Fork the repository.
 2. Create a new branch for your feature or bug fix.
