@@ -153,8 +153,17 @@ export function SceneTable({ scenes, onEdit, onDelete, onToggleActive }: SceneTa
       accessorKey: 'description',
       header: '描述',
       cell: ({ row }) => (
-        <div className="w-[500px] truncate" title={row.getValue('description')}>
+        <div className="w-[200px] whitespace-pre-wrap break-words">
           {row.getValue('description')}
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'prompt',
+      header: '提示词',
+      cell: ({ row }) => (
+        <div className="w-[500px] whitespace-pre-wrap break-words">
+          {row.getValue('prompt')}
         </div>
       ),
     },

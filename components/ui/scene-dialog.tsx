@@ -111,7 +111,7 @@ export function SceneDialog({ open, onOpenChange, scene, onSubmit }: SceneDialog
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="prompt">Prompt</Label>
+            <Label htmlFor="prompt">提示词</Label>
             <Textarea
               id="prompt"
               value={prompt}
