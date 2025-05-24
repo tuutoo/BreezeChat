@@ -130,7 +130,7 @@ export default function ChatDemo(props: ChatDemoProps) {
                   <span
                     className="text-xs text-muted-foreground max-w-[180px] whitespace-normal break-all"
                   >
-                    {model.description}
+                    {model.modelId}
                   </span>
                 </div>
               </SelectItem>
