@@ -9,6 +9,9 @@ import { fontVariables } from "@/lib/fonts";
 import { cn } from "@/lib/utils";
 import { Footer } from "@/components/footer";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Inter } from 'next/font/google'
+import { notoSansMono } from './fonts'
+
 const geistSans = Geist({
   variable: '--font-geist-sans',
   subsets: ['latin'],
@@ -18,6 +21,8 @@ const geistMono = Geist_Mono({
   variable: '--font-geist-mono',
   subsets: ['latin'],
 })
+
+const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: "LinguaLens 翻译助手",
@@ -50,10 +55,9 @@ export default async function RootLayout({
   const activeThemeValue = cookieStore.get("active_theme")?.value
   const isScaled = activeThemeValue?.endsWith("-scaled")
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className={`${geistSans.variable} ${geistMono.variable} ${inter.className} ${notoSansMono.variable} bg-background overscroll-none font-sans antialiased`}>
       <body
-        className={cn(`${geistSans.variable} ${geistMono.variable}`,
-          "bg-background overscroll-none font-sans antialiased",
+        className={cn(
           activeThemeValue ? `theme-${activeThemeValue}` : "",
           isScaled ? "theme-scaled" : "",
           fontVariables
