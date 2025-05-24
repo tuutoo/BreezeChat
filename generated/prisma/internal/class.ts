@@ -46,7 +46,6 @@ const config: runtime.GetPrismaClientConfig = {
     "db"
   ],
   "activeProvider": "postgresql",
-  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
@@ -57,7 +56,7 @@ const config: runtime.GetPrismaClientConfig = {
   },
   "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\ngenerator client {\n  provider = \"prisma-client\"\n  output   = \"../generated/prisma\"\n}\n\n// 场景配置\nmodel Scene {\n  id          String   @id @default(cuid())\n  name        String   @unique\n  nameEn      String // 英文名称\n  description String\n  prompt      String\n  isActive    Boolean  @default(true)\n  createdAt   DateTime @default(now())\n  updatedAt   DateTime @updatedAt\n}\n\n// 模型配置\nmodel Model {\n  id           String   @id @default(cuid())\n  name         String   @unique\n  description  String?\n  providerName String // 提供商名称，对应 providers.ts 中的 providerName\n  modelId      String // 提供商内部的模型 ID，例如：gpt-4, qwen-32b\n  isActive     Boolean  @default(true)\n  createdAt    DateTime @default(now())\n  updatedAt    DateTime @updatedAt\n}\n",
   "inlineSchemaHash": "4711db55a05cd35b10c9d5c052066608bf8f5d234f8672ce7c75ac5f76ecc767",
-  "copyEngine": true,
+  "copyEngine": false,
   "runtimeDataModel": {
     "models": {},
     "enums": {},

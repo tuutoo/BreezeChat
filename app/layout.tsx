@@ -70,10 +70,10 @@ export default async function RootLayout({
             <Header></Header>
             <main
               className="
-              pt-20                          
-              min-h-[calc(100vh-5rem)]      
-              flex justify-center  items-center    
-              px-4                         
+              pt-20
+              min-h-[calc(100vh-5rem)]
+              flex justify-center  items-center
+              px-4
             "
             >
               {children}

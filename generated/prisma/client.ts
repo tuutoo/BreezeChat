@@ -37,9 +37,6 @@ export type PrismaClient<ClientOptions extends Prisma.PrismaClientOptions = Pris
 export { Prisma }
 
 
-// file annotations for bundling tools to include these files
-path.join(__dirname, "libquery_engine-debian-openssl-1.1.x.so.node")
-path.join(process.cwd(), "generated/prisma/libquery_engine-debian-openssl-1.1.x.so.node")
 
 /**
  * Model Scene
