@@ -49,11 +49,12 @@ export function LanguageSwitch() {
       <DropdownMenuTrigger asChild>
         <Button
           variant="outline"
-          size="icon"
           aria-label={t('toggleLanguage')}
           title={currentLanguage.name}
+          className="px-2 sm:px-3 h-9 relative flex items-center gap-1.5"
         >
-          <Globe className="h-[1.2rem] w-[1.2rem]" />
+          <Globe className="h-4 w-4" />
+          <span className="text-xs font-semibold">{currentLocale.toUpperCase()}</span>
           <span className="sr-only">{t('toggleLanguage')}</span>
         </Button>
       </DropdownMenuTrigger>
