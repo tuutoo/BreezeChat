@@ -1,7 +1,7 @@
 'use client'
 
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Database, Settings, Bot } from "lucide-react"
+import { Database, Bot } from "lucide-react"
 import Link from "next/link"
 
 export default function AdminPage() {

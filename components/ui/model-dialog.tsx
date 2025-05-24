@@ -17,11 +17,19 @@ import {
 } from '@/components/ui/select'
 import { toast } from '@/components/ui/use-toast'
 
+interface ModelFormData {
+  name: string
+  description: string
+  providerName: string
+  modelId: string
+  isActive: boolean
+}
+
 interface ModelDialogProps {
   open: boolean
   onOpenChange: (open: boolean) => void
   model?: Model | null
-  onSubmit: (data: any) => void
+  onSubmit: (data: ModelFormData) => void
 }
 
 export function ModelDialog({

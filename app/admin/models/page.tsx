@@ -36,7 +36,7 @@ export default function ModelsPage() {
     }
   }
 
-  const handleSave = async (data: any) => {
+  const handleSave = async (data: Model) => {
     try {
       const url = selectedModel
         ? `/api/config/models?name=${selectedModel.name}`
