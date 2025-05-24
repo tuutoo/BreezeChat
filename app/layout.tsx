@@ -48,14 +48,18 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({
   children,
+  params,
 }: Readonly<{
   children: React.ReactNode;
+  params?: { locale?: string };
 }>) {
   const cookieStore = await cookies()
   const activeThemeValue = cookieStore.get("active_theme")?.value
   const isScaled = activeThemeValue?.endsWith("-scaled")
+  const locale = params?.locale || "en"
+
   return (
-    <html lang="en" suppressHydrationWarning className={`${geistSans.variable} ${geistMono.variable} ${inter.className} ${notoSansMono.variable} bg-background overscroll-none font-sans antialiased`}>
+    <html lang={locale} suppressHydrationWarning className={`${geistSans.variable} ${geistMono.variable} ${inter.className} ${notoSansMono.variable} bg-background overscroll-none font-sans antialiased`}>
       <body
         className={cn(
           activeThemeValue ? `theme-${activeThemeValue}` : "",

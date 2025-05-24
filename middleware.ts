@@ -1,31 +1,88 @@
-import { NextResponse } from 'next/server'
-import type { NextRequest } from 'next/server'
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+import { defaultLocale, locales } from "./i18n/config";
 
 export function middleware(request: NextRequest) {
-  // 检查是否是登录页面或 API 路由
-  if (request.nextUrl.pathname === '/login' || request.nextUrl.pathname.startsWith('/api/')) {
-    return NextResponse.next()
+  // Get pathname from the URL
+  const pathname = request.nextUrl.pathname;
+
+  // Skip middleware for static files, API routes, etc.
+  if (
+    pathname.startsWith("/_next") ||
+    pathname.startsWith("/api") ||
+    pathname.startsWith("/favicon.ico") ||
+    pathname.includes(".")
+  ) {
+    return NextResponse.next();
   }
 
-  // 检查是否已登录
-  const isAuthenticated = request.cookies.has('admin-auth')
+  // Extract locale from pathname
+  const pathnameLocale = pathname.split("/")[1];
 
-  // 如果未登录且不是登录页面，重定向到登录页面
-  if (!isAuthenticated) {
-    return NextResponse.redirect(new URL('/login', request.url))
+  // Check if the URL doesn't start with a locale
+  if (!locales.includes(pathnameLocale)) {
+    // First check for locale preference in cookies
+    const preferredLocale = request.cookies.get("preferred-locale")?.value;
+
+    // If no cookie, check Accept-Language header
+    const acceptLanguage = request.headers.get("accept-language") || "";
+    const bestLocale =
+      preferredLocale && locales.includes(preferredLocale)
+        ? preferredLocale
+        : acceptLanguage
+        ? locales.find((locale) => acceptLanguage.includes(locale)) ||
+          defaultLocale
+        : defaultLocale;
+
+    // Redirect to the URL with locale prefix
+    const newUrl = new URL(
+      `/${bestLocale}${pathname === "/" ? "" : pathname}`,
+      request.url
+    );
+
+    // Create the response with redirect
+    const response = NextResponse.redirect(newUrl);
+
+    // If we derived the locale from Accept-Language, set a cookie for future visits
+    if (!preferredLocale && bestLocale) {
+      response.cookies.set("preferred-locale", bestLocale, {
+        maxAge: 60 * 60 * 24 * 365, // 1 year
+        path: "/",
+      });
+    }
+
+    return response;
   }
 
-  return NextResponse.next()
+  // Check if the user is authenticated for admin routes
+  if (pathname.includes("/admin")) {
+    const isAuthenticated = request.cookies.has("admin-auth");
+    if (!isAuthenticated) {
+      return NextResponse.redirect(
+        new URL(`/${pathnameLocale}/login`, request.url)
+      );
+    }
+  }
+
+  // For all other cases, continue with the response but ensure locale is in the cookie
+  const response = NextResponse.next();
+
+  // Set or update the preferred-locale cookie to match the URL
+  if (pathnameLocale && locales.includes(pathnameLocale)) {
+    const currentCookieLocale = request.cookies.get("preferred-locale")?.value;
+
+    if (currentCookieLocale !== pathnameLocale) {
+      response.cookies.set("preferred-locale", pathnameLocale, {
+        maxAge: 60 * 60 * 24 * 365, // 1 year
+        path: "/",
+      });
+    }
+  }
+
+  return response;
 }
 
+// Define the matcher for the middleware
 export const config = {
-  matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     */
-    '/((?!_next/static|_next/image|favicon.ico).*)',
-  ],
-}
+  matcher: ["/((?!_next/static|_next/image|favicon.ico|api).*)"],
+};

@@ -1,11 +1,9 @@
 'use client';
 
-import ChatDemo from "@/components/chat-demo";
+import { redirect } from 'next/navigation'
+import { defaultLocale } from '@/i18n/config'
 
 export default function Home() {
-  return (
-    <div className="w-full max-w-[80ch] mb-4">
-      <ChatDemo />
-    </div>
-  );
+  // Redirect to the default locale
+  redirect(`/${defaultLocale}`)
 }
