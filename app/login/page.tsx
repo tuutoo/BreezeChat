@@ -24,7 +24,7 @@ export default function LoginPage() {
       })
 
       if (response.ok) {
-        router.push('/admin')
+        router.push('/')
       } else {
         toast({
           title: '错误',
