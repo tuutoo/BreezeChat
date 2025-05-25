@@ -9,112 +9,14 @@ import { Plus } from 'lucide-react'
 import { toast } from '@/components/ui/use-toast'
 import { Toaster } from '@/components/ui/toaster'
 import { ConfirmDialog } from '@/components/ui/confirm-dialog'
-import { usePathname } from 'next/navigation'
-import { useMemo } from 'react'
+import { useTranslations } from 'next-intl'
 
 export default function LocalizedModelsPage() {
   const [models, setModels] = useState<Model[]>([])
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [selectedModel, setSelectedModel] = useState<Model | null>(null)
   const [modelToDelete, setModelToDelete] = useState<Model | null>(null)
-  const pathname = usePathname()
-  const locale = pathname.split('/')[1]
-
-  const translations = useMemo(() => ({
-    title: {
-      zh: '模型管理',
-      en: 'Model Management',
-      ja: 'モデル管理',
-      ko: '모델 관리'
-    },
-    addModel: {
-      zh: '添加模型',
-      en: 'Add Model',
-      ja: 'モデルを追加',
-      ko: '모델 추가'
-    },
-    error: {
-      zh: '错误',
-      en: 'Error',
-      ja: 'エラー',
-      ko: '오류'
-    },
-    success: {
-      zh: '成功',
-      en: 'Success',
-      ja: '成功',
-      ko: '성공'
-    },
-    fetchError: {
-      zh: '获取模型列表失败',
-      en: 'Failed to fetch models',
-      ja: 'モデルリストの取得に失敗しました',
-      ko: '모델 목록을 가져오지 못했습니다'
-    },
-    saveSuccess: {
-      zh: '模型保存成功',
-      en: 'Model saved successfully',
-      ja: 'モデルが正常に保存されました',
-      ko: '모델이 성공적으로 저장되었습니다'
-    },
-    saveError: {
-      zh: '保存模型失败',
-      en: 'Failed to save model',
-      ja: 'モデルの保存に失敗しました',
-      ko: '모델을 저장하지 못했습니다'
-    },
-    deleteSuccess: {
-      zh: '模型删除成功',
-      en: 'Model deleted successfully',
-      ja: 'モデルが正常に削除されました',
-      ko: '모델이 성공적으로 삭제되었습니다'
-    },
-    deleteError: {
-      zh: '删除模型失败',
-      en: 'Failed to delete model',
-      ja: 'モデルの削除に失敗しました',
-      ko: '모델을 삭제하지 못했습니다'
-    },
-    updateError: {
-      zh: '更新模型状态失败',
-      en: 'Failed to update model status',
-      ja: 'モデルの状態の更新に失敗しました',
-      ko: '모델 상태를 업데이트하지 못했습니다'
-    },
-    modelEnabled: {
-      zh: '模型已启用',
-      en: 'Model has been enabled',
-      ja: 'モデルが有効になりました',
-      ko: '모델이 활성화되었습니다'
-    },
-    modelDisabled: {
-      zh: '模型已禁用',
-      en: 'Model has been disabled',
-      ja: 'モデルが無効になりました',
-      ko: '모델이 비활성화되었습니다'
-    },
-    confirmDelete: {
-      zh: '确认删除',
-      en: 'Confirm Delete',
-      ja: '削除の確認',
-      ko: '삭제 확인'
-    },
-    deletePrompt: {
-      zh: '确定要删除此模型吗？此操作无法撤销。',
-      en: 'Are you sure you want to delete this model? This action cannot be undone.',
-      ja: 'このモデルを削除してもよろしいですか？この操作は元に戻せません。',
-      ko: '이 모델을 삭제하시겠습니까? 이 작업은 취소할 수 없습니다.'
-    }
-  }), [])
-
-  const getTranslation = useCallback(
-    (key: string) => {
-      const section = translations[key as keyof typeof translations]
-      return section?.[locale as keyof typeof section] || section?.['en']
-    },
-    [locale, translations]
-  )
-
+  const t = useTranslations()
 
   const fetchModels = useCallback(async () => {
     try {
@@ -125,12 +27,12 @@ export default function LocalizedModelsPage() {
     } catch (error) {
       console.error('Error fetching models:', error)
       toast({
-        title: getTranslation('error'),
-        description: getTranslation('fetchError'),
+        title: t('common.error'),
+        description: t('model.fetchError'),
         variant: 'destructive',
       })
     }
-  }, [getTranslation])
+  }, [t])
 
   useEffect(() => {
     fetchModels()
@@ -157,14 +59,14 @@ export default function LocalizedModelsPage() {
       setSelectedModel(null)
       fetchModels()
       toast({
-        title: '成功',
-        description: getTranslation('saveSuccess'),
+        title: t('common.success'),
+        description: t('model.saveSuccess'),
       })
     } catch (error) {
       console.error('Error saving model:', error)
       toast({
-        title: getTranslation('error'),
-        description: getTranslation('saveError'),
+        title: t('common.error'),
+        description: t('model.saveError'),
         variant: 'destructive',
       })
     }
@@ -186,14 +88,14 @@ export default function LocalizedModelsPage() {
       setModelToDelete(null)
       fetchModels()
       toast({
-        title: '成功',
-        description: getTranslation('deleteSuccess'),
+        title: t('common.success'),
+        description: t('model.deleteSuccess'),
       })
     } catch (error) {
       console.error('Error deleting model:', error)
       toast({
-        title: getTranslation('error'),
-        description: getTranslation('deleteError'),
+        title: t('common.error'),
+        description: t('model.deleteError'),
         variant: 'destructive',
       })
     }
@@ -215,18 +117,18 @@ export default function LocalizedModelsPage() {
       if (!response.ok) throw new Error('Failed to update model')
 
       toast({
-        title: getTranslation('success'),
+        title: t('common.success'),
         description: model.isActive
-          ? getTranslation('modelDisabled')
-          : getTranslation('modelEnabled'),
+          ? t('model.disabled')
+          : t('model.enabled'),
       })
 
       fetchModels()
     } catch (error) {
       console.error('Error updating model:', error)
       toast({
-        title: getTranslation('error'),
-        description: getTranslation('updateError'),
+        title: t('common.error'),
+        description: t('model.updateError'),
         variant: 'destructive',
       })
     }
@@ -235,7 +137,7 @@ export default function LocalizedModelsPage() {
   return (
     <div className="container mx-auto py-10">
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold">{getTranslation('title')}</h1>
+        <h1 className="text-3xl font-bold">{t('model.title')}</h1>
         <Button
           onClick={() => {
             setSelectedModel(null)
@@ -243,7 +145,7 @@ export default function LocalizedModelsPage() {
           }}
         >
           <Plus className="h-4 w-4 mr-2" />
-          {getTranslation('addModel')}
+          {t('model.add')}
         </Button>
       </div>
 
@@ -267,8 +169,8 @@ export default function LocalizedModelsPage() {
       <ConfirmDialog
         open={!!modelToDelete}
         onOpenChange={() => setModelToDelete(null)}
-        title={getTranslation('confirmDelete')}
-        description={getTranslation('deletePrompt')}
+        title={t('model.confirmDelete')}
+        description={t('model.deletePrompt')}
         onConfirm={handleDelete}
       />
 

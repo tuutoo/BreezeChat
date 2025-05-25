@@ -7,16 +7,16 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import { Database, Bot, LogOut } from "lucide-react";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/i18n/routing";
+import { Link } from "@/i18n/routing";
+import { useTranslations } from "next-intl";
 import { toast } from "@/components/ui/use-toast";
 import { Toaster } from "@/components/ui/toaster";
-import { useLocale } from "@/hooks/use-locale";
 
 export default function LocalizedAdminPage() {
 	const router = useRouter();
-	const { locale, t } = useLocale();
+	const t = useTranslations();
 
 	const handleLogout = async () => {
 		try {
@@ -25,18 +25,18 @@ export default function LocalizedAdminPage() {
 			});
 
 			if (response.ok) {
-				router.push(`/${locale}/login`);
+				router.push("/login");
 			} else {
 				toast({
-					title: t("error"),
-					description: t("logoutError"),
+					title: t("common.error"),
+					description: t("admin.logoutError"),
 					variant: "destructive",
 				});
 			}
 		} catch {
 			toast({
-				title: t("error"),
-				description: t("logoutError"),
+				title: t("common.error"),
+				description: t("admin.logoutError"),
 				variant: "destructive",
 			});
 		}
@@ -45,37 +45,51 @@ export default function LocalizedAdminPage() {
 	return (
 		<div className="container mx-auto py-10">
 			<div className="flex justify-between items-center mb-8">
-				<h1 className="text-3xl font-bold">{t("admin")}</h1>
+				<h1 className="text-3xl font-bold">{t("admin.title")}</h1>
 				<Button variant="outline" onClick={handleLogout}>
 					<LogOut className="h-4 w-4 mr-2" />
-					{t("logout")}
+					{t("admin.logout")}
 				</Button>
 			</div>
 
 			<div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-				<Link href={`/${locale}/admin/models`}>
+				<Link href="/admin/models">
 					<Card className="hover:bg-accent/50 transition-colors cursor-pointer">
 						<CardHeader>
 							<CardTitle className="flex items-center gap-2">
 								<Bot className="h-5 w-5" />
-								{t("modelManagement")}
+								{t("admin.modelManagement")}
 							</CardTitle>
 							<CardDescription>
-								{t("modelDescription")}
+								{t("admin.modelDescription")}
 							</CardDescription>
 						</CardHeader>
 					</Card>
 				</Link>
 
-				<Link href={`/${locale}/admin/scene`}>
+				<Link href="/admin/scene">
 					<Card className="hover:bg-accent/50 transition-colors cursor-pointer">
 						<CardHeader>
 							<CardTitle className="flex items-center gap-2">
 								<Database className="h-5 w-5" />
-								{t("sceneManagement")}
+								{t("admin.sceneManagement")}
 							</CardTitle>
 							<CardDescription>
-								{t("sceneDescription")}
+								{t("admin.sceneDescription")}
+							</CardDescription>
+						</CardHeader>
+					</Card>
+				</Link>
+
+				<Link href="/admin/providers">
+					<Card className="hover:bg-accent/50 transition-colors cursor-pointer">
+						<CardHeader>
+							<CardTitle className="flex items-center gap-2">
+								<Database className="h-5 w-5" />
+								{t("admin.providersManagement")}
+							</CardTitle>
+							<CardDescription>
+								{t("admin.providersDescription")}
 							</CardDescription>
 						</CardHeader>
 					</Card>
