@@ -14,7 +14,7 @@
     "actions": "操作"
   },
   "header": {
-    "systemAdmin": "系统管理",
+    "systemAdmin": "1系统管理",
     "toggleTheme": "切换主题",
     "toggleLanguage": "切换语言",
     "github": "GitHub 仓库"
@@ -50,7 +50,7 @@
     "deleteMessage": "此操作无法撤销。您确定要删除这个项目吗？"
   },
   "footer": {
-    "tagline": "AI 翻译助手，支持多场景风格切换",
+    "tagline": "1AI 翻译助手，支持多场景风格切换",
     "features": "功能",
     "translation": "翻译",
     "sceneModes": "场景模式",

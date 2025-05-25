@@ -2,10 +2,9 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
+import { Link } from '@/i18n/routing';
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
-import { getTranslation, getLocaleFromPathname } from '@/i18n/config';
+import { useTranslations } from 'next-intl';
 
 interface MenuItem {
   title: string;
@@ -28,50 +27,47 @@ export const Footer: React.FC<FooterProps> = ({
     url: '/',
   },
 }: FooterProps) => {
-  const pathname = usePathname();
-  const locale = getLocaleFromPathname(pathname);
-
-  const t = (key: string) => getTranslation(locale, key);
+  const t = useTranslations();
 
   const menuItems = [
     {
-      title: t('footerFeatures'),
+      title: t('footer.features'),
       links: [
-        { text: t('footerTranslation'), url: 'https://github.com/neozhu/lingualens' },
-        { text: t('footerSceneModes'), url: `/${locale}/scene` },
+        { text: t('footer.translation'), url: 'https://github.com/neozhu/lingualens' },
+        { text: t('footer.sceneModes'), url: '/scene' },
       ],
     },
     {
-      title: t('footerSupport'),
+      title: t('footer.support'),
       links: [
-        { text: t('footerFAQ'), url: 'https://github.com/neozhu/lingualens' },
-        { text: t('footerContactMe'), url: 'https://blazorserver.com/contact' },
+        { text: t('footer.faq'), url: 'https://github.com/neozhu/lingualens' },
+        { text: t('footer.contactMe'), url: 'https://blazorserver.com/contact' },
       ],
     },
     {
-      title: t('footerAbout'),
+      title: t('footer.about'),
       links: [
-        { text: t('privacyPolicy'), url: `/${locale}/privacy` },
-        { text: t('termsOfService'), url: `/${locale}/terms` },
+        { text: t('legal.privacyPolicy'), url: '/privacy' },
+        { text: t('legal.termsOfService'), url: '/terms' },
       ],
     },
   ];
 
   const bottomLinks = [
-    { text: t('privacyPolicy'), url: `/${locale}/privacy` },
-    { text: t('termsOfService'), url: `/${locale}/terms` },
+    { text: t('legal.privacyPolicy'), url: '/privacy' },
+    { text: t('legal.termsOfService'), url: '/terms' },
   ];
 
   return (
-    <footer className="bg-background py-12">
-      <div className="container mx-auto px-4">
+    <footer className="w-full bg-background py-12 border-t">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-16">
         <div className="grid grid-cols-2 gap-8 lg:grid-cols-6">
           <div className="col-span-2 mb-8 lg:mb-0">
             <Link href={logo.url} className="flex items-center gap-2">
               <Image src={logo.src} alt={logo.alt} className="h-10" width="40" height="40" />
               <span className="text-xl font-semibold">{logo.title}</span>
             </Link>
-            <p className="mt-4 text-muted-foreground">{t('footerTagline')}</p>
+            <p className="mt-4 text-muted-foreground">{t('footer.tagline')}</p>
           </div>
 
           {menuItems.map((section, idx) => (
@@ -89,7 +85,7 @@ export const Footer: React.FC<FooterProps> = ({
         </div>
 
         <div className="mt-12 border-t pt-6 text-sm text-muted-foreground flex flex-col md:flex-row md:justify-between items-center gap-4">
-          <p>{t('footerCopyright')}</p>
+          <p>{t('footer.copyright')}</p>
           <ul className="flex gap-4">
             {bottomLinks.map((link, idx) => (
               <li key={idx} className="underline hover:text-primary">

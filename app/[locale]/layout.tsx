@@ -1,39 +1,43 @@
-'use client';
-
 import "../globals.css"
 import { LanguageProvider } from "@/components/language-provider"
 import { Toaster } from "@/components/ui/toaster"
-import { locales } from "@/i18n/config";
-import React from "react";
+import { Header } from "@/components/header"
+import { Footer } from "@/components/footer"
+import { NextIntlClientProvider } from 'next-intl';
+import { getMessages } from 'next-intl/server';
+import { notFound } from 'next/navigation';
+import { routing } from '@/i18n/routing';
 
-export default function LocaleLayout({
+export default async function LocaleLayout({
   children,
   params
 }: {
   children: React.ReactNode;
-  params: { locale: string } | Promise<{ locale: string }>;
+  params: Promise<{ locale: string }>;
 }) {
-  // Use React.use() for the params
-  let locale: string;
+  const { locale } = await params;
 
-  if (params instanceof Promise || (typeof params === 'object' && params !== null && 'then' in params)) {
-    const resolvedParams = React.use(params as Promise<{ locale: string }>);
-    locale = resolvedParams.locale;
-  } else {
-    locale = (params as { locale: string }).locale;
+  // Ensure that the incoming `locale` is valid
+  if (!routing.locales.includes(locale as (typeof routing.locales)[number])) {
+    notFound();
   }
 
-  const isValidLocale = locales.includes(locale);
-
-  if (!isValidLocale) {
-    // This shouldn't happen due to middleware, but just in case
-    return null;
-  }
+  // Providing all messages to the client
+  // side is the easiest way to get started
+  const messages = await getMessages();
 
   return (
-    <LanguageProvider>
-      {children}
-      <Toaster />
-    </LanguageProvider>
+    <NextIntlClientProvider messages={messages}>
+      <LanguageProvider>
+        <div className="min-h-screen flex flex-col">
+          <Header />
+          <main className="flex-1 pt-20 min-h-[calc(100vh-5rem)] flex justify-center items-center px-4">
+            {children}
+          </main>
+          <Footer />
+        </div>
+        <Toaster />
+      </LanguageProvider>
+    </NextIntlClientProvider>
   )
 }

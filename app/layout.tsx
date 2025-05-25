@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 import { GoogleAnalytics } from '@next/third-parties/google'
 import "./globals.css";
-import { Header } from "@/components/header";
+
 import { ThemeProvider } from "@/components/theme-provider"
 import { ActiveThemeProvider } from "@/components/active-theme"
 import { cookies } from "next/headers";
 import { fontVariables } from "@/lib/fonts";
 import { cn } from "@/lib/utils";
-import { Footer } from "@/components/footer";
+
 import { Geist, Geist_Mono } from "next/font/google";
 import { Inter } from 'next/font/google'
 import { notoSansMono } from './fonts'
@@ -75,18 +75,7 @@ export default async function RootLayout({
           enableColorScheme
         >
           <ActiveThemeProvider initialTheme={activeThemeValue}>
-            <Header></Header>
-            <main
-              className="
-              pt-20
-              min-h-[calc(100vh-5rem)]
-              flex justify-center  items-center
-              px-4
-            "
-            >
-              {children}
-            </main>
-            <Footer />
+            {children}
             <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID!} />
           </ActiveThemeProvider>
         </ThemeProvider>
