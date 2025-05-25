@@ -1,0 +1,88 @@
+{
+  "common": {
+    "loading": "로딩 중...",
+    "save": "저장",
+    "cancel": "취소",
+    "confirm": "확인",
+    "error": "오류",
+    "success": "성공",
+    "name": "이름",
+    "description": "설명",
+    "status": "상태",
+    "enabled": "활성화됨",
+    "disabled": "비활성화됨",
+    "actions": "작업"
+  },
+  "header": {
+    "systemAdmin": "시스템 관리",
+    "toggleTheme": "테마 전환",
+    "toggleLanguage": "언어 전환",
+    "github": "GitHub 저장소"
+  },
+  "theme": {
+    "lightMode": "라이트 모드",
+    "darkMode": "다크 모드",
+    "systemDefault": "시스템 기본값"
+  },
+  "admin": {
+    "title": "시스템 관리",
+    "login": "로그인",
+    "logout": "로그아웃",
+    "logoutError": "로그아웃 실패",
+    "modelManagement": "모델 관리",
+    "sceneManagement": "장면 관리",
+    "modelDescription": "AI 모델 구성 관리 (모델 이름, 공급자 및 상태 포함)",
+    "sceneDescription": "장면 구성 관리 (장면 이름, 설명 및 상태 포함)",
+    "providersManagement": "공급자 관리",
+    "providersDescription": "AI 서비스 공급자 관리 (키 및 구성 포함)"
+  },
+  "model": {
+    "add": "모델 추가",
+    "edit": "모델 편집",
+    "delete": "모델 삭제",
+    "select": "모델 선택"
+  },
+  "scene": {
+    "management": "장면 관리"
+  },
+  "dialog": {
+    "deleteConfirm": "삭제 확인",
+    "deleteMessage": "이 작업은 취소할 수 없습니다. 이 항목을 삭제하시겠습니까?"
+  },
+  "footer": {
+    "tagline": "다중 시나리오 스타일 전환을 지원하는 AI 번역 도우미",
+    "features": "기능",
+    "translation": "번역",
+    "sceneModes": "시나리오 모드",
+    "support": "지원",
+    "faq": "자주 묻는 질문",
+    "contactMe": "문의하기",
+    "about": "정보",
+    "copyright": "© 2025 LinguaLens. 모든 권리 보유."
+  },
+  "legal": {
+    "privacyPolicy": "개인정보 처리방침",
+    "termsOfService": "서비스 이용약관",
+    "lastUpdated": "최종 업데이트"
+  },
+  "privacy": {
+    "intro": "LinguaLens에 오신 것을 환영합니다. 우리는 귀하의 개인정보를 존중하며 공유하신 모든 정보를 보호하기 위해 최선을 다하고 있습니다. 이 개인정보 처리방침은 귀하의 데이터를 어떻게 처리하는지 설명합니다.",
+    "collection": "LinguaLens는 개인정보나 번역 데이터를 수집, 저장 또는 처리하지 않습니다. 모든 번역은 타사 AI 서비스 또는 로컬 브라우저 기능을 사용하여 실시간으로 수행되며, 입력이나 출력은 서버에 보관되지 않습니다.",
+    "cookies": "이 애플리케이션 내에서는 쿠키, 추적 픽셀 또는 기타 추적 기술을 사용하지 않습니다. 귀하의 사용은 비공개이며 일시적입니다.",
+    "thirdParty": "번역을 수행하기 위해 AI 번역 서비스(예: Google Gemini, Llama, Qwen, Mistral)와 통합되어 있습니다. 즉각적인 번역 응답을 넘어 이러한 서비스와 주고받은 데이터는 보관하지 않습니다.",
+    "contact": "이 개인정보 처리방침에 대한 질문이나 우려사항이 있으시면 다음으로 연락해 주세요:"
+  },
+  "terms": {
+    "acceptance": "LinguaLens(\"서비스\")에 접속하거나 사용함으로써 귀하는 이 서비스 이용약관에 동의하게 됩니다. 이 약관의 일부에 동의하지 않는 경우 서비스를 사용할 수 없습니다.",
+    "description": "LinguaLens는 MIT 라이선스 하에 제공되는 무료 오픈소스 번역 도우미입니다. 중국어와 다른 언어 간의 양방향 번역을 제공하며 다양한 맥락과 시나리오에 적응합니다.",
+    "license": "서비스의 소스 코드는 MIT 라이선스 하에 제공됩니다. MIT 조건에 따라 소프트웨어를 자유롭게 사용, 복사, 수정, 병합, 게시, 배포 및 재라이선스할 수 있습니다. MIT 라이선스 사본은 LICENSE 파일에서 찾을 수 있습니다.",
+    "warranty": "서비스는 \"있는 그대로\" 제공되며, 명시적 또는 묵시적인 어떠한 보증도 제공하지 않습니다. 작성자와 기여자는 상품성 및 특정 목적에의 적합성을 포함하되 이에 국한되지 않는 모든 보증을 부인합니다.",
+    "liability": "어떤 경우에도 작성자 또는 기여자는 서비스 사용과 관련하여 발생하는 간접적, 우발적, 특별 또는 결과적 손해에 대해 책임을 지지 않습니다.",
+    "privacy": "개인정보 처리 방법에 대한 자세한 내용은 개인정보 처리방침을 참조하세요.",
+    "changes": "이 서비스 이용약관은 수시로 업데이트될 수 있습니다. 변경사항은 이 페이지에 게시되며 수정된 \"최종 업데이트\" 날짜가 표시됩니다.",
+    "contact": "이 약관에 대한 질문이 있으시면 다음으로 연락해 주세요:"
+  },
+  "chat": {
+    "inputPlaceholder": "번역할 내용을 입력하세요..."
+  }
+}

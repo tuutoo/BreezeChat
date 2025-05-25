@@ -1,0 +1,88 @@
+{
+  "common": {
+    "loading": "加载中...",
+    "save": "保存",
+    "cancel": "取消",
+    "confirm": "确认",
+    "error": "错误",
+    "success": "成功",
+    "name": "名称",
+    "description": "描述",
+    "status": "状态",
+    "enabled": "启用",
+    "disabled": "禁用",
+    "actions": "操作"
+  },
+  "header": {
+    "systemAdmin": "系统管理",
+    "toggleTheme": "切换主题",
+    "toggleLanguage": "切换语言",
+    "github": "GitHub 仓库"
+  },
+  "theme": {
+    "lightMode": "浅色模式",
+    "darkMode": "深色模式",
+    "systemDefault": "系统默认"
+  },
+  "admin": {
+    "title": "系统管理",
+    "login": "登录",
+    "logout": "登出",
+    "logoutError": "登出失败",
+    "modelManagement": "模型管理",
+    "sceneManagement": "场景管理",
+    "modelDescription": "管理 AI 模型配置，包括模型名称、提供商和状态等",
+    "sceneDescription": "管理场景配置，包括场景名称、描述和状态等",
+    "providersManagement": "提供商管理",
+    "providersDescription": "管理 AI 服务提供商，包括密钥和配置"
+  },
+  "model": {
+    "add": "添加模型",
+    "edit": "编辑模型",
+    "delete": "删除模型",
+    "select": "选择模型"
+  },
+  "scene": {
+    "management": "场景管理"
+  },
+  "dialog": {
+    "deleteConfirm": "确认删除",
+    "deleteMessage": "此操作无法撤销。您确定要删除这个项目吗？"
+  },
+  "footer": {
+    "tagline": "AI 翻译助手，支持多场景风格切换",
+    "features": "功能",
+    "translation": "翻译",
+    "sceneModes": "场景模式",
+    "support": "支持",
+    "faq": "常见问题",
+    "contactMe": "联系我",
+    "about": "关于",
+    "copyright": "© 2025 LinguaLens. 保留所有权利。"
+  },
+  "legal": {
+    "privacyPolicy": "隐私政策",
+    "termsOfService": "服务条款",
+    "lastUpdated": "最后更新"
+  },
+  "privacy": {
+    "intro": "欢迎使用 LinguaLens。我们尊重您的隐私并致力于保护您分享的任何信息。本隐私政策说明了我们如何处理您的数据。",
+    "collection": "LinguaLens 不会收集、存储或处理任何个人信息或翻译数据。所有翻译都是使用第三方 AI 服务或本地浏览器功能实时进行的，不会在我们的服务器上保留任何输入或输出。",
+    "cookies": "我们不会在应用程序中使用 cookie、跟踪像素或任何其他跟踪技术。您的使用保持私密和临时性。",
+    "thirdParty": "我们集成了 AI 翻译服务（如 Google Gemini、Llama、Qwen、Mistral）来执行翻译。除了即时的翻译响应外，我们不会保留发送给或从这些服务接收的任何数据。",
+    "contact": "如果您对本隐私政策有任何疑问或疑虑，请通过以下方式联系我们："
+  },
+  "terms": {
+    "acceptance": "通过访问或使用 LinguaLens(\"服务\")，您同意受这些服务条款的约束。如果您不同意这些条款的任何部分，则不得使用本服务。",
+    "description": "LinguaLens 是一个免费的开源翻译助手，采用 MIT 许可证。它提供中文和其他语言之间的双向翻译，适应各种上下文和场景。",
+    "license": "本服务的源代码在 MIT 许可证下可用。您可以根据 MIT 条款自由使用、复制、修改、合并、发布、分发和再许可该软件。MIT 许可证的副本可以在 LICENSE 文件中找到。",
+    "warranty": "本服务按\"原样\"提供，不提供任何形式的明示或暗示保证。作者和贡献者不承担任何保证，包括但不限于适销性和特定用途的适用性。",
+    "liability": "在任何情况下，作者或贡献者均不对因使用本服务而产生的任何间接、偶然、特殊或后果性损害负责。",
+    "privacy": "有关我们如何处理个人信息的详细信息，请参阅我们的隐私政策。",
+    "changes": "我们可能会不时更新这些服务条款。任何更改都将发布在此页面上，并附上修订后的\"最后更新\"日期。",
+    "contact": "如果您对这些条款有任何疑问，请通过以下方式联系我们："
+  },
+  "chat": {
+    "inputPlaceholder": "输入想要翻译的内容..."
+  }
+}

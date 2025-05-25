@@ -1,0 +1,88 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "error": "Error",
+    "success": "Success",
+    "name": "Name",
+    "description": "Description",
+    "status": "Status",
+    "enabled": "Enabled",
+    "disabled": "Disabled",
+    "actions": "Actions"
+  },
+  "header": {
+    "systemAdmin": "System Admin",
+    "toggleTheme": "Toggle Theme",
+    "toggleLanguage": "Toggle Language",
+    "github": "GitHub Repository"
+  },
+  "theme": {
+    "lightMode": "Light Mode",
+    "darkMode": "Dark Mode",
+    "systemDefault": "System Default"
+  },
+  "admin": {
+    "title": "System Administration",
+    "login": "Login",
+    "logout": "Logout",
+    "logoutError": "Logout failed",
+    "modelManagement": "Model Management",
+    "sceneManagement": "Scene Management",
+    "modelDescription": "Manage AI model configurations, including model names, providers, and status",
+    "sceneDescription": "Manage scene configurations, including scene names, descriptions, and status",
+    "providersManagement": "Provider Management",
+    "providersDescription": "Manage AI service providers, including keys and configurations"
+  },
+  "model": {
+    "add": "Add Model",
+    "edit": "Edit Model",
+    "delete": "Delete Model",
+    "select": "Select Model"
+  },
+  "scene": {
+    "management": "Scene Management"
+  },
+  "dialog": {
+    "deleteConfirm": "Confirm Deletion",
+    "deleteMessage": "This action cannot be undone. Are you sure you want to delete this item?"
+  },
+  "footer": {
+    "tagline": "AI translation assistant with multi-scenario style switching",
+    "features": "Features",
+    "translation": "Translation",
+    "sceneModes": "Scene Modes",
+    "support": "Support",
+    "faq": "FAQ",
+    "contactMe": "Contact Me",
+    "about": "About",
+    "copyright": "© 2025 LinguaLens. All rights reserved."
+  },
+  "legal": {
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service",
+    "lastUpdated": "Last updated"
+  },
+  "privacy": {
+    "intro": "Welcome to LinguaLens. We respect your privacy and are committed to protecting any information you share. This Privacy Policy explains how we handle your data.",
+    "collection": "LinguaLens does not collect, store, or process any personal information or translation data. All translations are performed in real-time using third-party AI services or local browser capabilities, and no input or output is retained on our servers.",
+    "cookies": "We do not use cookies, tracking pixels, or any other tracking technologies within this application. Your use remains private and ephemeral.",
+    "thirdParty": "We integrate with AI translation services (e.g., Google Gemini, Llama, Qwen, Mistral) to perform translations. We do not retain any data sent to or received from these services beyond the immediate translation response.",
+    "contact": "If you have any questions or concerns about this Privacy Policy, please contact us at:"
+  },
+  "terms": {
+    "acceptance": "By accessing or using LinguaLens (\"the Service\"), you agree to be bound by these Terms of Service. If you do not agree with any part of these terms, you may not use the Service.",
+    "description": "LinguaLens is a free, open-source translation assistant licensed under the MIT License. It provides bidirectional translation between Chinese and other languages, adapting to various contexts and scenarios.",
+    "license": "The Service's source code is available under the MIT License. You are free to use, copy, modify, merge, publish, distribute, and sublicense the software in accordance with the MIT terms. A copy of the MIT License can be found in the LICENSE file.",
+    "warranty": "The Service is provided \"as is\", without warranty of any kind, express or implied. The authors and contributors disclaim all warranties, including but not limited to merchantability and fitness for a particular purpose.",
+    "liability": "In no event shall the authors or contributors be liable for any indirect, incidental, special, or consequential damages arising out of or in connection with the use of the Service.",
+    "privacy": "Please refer to our Privacy Policy for details on how we handle personal information.",
+    "changes": "We may update these Terms of Service from time to time. Any changes will be posted on this page with a revised \"Last updated\" date.",
+    "contact": "If you have any questions about these Terms, please contact us at:"
+  },
+  "chat": {
+    "inputPlaceholder": "Enter content to translate..."
+  }
+}
