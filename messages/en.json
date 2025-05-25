@@ -24,6 +24,16 @@
     "darkMode": "Dark Mode",
     "systemDefault": "System Default"
   },
+  "pageTheme": {
+    "default": "Default",
+    "neutral": "Neutral",
+    "stone": "Stone",
+    "zinc": "Zinc",
+    "gray": "Gray",
+    "slate": "Slate",
+    "scaled": "Scaled",
+    "selectTheme": "Select Theme"
+  },
   "admin": {
     "title": "System Administration",
     "login": "Login",

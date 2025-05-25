@@ -24,6 +24,16 @@
     "darkMode": "深色模式",
     "systemDefault": "系统默认"
   },
+  "pageTheme": {
+    "default": "默认",
+    "neutral": "中性",
+    "stone": "石头",
+    "zinc": "锌",
+    "gray": "灰色",
+    "slate": "石板灰",
+    "scaled": "缩放",
+    "selectTheme": "选择主题"
+  },
   "admin": {
     "title": "1系统管理",
     "login": "登录",

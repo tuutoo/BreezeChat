@@ -24,6 +24,16 @@
     "darkMode": "ダークモード",
     "systemDefault": "システムデフォルト"
   },
+  "pageTheme": {
+    "default": "デフォルト",
+    "neutral": "ニュートラル",
+    "stone": "ストーン",
+    "zinc": "ジンク",
+    "gray": "グレー",
+    "slate": "スレート",
+    "scaled": "スケール",
+    "selectTheme": "テーマを選択"
+  },
   "admin": {
     "title": "システム管理",
     "login": "ログイン",

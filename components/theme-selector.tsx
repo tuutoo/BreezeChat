@@ -9,19 +9,21 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { useTranslations } from 'next-intl'
 
 export function ThemeSelector() {
   const { activeTheme, setActiveTheme } = useThemeConfig()
+  const t = useTranslations()
 
   return (
     <Select value={activeTheme} onValueChange={setActiveTheme}>
       <SelectTrigger size="sm" className="w-32">
-        <SelectValue placeholder="Select a theme" />
+        <SelectValue placeholder={t('pageTheme.selectTheme')} />
       </SelectTrigger>
       <SelectContent align="end">
         {THEMES.map((theme) => (
-          <SelectItem key={theme.name} value={theme.value}>
-            {theme.name}
+          <SelectItem key={theme.value} value={theme.value}>
+            {t(`pageTheme.${theme.value}`)}
           </SelectItem>
         ))}
       </SelectContent>
