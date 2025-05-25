@@ -11,16 +11,16 @@
     "status": "状态",
     "enabled": "启用",
     "disabled": "禁用",
-    "actions": "1操作"
+    "actions": "操作"
   },
   "header": {
-    "systemAdmin": "1系统管理",
+    "systemAdmin": "系统管理",
     "toggleTheme": "切换主题",
-    "toggleLanguage": "1切换语言",
+    "toggleLanguage": "切换语言",
     "github": "GitHub 仓库"
   },
   "theme": {
-    "lightMode": "1浅色模式",
+    "lightMode": "浅色模式",
     "darkMode": "深色模式",
     "systemDefault": "系统默认"
   },
@@ -35,29 +35,29 @@
     "selectTheme": "选择主题"
   },
   "admin": {
-    "title": "1系统管理",
+    "title": "系统管理",
     "login": "登录",
-    "logout": "1登出",
+    "logout": "登出",
     "logoutError": "登出失败",
-    "modelManagement": "1模型管理",
-    "sceneManagement": "1场景管理",
-    "modelDescription": "1管理 AI 模型配置，包括模型名称、提供商和状态等",
-    "sceneDescription": "1管理场景配置，包括场景名称、描述和状态等"
+    "modelManagement": "模型管理",
+    "sceneManagement": "场景管理",
+    "modelDescription": "管理 AI 模型配置，包括模型名称、提供商和状态等",
+    "sceneDescription": "管理场景配置，包括场景名称、描述和状态等"
   },
   "model": {
-    "add": "1添加模型",
-    "edit": "1编辑模型",
+    "add": "添加模型",
+    "edit": "编辑模型",
     "delete": "删除模型",
     "select": "选择模型",
-    "title": "1模型管理",
+    "title": "模型管理",
     "fetchError": "获取模型列表失败",
     "saveSuccess": "模型保存成功",
     "saveError": "保存模型失败",
     "deleteSuccess": "模型删除成功",
     "deleteError": "删除模型失败",
     "updateError": "更新模型状态失败",
-    "enabled": "1模型已启用",
-    "disabled": "1模型已禁用",
+    "enabled": "模型已启用",
+    "disabled": "模型已禁用",
     "confirmDelete": "确认删除",
     "deletePrompt": "确定要删除此模型吗？此操作无法撤销。",
     "provider": "提供商",
@@ -70,10 +70,10 @@
     "validationError": "验证提供商配置失败"
   },
   "scene": {
-    "management": "1场景管理",
-    "title": "1场景管理",
-    "add": "1添加场景",
-    "edit": "1编辑场景",
+    "management": "场景管理",
+    "title": "场景管理",
+    "add": "添加场景",
+    "edit": "编辑场景",
     "delete": "删除场景",
     "fetchError": "加载场景列表失败",
     "saveSuccess": "场景保存成功",
@@ -81,8 +81,8 @@
     "deleteSuccess": "场景删除成功",
     "deleteError": "删除场景失败",
     "updateError": "更新场景状态失败",
-    "enabled": "1场景已启用",
-    "disabled": "1场景已禁用",
+    "enabled": "场景已启用",
+    "disabled": "场景已禁用",
     "confirmDelete": "确认删除",
     "deletePrompt": "确定要删除此场景吗？此操作无法撤销。",
     "chineseName": "中文名称",
@@ -100,11 +100,11 @@
     "saving": "保存中..."
   },
   "dialog": {
-    "deleteConfirm": "1确认删除",
+    "deleteConfirm": "确认删除",
     "deleteMessage": "此操作无法撤销。您确定要删除这个项目吗？"
   },
   "footer": {
-    "tagline": "1AI 翻译助手，支持多场景风格切换",
+    "tagline": "AI 翻译助手，支持多场景风格切换",
     "features": "功能",
     "translation": "翻译",
     "sceneModes": "场景模式",
@@ -115,19 +115,19 @@
     "copyright": "© 2025 LinguaLens. 保留所有权利。"
   },
   "legal": {
-    "privacyPolicy": "1隐私政策",
+    "privacyPolicy": "隐私政策",
     "termsOfService": "服务条款",
     "lastUpdated": "最后更新"
   },
   "privacy": {
-    "intro": "1欢迎使用 LinguaLens。我们尊重您的隐私并致力于保护您分享的任何信息。本隐私政策说明了我们如何处理您的数据。",
+    "intro": "欢迎使用 LinguaLens。我们尊重您的隐私并致力于保护您分享的任何信息。本隐私政策说明了我们如何处理您的数据。",
     "collection": "LinguaLens 不会收集、存储或处理任何个人信息或翻译数据。所有翻译都是使用第三方 AI 服务或本地浏览器功能实时进行的，不会在我们的服务器上保留任何输入或输出。",
     "cookies": "我们不会在应用程序中使用 cookie、跟踪像素或任何其他跟踪技术。您的使用保持私密和临时性。",
     "thirdParty": "我们集成了 AI 翻译服务（如 Google Gemini、Llama、Qwen、Mistral）来执行翻译。除了即时的翻译响应外，我们不会保留发送给或从这些服务接收的任何数据。",
     "contact": "如果您对本隐私政策有任何疑问或疑虑，请通过以下方式联系我们："
   },
   "terms": {
-    "acceptance": "1通过访问或使用 LinguaLens(\"服务\")，您同意受这些服务条款的约束。如果您不同意这些条款的任何部分，则不得使用本服务。",
+    "acceptance": "通过访问或使用 LinguaLens(\"服务\")，您同意受这些服务条款的约束。如果您不同意这些条款的任何部分，则不得使用本服务。",
     "description": "LinguaLens 是一个免费的开源翻译助手，采用 MIT 许可证。它提供中文和其他语言之间的双向翻译，适应各种上下文和场景。",
     "license": "本服务的源代码在 MIT 许可证下可用。您可以根据 MIT 条款自由使用、复制、修改、合并、发布、分发和再许可该软件。MIT 许可证的副本可以在 LICENSE 文件中找到。",
     "warranty": "本服务按\"原样\"提供，不提供任何形式的明示或暗示保证。作者和贡献者不承担任何保证，包括但不限于适销性和特定用途的适用性。",
@@ -137,6 +137,6 @@
     "contact": "如果您对这些条款有任何疑问，请通过以下方式联系我们："
   },
   "chat": {
-    "inputPlaceholder": "1输入想要翻译的内容..."
+    "inputPlaceholder": "输入想要翻译的内容..."
   }
 }
