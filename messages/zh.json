@@ -32,9 +32,7 @@
     "modelManagement": "1模型管理",
     "sceneManagement": "1场景管理",
     "modelDescription": "1管理 AI 模型配置，包括模型名称、提供商和状态等",
-    "sceneDescription": "1管理场景配置，包括场景名称、描述和状态等",
-    "providersManagement": "1提供商管理",
-    "providersDescription": "1管理 AI 服务提供商，包括密钥和配置"
+    "sceneDescription": "1管理场景配置，包括场景名称、描述和状态等"
   },
   "model": {
     "add": "1添加模型",
@@ -69,17 +67,6 @@
     "disabled": "1场景已禁用",
     "confirmDelete": "确认删除",
     "deletePrompt": "确定要删除此场景吗？此操作无法撤销。"
-  },
-  "provider": {
-    "title": "提供商管理",
-    "description": "管理AI模型提供商的API密钥和配置",
-    "provider": "提供商",
-    "apiKey": "API密钥",
-    "edit": "编辑",
-    "configured": "已配置",
-    "notConfigured": "未配置",
-    "saveSuccess": "API密钥已保存",
-    "saveError": "保存API密钥失败"
   },
   "dialog": {
     "deleteConfirm": "1确认删除",

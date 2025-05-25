@@ -32,9 +32,7 @@
     "modelManagement": "Model Management",
     "sceneManagement": "Scene Management",
     "modelDescription": "Manage AI model configurations, including model names, providers, and status",
-    "sceneDescription": "Manage scene configurations, including scene names, descriptions, and status",
-    "providersManagement": "Provider Management",
-    "providersDescription": "Manage AI service providers, including keys and configurations"
+    "sceneDescription": "Manage scene configurations, including scene names, descriptions, and status"
   },
   "model": {
     "add": "Add Model",
@@ -70,17 +68,7 @@
     "confirmDelete": "Confirm Delete",
     "deletePrompt": "Are you sure you want to delete this scene? This action cannot be undone."
   },
-  "provider": {
-    "title": "Provider Management",
-    "description": "Manage API keys and configurations for AI model providers",
-    "provider": "Provider",
-    "apiKey": "API Key",
-    "edit": "Edit",
-    "configured": "Configured",
-    "notConfigured": "Not Configured",
-    "saveSuccess": "API key saved successfully",
-    "saveError": "Failed to save API key"
-  },
+
   "dialog": {
     "deleteConfirm": "Confirm Deletion",
     "deleteMessage": "This action cannot be undone. Are you sure you want to delete this item?"

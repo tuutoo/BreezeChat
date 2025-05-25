@@ -32,9 +32,7 @@
     "modelManagement": "모델 관리",
     "sceneManagement": "장면 관리",
     "modelDescription": "AI 모델 구성 관리 (모델 이름, 공급자 및 상태 포함)",
-    "sceneDescription": "장면 구성 관리 (장면 이름, 설명 및 상태 포함)",
-    "providersManagement": "공급자 관리",
-    "providersDescription": "AI 서비스 공급자 관리 (키 및 구성 포함)"
+    "sceneDescription": "장면 구성 관리 (장면 이름, 설명 및 상태 포함)"
   },
   "model": {
     "add": "모델 추가",
@@ -69,17 +67,6 @@
     "disabled": "장면이 비활성화되었습니다",
     "confirmDelete": "삭제 확인",
     "deletePrompt": "이 장면을 삭제하시겠습니까? 이 작업은 취소할 수 없습니다."
-  },
-  "provider": {
-    "title": "공급자 관리",
-    "description": "AI 모델 공급자를 위한 API 키 및 구성 관리",
-    "provider": "공급자",
-    "apiKey": "API 키",
-    "edit": "편집",
-    "configured": "구성됨",
-    "notConfigured": "구성되지 않음",
-    "saveSuccess": "API 키가 성공적으로 저장되었습니다",
-    "saveError": "API 키 저장에 실패했습니다"
   },
   "dialog": {
     "deleteConfirm": "삭제 확인",

@@ -80,20 +80,6 @@ export default function LocalizedAdminPage() {
 						</CardHeader>
 					</Card>
 				</Link>
-
-				<Link href="/admin/providers">
-					<Card className="hover:bg-accent/50 transition-colors cursor-pointer">
-						<CardHeader>
-							<CardTitle className="flex items-center gap-2">
-								<Database className="h-5 w-5" />
-								{t("admin.providersManagement")}
-							</CardTitle>
-							<CardDescription>
-								{t("admin.providersDescription")}
-							</CardDescription>
-						</CardHeader>
-					</Card>
-				</Link>
 			</div>
 			<Toaster />
 		</div>
