@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import { toast } from '@/components/ui/use-toast'
+import { useTranslations } from 'next-intl'
 
 interface SceneDialogProps {
   open: boolean
@@ -36,6 +37,8 @@ export function SceneDialog({ open, onOpenChange, scene, onSubmit }: SceneDialog
   const [isActive, setIsActive] = useState(scene?.isActive ?? true)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
+  const t = useTranslations()
+
   useEffect(() => {
     if (scene) {
       setName(scene.name)
@@ -58,15 +61,15 @@ export function SceneDialog({ open, onOpenChange, scene, onSubmit }: SceneDialog
     try {
       await onSubmit({ name, nameEn, description, prompt, isActive })
       toast({
-        title: "成功",
-        description: `场景已${scene ? '更新' : '创建'}`,
+        title: t('common.success'),
+        description: scene ? t('scene.saveSuccess') : t('scene.saveSuccess'),
       })
       onOpenChange(false)
     } catch (error) {
       console.error('Failed to save scene:', error)
       toast({
-        title: "错误",
-        description: "保存场景失败",
+        title: t('common.error'),
+        description: t('scene.saveError'),
         variant: "destructive",
       })
     } finally {
@@ -78,12 +81,12 @@ export function SceneDialog({ open, onOpenChange, scene, onSubmit }: SceneDialog
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
-          <DialogTitle>{scene ? '编辑场景' : '新建场景'}</DialogTitle>
+          <DialogTitle>{scene ? t('scene.edit') : t('scene.create')}</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="name">中文名称</Label>
+              <Label htmlFor="name">{t('scene.chineseName')}</Label>
               <Input
                 id="name"
                 value={name}
@@ -92,7 +95,7 @@ export function SceneDialog({ open, onOpenChange, scene, onSubmit }: SceneDialog
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="nameEn">英文名称</Label>
+              <Label htmlFor="nameEn">{t('scene.englishName')}</Label>
               <Input
                 id="nameEn"
                 value={nameEn}
@@ -102,7 +105,7 @@ export function SceneDialog({ open, onOpenChange, scene, onSubmit }: SceneDialog
             </div>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="description">描述</Label>
+            <Label htmlFor="description">{t('common.description')}</Label>
             <Textarea
               id="description"
               value={description}
@@ -111,7 +114,7 @@ export function SceneDialog({ open, onOpenChange, scene, onSubmit }: SceneDialog
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="prompt">提示词</Label>
+            <Label htmlFor="prompt">{t('scene.prompt')}</Label>
             <Textarea
               id="prompt"
               value={prompt}
@@ -122,10 +125,10 @@ export function SceneDialog({ open, onOpenChange, scene, onSubmit }: SceneDialog
           </div>
           <DialogFooter>
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-              取消
+              {t('common.cancel')}
             </Button>
             <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? '保存中...' : '保存'}
+              {isSubmitting ? t('scene.saving') : t('common.save')}
             </Button>
           </DialogFooter>
         </form>

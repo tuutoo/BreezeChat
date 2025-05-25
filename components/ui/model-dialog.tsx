@@ -16,6 +16,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { toast } from '@/components/ui/use-toast'
+import { useTranslations } from 'next-intl'
 
 interface ModelFormData {
   name: string
@@ -46,6 +47,8 @@ export function ModelDialog({
     isActive: true,
   })
 
+  const t = useTranslations()
+
   useEffect(() => {
     if (model) {
       setFormData({
@@ -73,8 +76,8 @@ export function ModelDialog({
 
       if (!response.ok) {
         toast({
-          title: '错误',
-          description: data.error || '验证提供商配置失败',
+          title: t('common.error'),
+          description: data.error || t('model.validationError'),
           variant: 'destructive',
         })
         return false
@@ -83,8 +86,8 @@ export function ModelDialog({
     } catch (error) {
       console.error('Error validating provider:', error)
       toast({
-        title: '错误',
-        description: '验证提供商配置失败',
+        title: t('common.error'),
+        description: t('model.validationError'),
         variant: 'destructive',
       })
       return false
@@ -107,11 +110,11 @@ export function ModelDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{model ? '编辑模型' : '添加模型'}</DialogTitle>
+          <DialogTitle>{model ? t('model.edit') : t('model.add')}</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="name">名称</Label>
+            <Label htmlFor="name">{t('common.name')}</Label>
             <Input
               id="name"
               value={formData.name}
@@ -122,7 +125,7 @@ export function ModelDialog({
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="description">描述</Label>
+            <Label htmlFor="description">{t('common.description')}</Label>
             <Input
               id="description"
               value={formData.description}
@@ -132,7 +135,7 @@ export function ModelDialog({
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="provider">提供商</Label>
+            <Label htmlFor="provider">{t('model.provider')}</Label>
             <Select
               value={formData.providerName}
               onValueChange={(value) =>
@@ -141,7 +144,7 @@ export function ModelDialog({
               required
             >
               <SelectTrigger>
-                <SelectValue placeholder="选择提供商" />
+                <SelectValue placeholder={t('model.selectProvider')} />
               </SelectTrigger>
               <SelectContent>
                 {PROVIDERS.map((provider) => (
@@ -153,7 +156,7 @@ export function ModelDialog({
             </Select>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="modelId">模型ID</Label>
+            <Label htmlFor="modelId">{t('model.modelId')}</Label>
             <Input
               id="modelId"
               value={formData.modelId}
@@ -171,7 +174,7 @@ export function ModelDialog({
                 setFormData({ ...formData, isActive: checked })
               }
             />
-            <Label htmlFor="isActive">启用</Label>
+            <Label htmlFor="isActive">{t('common.enabled')}</Label>
           </div>
           <div className="flex justify-end space-x-2">
             <Button
@@ -179,9 +182,9 @@ export function ModelDialog({
               variant="outline"
               onClick={() => onOpenChange(false)}
             >
-              取消
+              {t('common.cancel')}
             </Button>
-            <Button type="submit">保存</Button>
+            <Button type="submit">{t('common.save')}</Button>
           </div>
         </form>
       </DialogContent>

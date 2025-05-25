@@ -49,7 +49,15 @@
     "enabled": "1模型已启用",
     "disabled": "1模型已禁用",
     "confirmDelete": "确认删除",
-    "deletePrompt": "确定要删除此模型吗？此操作无法撤销。"
+    "deletePrompt": "确定要删除此模型吗？此操作无法撤销。",
+    "provider": "提供商",
+    "modelId": "模型ID",
+    "searchPlaceholder": "搜索模型...",
+    "noData": "暂无数据",
+    "previousPage": "上一页",
+    "nextPage": "下一页",
+    "selectProvider": "选择提供商",
+    "validationError": "验证提供商配置失败"
   },
   "scene": {
     "management": "1场景管理",
@@ -66,7 +74,20 @@
     "enabled": "1场景已启用",
     "disabled": "1场景已禁用",
     "confirmDelete": "确认删除",
-    "deletePrompt": "确定要删除此场景吗？此操作无法撤销。"
+    "deletePrompt": "确定要删除此场景吗？此操作无法撤销。",
+    "chineseName": "中文名称",
+    "englishName": "英文名称",
+    "prompt": "提示词",
+    "searchPlaceholder": "搜索场景...",
+    "noData": "暂无数据",
+    "itemsPerPage": "每页显示",
+    "records": "条记录",
+    "goToPage": "跳转到",
+    "page": "页",
+    "pageOf": "第 {current} 页，共 {total} 页",
+    "create": "新建场景",
+    "update": "更新",
+    "saving": "保存中..."
   },
   "dialog": {
     "deleteConfirm": "1确认删除",

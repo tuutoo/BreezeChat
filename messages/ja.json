@@ -49,7 +49,15 @@
     "enabled": "モデルが有効になりました",
     "disabled": "モデルが無効になりました",
     "confirmDelete": "削除の確認",
-    "deletePrompt": "このモデルを削除してもよろしいですか？この操作は元に戻せません。"
+    "deletePrompt": "このモデルを削除してもよろしいですか？この操作は元に戻せません。",
+    "provider": "プロバイダー",
+    "modelId": "モデルID",
+    "searchPlaceholder": "モデルを検索...",
+    "noData": "データなし",
+    "previousPage": "前へ",
+    "nextPage": "次へ",
+    "selectProvider": "プロバイダーを選択",
+    "validationError": "プロバイダー設定の検証に失敗しました"
   },
   "scene": {
     "management": "シーン管理",
@@ -66,7 +74,20 @@
     "enabled": "シーンが有効になりました",
     "disabled": "シーンが無効になりました",
     "confirmDelete": "削除の確認",
-    "deletePrompt": "このシーンを削除してもよろしいですか？この操作は元に戻せません。"
+    "deletePrompt": "このシーンを削除してもよろしいですか？この操作は元に戻せません。",
+    "chineseName": "中国語名",
+    "englishName": "英語名",
+    "prompt": "プロンプト",
+    "searchPlaceholder": "シーンを検索...",
+    "noData": "データなし",
+    "itemsPerPage": "ページあたりのアイテム数",
+    "records": "レコード",
+    "goToPage": "ページへ移動",
+    "page": "ページ",
+    "pageOf": "ページ {current} / {total}",
+    "create": "シーンを作成",
+    "update": "更新",
+    "saving": "保存中..."
   },
   "dialog": {
     "deleteConfirm": "削除の確認",

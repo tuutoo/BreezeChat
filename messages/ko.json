@@ -49,7 +49,15 @@
     "enabled": "모델이 활성화되었습니다",
     "disabled": "모델이 비활성화되었습니다",
     "confirmDelete": "삭제 확인",
-    "deletePrompt": "이 모델을 삭제하시겠습니까? 이 작업은 취소할 수 없습니다."
+    "deletePrompt": "이 모델을 삭제하시겠습니까? 이 작업은 취소할 수 없습니다.",
+    "provider": "공급자",
+    "modelId": "모델 ID",
+    "searchPlaceholder": "모델 검색...",
+    "noData": "데이터 없음",
+    "previousPage": "이전",
+    "nextPage": "다음",
+    "selectProvider": "공급자 선택",
+    "validationError": "공급자 구성 검증에 실패했습니다"
   },
   "scene": {
     "management": "장면 관리",
@@ -66,7 +74,20 @@
     "enabled": "장면이 활성화되었습니다",
     "disabled": "장면이 비활성화되었습니다",
     "confirmDelete": "삭제 확인",
-    "deletePrompt": "이 장면을 삭제하시겠습니까? 이 작업은 취소할 수 없습니다."
+    "deletePrompt": "이 장면을 삭제하시겠습니까? 이 작업은 취소할 수 없습니다.",
+    "chineseName": "중국어 이름",
+    "englishName": "영어 이름",
+    "prompt": "프롬프트",
+    "searchPlaceholder": "장면 검색...",
+    "noData": "데이터 없음",
+    "itemsPerPage": "페이지당 항목 수",
+    "records": "레코드",
+    "goToPage": "페이지로 이동",
+    "page": "페이지",
+    "pageOf": "페이지 {current} / {total}",
+    "create": "장면 생성",
+    "update": "업데이트",
+    "saving": "저장 중..."
   },
   "dialog": {
     "deleteConfirm": "삭제 확인",

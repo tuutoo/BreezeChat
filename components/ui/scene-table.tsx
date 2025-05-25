@@ -32,6 +32,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { useTranslations } from 'next-intl'
 
 // 添加防抖函数
 function useDebounce<T>(value: T, delay: number): T {
@@ -66,6 +67,8 @@ export function SceneTable({ scenes, onEdit, onDelete, onToggleActive }: SceneTa
     pageSize: 5,
   })
 
+  const t = useTranslations()
+
   // 使用防抖的搜索值
   const debouncedSearchValue = useDebounce(searchValue, 300)
 
@@ -93,7 +96,7 @@ export function SceneTable({ scenes, onEdit, onDelete, onToggleActive }: SceneTa
             }}
             className="w-[150px] justify-start"
           >
-            中文名称
+            {t('scene.chineseName')}
             {column.getIsSorted() ? (
               column.getIsSorted() === 'asc' ? (
                 <ArrowUp className="ml-2 h-4 w-4" />
@@ -130,7 +133,7 @@ export function SceneTable({ scenes, onEdit, onDelete, onToggleActive }: SceneTa
             }}
             className="w-[200px] justify-start"
           >
-            英文名称
+            {t('scene.englishName')}
             {column.getIsSorted() ? (
               column.getIsSorted() === 'asc' ? (
                 <ArrowUp className="ml-2 h-4 w-4" />
@@ -151,7 +154,7 @@ export function SceneTable({ scenes, onEdit, onDelete, onToggleActive }: SceneTa
     },
     {
       accessorKey: 'description',
-      header: '描述',
+      header: t('common.description'),
       cell: ({ row }) => (
         <div className="w-[200px] whitespace-pre-wrap break-words">
           {row.getValue('description')}
@@ -160,7 +163,7 @@ export function SceneTable({ scenes, onEdit, onDelete, onToggleActive }: SceneTa
     },
     {
       accessorKey: 'prompt',
-      header: '提示词',
+      header: t('scene.prompt'),
       cell: ({ row }) => (
         <div className="w-[500px] whitespace-pre-wrap break-words">
           {row.getValue('prompt')}
@@ -169,7 +172,7 @@ export function SceneTable({ scenes, onEdit, onDelete, onToggleActive }: SceneTa
     },
     {
       accessorKey: 'isActive',
-      header: '状态',
+      header: t('common.status'),
       cell: ({ row }) => {
         const scene = row.original
         return (
@@ -184,7 +187,7 @@ export function SceneTable({ scenes, onEdit, onDelete, onToggleActive }: SceneTa
     },
     {
       id: 'actions',
-      header: '操作',
+      header: t('common.actions'),
       cell: ({ row }) => {
         const scene = row.original
         return (
@@ -232,7 +235,7 @@ export function SceneTable({ scenes, onEdit, onDelete, onToggleActive }: SceneTa
         <div className="relative flex-1">
           <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder="搜索场景..."
+            placeholder={t('scene.searchPlaceholder')}
             value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}
             className="pl-8"
@@ -281,7 +284,7 @@ export function SceneTable({ scenes, onEdit, onDelete, onToggleActive }: SceneTa
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  暂无数据
+                  {t('scene.noData')}
                 </TableCell>
               </TableRow>
             )}
@@ -292,7 +295,7 @@ export function SceneTable({ scenes, onEdit, onDelete, onToggleActive }: SceneTa
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <p className="text-sm text-muted-foreground">
-            每页显示
+            {t('scene.itemsPerPage')}
           </p>
           <Select
             value={pagination.pageSize.toString()}
@@ -312,13 +315,13 @@ export function SceneTable({ scenes, onEdit, onDelete, onToggleActive }: SceneTa
             </SelectContent>
           </Select>
           <p className="text-sm text-muted-foreground">
-            条记录
+            {t('scene.records')}
           </p>
         </div>
 
         <div className="flex items-center gap-2">
           <div className="flex items-center gap-1">
-            <p className="text-sm font-medium">跳转到</p>
+            <p className="text-sm font-medium">{t('scene.goToPage')}</p>
             <Input
               type="number"
               min={1}
@@ -341,7 +344,7 @@ export function SceneTable({ scenes, onEdit, onDelete, onToggleActive }: SceneTa
               }}
               className="h-8 w-16"
             />
-            <p className="text-sm font-medium">页</p>
+            <p className="text-sm font-medium">{t('scene.page')}</p>
           </div>
           <div className="flex items-center gap-1">
             <Button
@@ -378,7 +381,10 @@ export function SceneTable({ scenes, onEdit, onDelete, onToggleActive }: SceneTa
             </Button>
           </div>
           <p className="text-sm text-muted-foreground">
-            第 {table.getState().pagination.pageIndex + 1} 页，共 {table.getPageCount()} 页
+            {t('scene.pageOf', {
+              current: table.getState().pagination.pageIndex + 1,
+              total: table.getPageCount()
+            })}
           </p>
         </div>
       </div>

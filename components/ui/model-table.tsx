@@ -26,6 +26,7 @@ import { Switch } from '@/components/ui/switch'
 import { Model } from '@/generated/prisma/client'
 import { PROVIDERS } from '@/lib/providers'
 import { Edit2, Trash2 } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 
 interface ModelTableProps {
   models: Model[]
@@ -43,18 +44,20 @@ export function ModelTable({
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
 
+  const t = useTranslations()
+
   const columns: ColumnDef<Model>[] = [
     {
       accessorKey: 'name',
-      header: '名称',
+      header: t('common.name'),
     },
     {
       accessorKey: 'description',
-      header: '描述',
+      header: t('common.description'),
     },
     {
       accessorKey: 'providerName',
-      header: '提供商',
+      header: t('model.provider'),
       cell: ({ row }) => {
         const provider = PROVIDERS.find(p => p.providerName === row.original.providerName)
         return (
@@ -66,11 +69,11 @@ export function ModelTable({
     },
     {
       accessorKey: 'modelId',
-      header: '模型ID',
+      header: t('model.modelId'),
     },
     {
       accessorKey: 'isActive',
-      header: '状态',
+      header: t('common.status'),
       cell: ({ row }) => (
         <Switch
           checked={row.original.isActive}
@@ -80,7 +83,7 @@ export function ModelTable({
     },
     {
       id: 'actions',
-      header: '操作',
+      header: t('common.actions'),
       cell: ({ row }) => (
         <div className="flex items-center gap-2">
           <Button
@@ -121,7 +124,7 @@ export function ModelTable({
     <div>
       <div className="flex items-center py-4">
         <Input
-          placeholder="搜索模型..."
+          placeholder={t('model.searchPlaceholder')}
           value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
           onChange={(event) =>
             table.getColumn('name')?.setFilterValue(event.target.value)
@@ -172,7 +175,7 @@ export function ModelTable({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  暂无数据
+                  {t('model.noData')}
                 </TableCell>
               </TableRow>
             )}
@@ -186,7 +189,7 @@ export function ModelTable({
           onClick={() => table.previousPage()}
           disabled={!table.getCanPreviousPage()}
         >
-          上一页
+          {t('model.previousPage')}
         </Button>
         <Button
           variant="outline"
@@ -194,7 +197,7 @@ export function ModelTable({
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}
         >
-          下一页
+          {t('model.nextPage')}
         </Button>
       </div>
     </div>
