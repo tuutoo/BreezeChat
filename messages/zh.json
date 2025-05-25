@@ -16,7 +16,7 @@
   "header": {
     "systemAdmin": "1系统管理",
     "toggleTheme": "切换主题",
-    "toggleLanguage": "切换语言",
+    "toggleLanguage": "1切换语言",
     "github": "GitHub 仓库"
   },
   "theme": {

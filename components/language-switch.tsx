@@ -2,7 +2,9 @@
 
 import * as React from "react"
 import { Globe } from "lucide-react"
-import { useRouter, usePathname } from "next/navigation"
+import { useRouter, usePathname } from "@/i18n/routing"
+import { useLocale } from "next-intl"
+import { useTranslations } from "next-intl"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -13,8 +15,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuLabel
 } from "@/components/ui/dropdown-menu"
-import { saveLocalePreference } from "@/i18n/config"
-import { useLocale } from "@/hooks/use-locale"
 
 interface Language {
   code: string;
@@ -31,31 +31,29 @@ const languages: Language[] = [
 ]
 
 export function LanguageSwitch() {
-  usePathname(); // 仅用于触发组件在路由变化时刷新
   const router = useRouter()
-  const { locale: pathLocale, getLocalizedPath, t } = useLocale()
+  const pathname = usePathname()
+  const locale = useLocale()
+  const t = useTranslations()
 
-  const switchLanguage = (locale: string) => {
-    saveLocalePreference(locale);
-    const newPath = getLocalizedPath(locale);
-    router.push(newPath);
+  const switchLanguage = (newLocale: string) => {
+    router.replace(pathname, { locale: newLocale });
   }
 
-  const currentLocale = pathLocale;
-  const currentLanguage = languages.find(lang => lang.code === currentLocale) || languages[0]
+  const currentLanguage = languages.find(lang => lang.code === locale) || languages[0]
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
           variant="outline"
-          aria-label={t('toggleLanguage')}
+          aria-label={t('header.toggleLanguage')}
           title={currentLanguage.name}
           className="px-2 sm:px-3 h-9 relative flex items-center gap-1.5"
         >
           <Globe className="h-4 w-4" />
-          <span className="text-xs font-semibold">{currentLocale.toUpperCase()}</span>
-          <span className="sr-only">{t('toggleLanguage')}</span>
+          <span className="text-xs font-semibold">{locale.toUpperCase()}</span>
+          <span className="sr-only">{t('header.toggleLanguage')}</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
@@ -67,7 +65,7 @@ export function LanguageSwitch() {
           <DropdownMenuItem
             key={language.code}
             onClick={() => switchLanguage(language.code)}
-            className={currentLocale === language.code ? "bg-muted" : ""}
+            className={locale === language.code ? "bg-muted" : ""}
           >
             <span className="mr-2">{language.flag}</span>
             <span>{language.nativeName}</span>
