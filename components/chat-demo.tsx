@@ -17,12 +17,18 @@ import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext
 import { type CarouselApi } from "@/components/ui/carousel"
 import { Badge } from "@/components/ui/badge"
 import { Model, Scene } from "@/generated/prisma/client"
+import { usePathname } from 'next/navigation'
+import { getTranslation, getLocaleFromPathname } from '@/i18n/config'
 
 type ChatDemoProps = {
   initialMessages?: UseChatOptions["initialMessages"]
 }
 
 export default function ChatDemo(props: ChatDemoProps) {
+  const pathname = usePathname()
+  const locale = getLocaleFromPathname(pathname)
+  const t = (key: string) => getTranslation(locale, key)
+
   const [api, setApi] = useState<CarouselApi>()
   const [models, setModels] = useState<Model[]>([])
   const [scenes, setScenes] = useState<Scene[]>([])
@@ -118,7 +124,7 @@ export default function ChatDemo(props: ChatDemoProps) {
       <div className={cn("flex", "justify-end", "mb-2")}>
         <Select value={selectedModel} onValueChange={setSelectedModel} disabled={isLoading}>
           <SelectTrigger className="w-[220px]">
-            <SelectValue placeholder={isLoading ? "加载中..." : "选择模型"}>
+            <SelectValue placeholder={isLoading ? t('loading') : t('selectModel')}>
               {models.find((m) => m.name === selectedModel)?.name || ''}
             </SelectValue>
           </SelectTrigger>
@@ -150,6 +156,7 @@ export default function ChatDemo(props: ChatDemoProps) {
         append={append}
         setMessages={setMessages}
         transcribeAudio={transcribeAudio}
+        placeholder={t('inputPlaceholder')}
         suggestions={[
           "你好，今天的会议在哪里举行？",
           "Please confirm your availability for the upcoming meeting.",

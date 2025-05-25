@@ -38,6 +38,7 @@ interface ChatPropsBase {
   ) => void
   setMessages?: (messages: any[]) => void
   transcribeAudio?: (blob: Blob) => Promise<string>
+  placeholder?: string
 }
 
 interface ChatPropsWithoutSuggestions extends ChatPropsBase {
@@ -65,6 +66,7 @@ export function Chat({
   onRateResponse,
   setMessages,
   transcribeAudio,
+  placeholder,
 }: ChatProps) {
   const lastMessage = messages.at(-1)
   const isEmpty = messages.length === 0
@@ -247,7 +249,7 @@ export function Chat({
         {({ files, setFiles }) => (
           <MessageInput
             value={input}
-            placeholder="输入想要翻译的内容..."
+            placeholder={placeholder}
             onChange={handleInputChange}
             allowAttachments={false}
             stop={handleStop}
