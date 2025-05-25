@@ -66,23 +66,44 @@ npm install
 
 ### **3. Set up environment variables**
 
-Create a `.env.local` file in the root directory and add your environment-specific variables, such as API keys for the AI translation service.
+Create a `.env.local` file in the root directory and add your environment-specific variables. You can use the provided `sample.env` file as a template.
 
 > **Note:** These API keys can be obtained for free by registering an account, or you can use a paid account if you need higher usage limits.
 
 ```bash
+# Environment Configuration
+NODE_ENV=production
+NEXT_PUBLIC_GA_ID=your_google_analytics_id
+
+# Admin Configuration
+ADMIN_PASSWORD=your_admin_password
+
+# Database Configuration
+DATABASE_URL=postgresql://<username>:<password>@<host>:<port>/<database>?schema=public
+
+# AI API Keys
 GOOGLE_GENERATIVE_AI_API_KEY=your_google_api_key
 GROQ_API_KEY=your_groq_api_key
-OPENAI_API_KEY=<your API key>
-MISTRAL_API_KEY=<your API key>
-DATABASE_URL=postgresql://<username>:<password>@<host>:<port>/<database>?schema=public
+OPENAI_API_KEY=your_openai_api_key
+MISTRAL_API_KEY=your_mistral_api_key
 ```
 
-- `<username>`：数据库用户名
-- `<password>`：数据库密码
-- `<host>`：数据库主机地址（如 `localhost` 或容器名）
-- `<port>`：数据库端口（PostgreSQL 默认 5432）
-- `<database>`：数据库名称
+#### **Environment Variables Explanation:**
+
+- **`NODE_ENV`**: Set to `production` for production deployment or `development` for local development
+- **`NEXT_PUBLIC_GA_ID`**: Your Google Analytics tracking ID for website analytics
+- **`ADMIN_PASSWORD`**: Password for admin access to certain features
+- **`DATABASE_URL`**: PostgreSQL database connection string
+  - `<username>`：数据库用户名
+  - `<password>`：数据库密码
+  - `<host>`：数据库主机地址（如 `localhost` 或容器名）
+  - `<port>`：数据库端口（PostgreSQL 默认 5432）
+  - `<database>`：数据库名称
+- **AI API Keys**: API keys for different AI translation services
+  - **`GOOGLE_GENERATIVE_AI_API_KEY`**: Google Gemini API key
+  - **`GROQ_API_KEY`**: Groq API key for fast inference
+  - **`OPENAI_API_KEY`**: OpenAI API key for GPT models
+  - **`MISTRAL_API_KEY`**: Mistral AI API key
 
 **示例：**
 ```env
@@ -135,12 +156,13 @@ services:
     # Set environment variables
     environment:
       - NODE_ENV=production
+      - NEXT_PUBLIC_GA_ID=your_google_analytics_id
+      - ADMIN_PASSWORD=your_admin_password
       - DATABASE_URL=postgresql://postgres:mysecretpassword@db:5432/lingualens?schema=public
-      - NEXT_PUBLIC_GA_ID=<your tag id>
-      - GROQ_API_KEY=<your api key>
-      - GOOGLE_GENERATIVE_AI_API_KEY=<your api key>
-      - OPENAI_API_KEY=<your API key>
-      - MISTRAL_API_KEY=<your API key>
+      - GOOGLE_GENERATIVE_AI_API_KEY=your_google_api_key
+      - GROQ_API_KEY=your_groq_api_key
+      - OPENAI_API_KEY=your_openai_api_key
+      - MISTRAL_API_KEY=your_mistral_api_key
     restart: unless-stopped
 ```
 
