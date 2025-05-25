@@ -1,12 +1,8 @@
-import { getTranslations } from 'next-intl/server';
+import { getMessages } from 'next-intl/server';
 import PrivacyPolicyContent from './privacy-content';
 
-export default async function PrivacyPolicy({
-  params: { locale }
-}: {
-  params: { locale: string }
-}) {
-  const messages = await getTranslations(locale);
+export default async function PrivacyPolicy() {
+  const messages = await getMessages();
 
   return <PrivacyPolicyContent messages={messages} />;
 }

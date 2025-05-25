@@ -51,12 +51,13 @@ export default async function RootLayout({
   params,
 }: Readonly<{
   children: React.ReactNode;
-  params?: { locale?: string };
+  params?: Promise<{ locale?: string }>;
 }>) {
   const cookieStore = await cookies()
   const activeThemeValue = cookieStore.get("active_theme")?.value
   const isScaled = activeThemeValue?.endsWith("-scaled")
-  const locale = params?.locale || "en"
+  const resolvedParams = params ? await params : undefined
+  const locale = resolvedParams?.locale || "en"
 
   return (
     <html lang={locale} suppressHydrationWarning className={`${geistSans.variable} ${geistMono.variable} ${inter.className} ${notoSansMono.variable} bg-background overscroll-none font-sans antialiased`}>
