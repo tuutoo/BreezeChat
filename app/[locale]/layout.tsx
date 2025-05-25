@@ -1,5 +1,4 @@
 import "../globals.css"
-import { LanguageProvider } from "@/components/language-provider"
 import { Toaster } from "@/components/ui/toaster"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
@@ -28,16 +27,14 @@ export default async function LocaleLayout({
 
   return (
     <NextIntlClientProvider messages={messages}>
-      <LanguageProvider>
-        <div className="min-h-screen flex flex-col">
-          <Header />
-          <main className="flex-1 pt-20 min-h-[calc(100vh-5rem)] flex justify-center items-center px-4">
-            {children}
-          </main>
-          <Footer />
-        </div>
-        <Toaster />
-      </LanguageProvider>
+      <div className="min-h-screen flex flex-col">
+        <Header />
+        <main className="flex-1 pt-20 min-h-[calc(100vh-5rem)] flex justify-center items-center px-4">
+          {children}
+        </main>
+        <Footer />
+      </div>
+      <Toaster />
     </NextIntlClientProvider>
   )
 }
