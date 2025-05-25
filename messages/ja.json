@@ -40,10 +40,46 @@
     "add": "モデルを追加",
     "edit": "モデルを編集",
     "delete": "モデルを削除",
-    "select": "モデルを選択"
+    "select": "モデルを選択",
+    "title": "モデル管理",
+    "fetchError": "モデルの取得に失敗しました",
+    "saveSuccess": "モデルが正常に保存されました",
+    "saveError": "モデルの保存に失敗しました",
+    "deleteSuccess": "モデルが正常に削除されました",
+    "deleteError": "モデルの削除に失敗しました",
+    "updateError": "モデルステータスの更新に失敗しました",
+    "enabled": "モデルが有効になりました",
+    "disabled": "モデルが無効になりました",
+    "confirmDelete": "削除の確認",
+    "deletePrompt": "このモデルを削除してもよろしいですか？この操作は元に戻せません。"
   },
   "scene": {
-    "management": "シーン管理"
+    "management": "シーン管理",
+    "title": "シーン管理",
+    "add": "シーンを追加",
+    "edit": "シーンを編集",
+    "delete": "シーンを削除",
+    "fetchError": "シーンリストの読み込みに失敗しました",
+    "saveSuccess": "シーンが正常に保存されました",
+    "saveError": "シーンの保存に失敗しました",
+    "deleteSuccess": "シーンが正常に削除されました",
+    "deleteError": "シーンの削除に失敗しました",
+    "updateError": "シーンのステータスの更新に失敗しました",
+    "enabled": "シーンが有効になりました",
+    "disabled": "シーンが無効になりました",
+    "confirmDelete": "削除の確認",
+    "deletePrompt": "このシーンを削除してもよろしいですか？この操作は元に戻せません。"
+  },
+  "provider": {
+    "title": "プロバイダー管理",
+    "description": "AIモデルプロバイダーのAPIキーと構成を管理する",
+    "provider": "プロバイダー",
+    "apiKey": "APIキー",
+    "edit": "編集",
+    "configured": "設定済み",
+    "notConfigured": "未設定",
+    "saveSuccess": "APIキーが正常に保存されました",
+    "saveError": "APIキーの保存に失敗しました"
   },
   "dialog": {
     "deleteConfirm": "削除の確認",

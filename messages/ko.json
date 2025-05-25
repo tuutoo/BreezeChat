@@ -40,10 +40,46 @@
     "add": "모델 추가",
     "edit": "모델 편집",
     "delete": "모델 삭제",
-    "select": "모델 선택"
+    "select": "모델 선택",
+    "title": "모델 관리",
+    "fetchError": "모델을 가져오지 못했습니다",
+    "saveSuccess": "모델이 성공적으로 저장되었습니다",
+    "saveError": "모델 저장에 실패했습니다",
+    "deleteSuccess": "모델이 성공적으로 삭제되었습니다",
+    "deleteError": "모델 삭제에 실패했습니다",
+    "updateError": "모델 상태 업데이트에 실패했습니다",
+    "enabled": "모델이 활성화되었습니다",
+    "disabled": "모델이 비활성화되었습니다",
+    "confirmDelete": "삭제 확인",
+    "deletePrompt": "이 모델을 삭제하시겠습니까? 이 작업은 취소할 수 없습니다."
   },
   "scene": {
-    "management": "장면 관리"
+    "management": "장면 관리",
+    "title": "장면 관리",
+    "add": "장면 추가",
+    "edit": "장면 편집",
+    "delete": "장면 삭제",
+    "fetchError": "장면 목록을 로드하지 못했습니다",
+    "saveSuccess": "장면이 성공적으로 저장되었습니다",
+    "saveError": "장면을 저장하지 못했습니다",
+    "deleteSuccess": "장면이 성공적으로 삭제되었습니다",
+    "deleteError": "장면을 삭제하지 못했습니다",
+    "updateError": "장면 상태 업데이트에 실패했습니다",
+    "enabled": "장면이 활성화되었습니다",
+    "disabled": "장면이 비활성화되었습니다",
+    "confirmDelete": "삭제 확인",
+    "deletePrompt": "이 장면을 삭제하시겠습니까? 이 작업은 취소할 수 없습니다."
+  },
+  "provider": {
+    "title": "공급자 관리",
+    "description": "AI 모델 공급자를 위한 API 키 및 구성 관리",
+    "provider": "공급자",
+    "apiKey": "API 키",
+    "edit": "편집",
+    "configured": "구성됨",
+    "notConfigured": "구성되지 않음",
+    "saveSuccess": "API 키가 성공적으로 저장되었습니다",
+    "saveError": "API 키 저장에 실패했습니다"
   },
   "dialog": {
     "deleteConfirm": "삭제 확인",

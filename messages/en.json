@@ -40,10 +40,46 @@
     "add": "Add Model",
     "edit": "Edit Model",
     "delete": "Delete Model",
-    "select": "Select Model"
+    "select": "Select Model",
+    "title": "Model Management",
+    "fetchError": "Failed to fetch models",
+    "saveSuccess": "Model saved successfully",
+    "saveError": "Failed to save model",
+    "deleteSuccess": "Model deleted successfully",
+    "deleteError": "Failed to delete model",
+    "updateError": "Failed to update model status",
+    "enabled": "Model has been enabled",
+    "disabled": "Model has been disabled",
+    "confirmDelete": "Confirm Delete",
+    "deletePrompt": "Are you sure you want to delete this model? This action cannot be undone."
   },
   "scene": {
-    "management": "Scene Management"
+    "management": "Scene Management",
+    "title": "Scene Management",
+    "add": "Add Scene",
+    "edit": "Edit Scene",
+    "delete": "Delete Scene",
+    "fetchError": "Failed to load scenes",
+    "saveSuccess": "Scene saved successfully",
+    "saveError": "Failed to save scene",
+    "deleteSuccess": "Scene deleted successfully",
+    "deleteError": "Failed to delete scene",
+    "updateError": "Failed to update scene status",
+    "enabled": "Scene enabled",
+    "disabled": "Scene disabled",
+    "confirmDelete": "Confirm Delete",
+    "deletePrompt": "Are you sure you want to delete this scene? This action cannot be undone."
+  },
+  "provider": {
+    "title": "Provider Management",
+    "description": "Manage API keys and configurations for AI model providers",
+    "provider": "Provider",
+    "apiKey": "API Key",
+    "edit": "Edit",
+    "configured": "Configured",
+    "notConfigured": "Not Configured",
+    "saveSuccess": "API key saved successfully",
+    "saveError": "Failed to save API key"
   },
   "dialog": {
     "deleteConfirm": "Confirm Deletion",
