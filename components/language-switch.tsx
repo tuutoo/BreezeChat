@@ -52,7 +52,7 @@ export function LanguageSwitch() {
           className="px-2 sm:px-3 h-9 relative flex items-center gap-1.5"
         >
           <Globe className="h-4 w-4" />
-          <span className="text-xs font-semibold">{locale.toUpperCase()}</span>
+          <span className="text-xs font-semibold">{currentLanguage.nativeName}</span>
           <span className="sr-only">{t('header.toggleLanguage')}</span>
         </Button>
       </DropdownMenuTrigger>
