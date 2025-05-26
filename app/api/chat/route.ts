@@ -1,5 +1,5 @@
 import { createGroq } from "@ai-sdk/groq"
-import { streamText  } from "ai"
+import { streamText } from "ai"
 import { google } from '@ai-sdk/google'
 import { openai } from '@ai-sdk/openai'
 import { PROVIDERS } from '@/lib/providers'
@@ -12,20 +12,24 @@ export const maxDuration = 30
 
 // const LLAMA_MODEL = "llama-3.3-70b-versatile"
 
+// 统一错误处理函数
+function createErrorResponse(message: string, status: number, details?: unknown) {
+  return NextResponse.json(
+    {
+      error: message,
+      ...(details && { details })
+    },
+    { status }
+  )
+}
+
 export async function POST(req: Request) {
   try {
     const body = await req.json()
-    console.log('Chat API request body:', body)
-
     const { messages, model: modelName, scene } = body
-    console.log('Scene:', scene)
 
     if (!messages || !modelName) {
-      console.error('Missing required fields:', { messages, modelName })
-      return NextResponse.json(
-        { error: 'Messages and model name are required' },
-        { status: 400 }
-      )
+      return createErrorResponse('Messages and model name are required', 400)
     }
 
     // 获取模型信息
@@ -34,11 +38,7 @@ export async function POST(req: Request) {
     })
 
     if (!model) {
-      console.error('Model not found:', modelName)
-      return NextResponse.json(
-        { error: 'Model not found' },
-        { status: 404 }
-      )
+      return createErrorResponse('Model not found', 404)
     }
 
     // 获取场景信息
@@ -47,31 +47,19 @@ export async function POST(req: Request) {
     })
 
     if (!sceneData) {
-      console.error('Scene not found:', scene)
-      return NextResponse.json(
-        { error: 'Scene not found' },
-        { status: 404 }
-      )
+      return createErrorResponse('Scene not found', 404)
     }
 
     // 获取提供商配置
     const providerConfig = PROVIDERS.find(p => p.providerName === model.providerName)
     if (!providerConfig) {
-      console.error('Provider not found:', model.providerName)
-      return NextResponse.json(
-        { error: `Provider ${model.providerName} not found` },
-        { status: 404 }
-      )
+      return createErrorResponse('Provider not found', 404)
     }
 
     // 获取 API 密钥
     const apiKey = process.env[providerConfig.envKey]
     if (!apiKey) {
-      console.error('API key not found for provider:', providerConfig.providerName)
-      return NextResponse.json(
-        { error: `API key not found for provider ${providerConfig.providerName}` },
-        { status: 500 }
-      )
+      return createErrorResponse('API key not found', 500)
     }
 
     // 根据提供商选择对应的客户端
@@ -99,14 +87,10 @@ export async function POST(req: Request) {
         })(model.modelId);
         break;
       default:
-        return NextResponse.json(
-          { error: `Unsupported provider: ${providerConfig.providerName}` },
-          { status: 400 }
-        )
+        return createErrorResponse('Unsupported provider', 400)
     }
 
     const systemPrompt = await createSystemPrompt() + sceneData.prompt;
-    console.log('System Prompt:', systemPrompt)
 
     const result = streamText({
       model: aiProvider,
@@ -115,13 +99,19 @@ export async function POST(req: Request) {
       topP: 0.9,
       messages,
     });
-    return result.toDataStreamResponse({ sendReasoning: false });
-  } catch (error) {
-    console.error('Chat API error:', error)
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+
+    for await (const part of result.fullStream) {
+      if (part.type === 'error') {
+        return createErrorResponse('Internal Server Error', 500, part.error)
+      }
+    }
+
+    return result.toDataStreamResponse({
+      sendReasoning: false
+    });
+
+  } catch (error: unknown) {
+    return createErrorResponse('Internal Server Error', 500, error)
   }
 }
 

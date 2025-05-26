@@ -19,6 +19,11 @@ import { Badge } from "@/components/ui/badge"
 import { Model, Scene } from "@/generated/prisma/client"
 import { useTranslations } from 'next-intl'
 
+// 定义错误类型
+interface ChatError extends Error {
+  error?: string;
+}
+
 type ChatDemoProps = {
   initialMessages?: UseChatOptions["initialMessages"]
 }
@@ -34,6 +39,7 @@ export default function ChatDemo(props: ChatDemoProps) {
   const [count, setCount] = useState(0)
   const [current, setCurrent] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
+  const [customError, setCustomError] = useState<string | null>(null)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -102,11 +108,12 @@ export default function ChatDemo(props: ChatDemoProps) {
     messages,
     input,
     handleInputChange,
-    handleSubmit,
+    handleSubmit: originalHandleSubmit,
     append,
     stop,
     status,
     setMessages,
+    error,
   } = useChat({
     ...props,
     api: "/api/chat",
@@ -114,7 +121,53 @@ export default function ChatDemo(props: ChatDemoProps) {
       model: selectedModel,
       scene: selectedScene,
     },
+    onError: (error: ChatError) => {
+      console.error('Chat error:', error)
+      // 尝试解析错误响应中的详细信息
+      try {
+        if (error.message) {
+          const errorData = JSON.parse(error.message)
+          if (errorData.details) {
+            console.error('AI Provider Error Details:', errorData.details)
+          }
+        }
+      } catch {
+        // 如果解析失败，直接打印原始错误
+        console.error('Raw error details:', error)
+      }
+      setCustomError('500 Internal Server Error')
+    },
+    onFinish: () => {
+      // 清除错误状态当成功完成时
+      setCustomError(null)
+    },
   })
+
+  // 自定义 handleSubmit 来处理错误
+  const handleSubmit = async (
+    event?: { preventDefault?: () => void },
+    options?: { experimental_attachments?: FileList }
+  ) => {
+    try {
+      setCustomError(null) // 清除之前的错误
+      await originalHandleSubmit(event, options)
+    } catch (error) {
+      console.error('Submit error:', error)
+      // 尝试解析错误响应中的详细信息
+      try {
+        if (error instanceof Error && error.message) {
+          const errorData = JSON.parse(error.message)
+          if (errorData.details) {
+            console.error('AI Provider Error Details:', errorData.details)
+          }
+        }
+      } catch {
+        // 如果解析失败，直接打印原始错误
+        console.error('Raw error details:', error)
+      }
+      setCustomError('500 Internal Server Error')
+    }
+  }
 
   return (
     <div className={cn("flex", "flex-col", "w-full")}>
@@ -141,6 +194,13 @@ export default function ChatDemo(props: ChatDemoProps) {
           </SelectContent>
         </Select>
       </div>
+
+      {(error || customError) && (
+        <div className="mb-4 p-4 rounded-lg bg-red-50 border border-red-200 text-red-700 dark:bg-red-900/20 dark:border-red-800 dark:text-red-300">
+          <p className="text-sm font-medium">Error</p>
+          <p className="text-sm">{customError || '500 Internal Server Error'}</p>
+        </div>
+      )}
 
       <Chat
         className="w-full"
