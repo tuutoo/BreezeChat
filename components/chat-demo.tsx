@@ -18,6 +18,7 @@ import { type CarouselApi } from "@/components/ui/carousel"
 import { Badge } from "@/components/ui/badge"
 import { Model, Scene } from "@/generated/prisma/client"
 import { useTranslations } from 'next-intl'
+import { useToast } from "@/components/ui/use-toast"
 
 // 定义错误类型
 interface ChatError extends Error {
@@ -30,6 +31,7 @@ type ChatDemoProps = {
 
 export default function ChatDemo(props: ChatDemoProps) {
   const t = useTranslations()
+  const { toast } = useToast()
 
   const [api, setApi] = useState<CarouselApi>()
   const [models, setModels] = useState<Model[]>([])
@@ -113,7 +115,6 @@ export default function ChatDemo(props: ChatDemoProps) {
     stop,
     status,
     setMessages,
-    error,
   } = useChat({
     ...props,
     api: "/api/chat",
@@ -127,6 +128,13 @@ export default function ChatDemo(props: ChatDemoProps) {
       try {
         if (error.message) {
           const errorData = JSON.parse(error.message)
+          if (errorData.showToast) {
+            toast({
+              variant: "destructive",
+              title: "Error",
+              description: errorData.error || 'An error occurred'
+            })
+          }
           if (errorData.details) {
             console.error('AI Provider Error Details:', errorData.details)
           }
@@ -134,8 +142,12 @@ export default function ChatDemo(props: ChatDemoProps) {
       } catch {
         // 如果解析失败，直接打印原始错误
         console.error('Raw error details:', error)
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: 'An error occurred while processing your request'
+        })
       }
-      setCustomError('500 Internal Server Error')
     },
     onFinish: () => {
       // 清除错误状态当成功完成时
@@ -157,6 +169,13 @@ export default function ChatDemo(props: ChatDemoProps) {
       try {
         if (error instanceof Error && error.message) {
           const errorData = JSON.parse(error.message)
+          if (errorData.showToast) {
+            toast({
+              variant: "destructive",
+              title: "Error",
+              description: errorData.error || 'An error occurred'
+            })
+          }
           if (errorData.details) {
             console.error('AI Provider Error Details:', errorData.details)
           }
@@ -164,8 +183,12 @@ export default function ChatDemo(props: ChatDemoProps) {
       } catch {
         // 如果解析失败，直接打印原始错误
         console.error('Raw error details:', error)
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: 'An error occurred while processing your request'
+        })
       }
-      setCustomError('500 Internal Server Error')
     }
   }
 
@@ -194,13 +217,6 @@ export default function ChatDemo(props: ChatDemoProps) {
           </SelectContent>
         </Select>
       </div>
-
-      {(error || customError) && (
-        <div className="mb-4 p-4 rounded-lg bg-red-50 border border-red-200 text-red-700 dark:bg-red-900/20 dark:border-red-800 dark:text-red-300">
-          <p className="text-sm font-medium">Error</p>
-          <p className="text-sm">{customError || '500 Internal Server Error'}</p>
-        </div>
-      )}
 
       <Chat
         className="w-full"

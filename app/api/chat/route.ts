@@ -17,6 +17,7 @@ function createErrorResponse(message: string, status: number, details?: unknown)
   return NextResponse.json(
     {
       error: message,
+      showToast: true,
       ...(details && { details })
     },
     { status }
