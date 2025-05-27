@@ -40,10 +40,10 @@ export default function LocalizedModelsPage() {
 
   const handleSave = async (data: Model) => {
     try {
-      const url = selectedModel
-        ? `/api/config/models?name=${selectedModel.name}`
+      const url = selectedModel?.id
+        ? `/api/config/models?id=${selectedModel.id}`
         : '/api/config/models'
-      const method = selectedModel ? 'PUT' : 'POST'
+      const method = selectedModel?.id ? 'PUT' : 'POST'
 
       const response = await fetch(url, {
         method,

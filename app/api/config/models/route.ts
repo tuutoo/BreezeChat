@@ -38,27 +38,69 @@ export async function POST(req: Request) {
   }
 }
 
+interface PrismaErrorWithName extends Error {
+  code?: string;
+  meta?: { target?: string[] };
+}
+
 export async function PUT(req: Request) {
+  let body: { name?: string, description?: string, providerName?: string, modelId?: string, isActive?: boolean } | undefined;
   try {
-    const { name, description, providerName, modelId, isActive } = await req.json()
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get('id');
+
+    if (!id) {
+      return NextResponse.json(
+        { error: 'Model ID is required for an update' },
+        { status: 400 }
+      );
+    }
+
+    body = await req.json();
+    // Ensure body is not null and is an object before destructuring
+    if (!body || typeof body !== 'object') {
+      return NextResponse.json(
+        { error: 'Invalid request body' },
+        { status: 400 }
+      );
+    }
+    const { name, description, providerName, modelId, isActive } = body;
+
+    // Validate that name is provided and is a non-empty string
+    if (typeof name !== 'string' || name.trim() === '') {
+      return NextResponse.json(
+        { error: 'Model name cannot be empty' },
+        { status: 400 }
+      );
+    }
 
     const model = await prisma.model.update({
-      where: { name },
+      where: { id },
       data: {
+        name,
         description,
         providerName,
         modelId,
         isActive,
       },
-    })
+    });
 
-    return NextResponse.json(model)
-  } catch (error) {
-    console.error('Error updating model:', error)
+    return NextResponse.json(model);
+  } catch (error: unknown) {
+    console.error('Error updating model:', error);
+    const prismaError = error as PrismaErrorWithName;
+    if (prismaError?.code === 'P2002') {
+      // Ensure body and body.name are available before trying to access them
+      const modelName = (body && typeof body === 'object' && body.name) ? body.name : 'unknown';
+      return NextResponse.json(
+        { error: `Failed to update model. The name '${modelName}' is already in use.` },
+        { status: 409 } // Conflict
+      );
+    }
     return NextResponse.json(
       { error: 'Failed to update model' },
       { status: 500 }
-    )
+    );
   }
 }
 
