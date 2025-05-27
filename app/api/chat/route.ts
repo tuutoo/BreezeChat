@@ -92,6 +92,7 @@ export async function POST(req: Request) {
     }
 
     const systemPrompt = await createSystemPrompt() + sceneData.prompt;
+    console.log(systemPrompt);
 
     const result = streamText({
       model: aiProvider,
@@ -102,9 +103,7 @@ export async function POST(req: Request) {
     });
 
     try {
-      return result.toDataStreamResponse({
-        sendReasoning: false
-      });
+      return result.toDataStreamResponse();
     } catch (error) {
       return createErrorResponse('Internal Server Error', 500, error);
     }
