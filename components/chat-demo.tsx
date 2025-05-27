@@ -41,7 +41,6 @@ export default function ChatDemo(props: ChatDemoProps) {
   const [count, setCount] = useState(0)
   const [current, setCurrent] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
-  const [customError, setCustomError] = useState<string | null>(null)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -151,7 +150,6 @@ export default function ChatDemo(props: ChatDemoProps) {
     },
     onFinish: () => {
       // 清除错误状态当成功完成时
-      setCustomError(null)
     },
   })
 
@@ -161,7 +159,6 @@ export default function ChatDemo(props: ChatDemoProps) {
     options?: { experimental_attachments?: FileList }
   ) => {
     try {
-      setCustomError(null) // 清除之前的错误
       await originalHandleSubmit(event, options)
     } catch (error) {
       console.error('Submit error:', error)
