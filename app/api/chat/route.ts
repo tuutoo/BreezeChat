@@ -100,15 +100,13 @@ export async function POST(req: Request) {
       messages,
     });
 
-    for await (const part of result.fullStream) {
-      if (part.type === 'error') {
-        return createErrorResponse('Internal Server Error', 500, part.error)
-      }
+    try {
+      return result.toDataStreamResponse({
+        sendReasoning: false
+      });
+    } catch (error) {
+      return createErrorResponse('Internal Server Error', 500, error);
     }
-
-    return result.toDataStreamResponse({
-      sendReasoning: false
-    });
 
   } catch (error: unknown) {
     return createErrorResponse('Internal Server Error', 500, error)
