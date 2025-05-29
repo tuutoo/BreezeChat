@@ -40,8 +40,10 @@
     "logout": "Logout",
     "logoutError": "Logout failed",
     "modelManagement": "Model Management",
+    "subjectManagement": "Subject Management",
     "sceneManagement": "Scene Management",
     "modelDescription": "Manage AI model configurations, including model names, providers, and status",
+    "subjectDescription": "Manage subject configurations, including base instructions and related scenes",
     "sceneDescription": "Manage scene configurations, including scene names, descriptions, and status"
   },
   "model": {
@@ -68,6 +70,36 @@
     "nextPage": "Next",
     "selectProvider": "Select Provider",
     "validationError": "Failed to validate provider configuration"
+  },
+  "subject": {
+    "management": "Subject Management",
+    "title": "Subject Management",
+    "name": "Name",
+    "add": "Add Subject",
+    "edit": "Edit Subject",
+    "create": "Create Subject",
+    "delete": "Delete Subject",
+    "prompt": "Base Instructions",
+    "promptPlaceholder": "Enter the base instructions for this subject, which will serve as the foundational prompt for translations...",
+    "fetchError": "Failed to load subjects",
+    "saveSuccess": "Subject saved successfully",
+    "saveError": "Failed to save subject",
+    "deleteSuccess": "Subject deleted successfully",
+    "deleteError": "Failed to delete subject",
+    "updateError": "Failed to update subject status",
+    "enabled": "Subject enabled",
+    "disabled": "Subject disabled",
+    "confirmDelete": "Confirm Delete",
+    "deletePrompt": "Are you sure you want to delete this subject? This action cannot be undone.",
+    "searchPlaceholder": "Search subjects...",
+    "noData": "No data",
+    "itemsPerPage": "Items per page",
+    "records": "records",
+    "goToPage": "Go to",
+    "page": "page",
+    "pageOf": "Page {current} of {total}",
+    "update": "Update",
+    "saving": "Saving..."
   },
   "scene": {
     "management": "Scene Management",
@@ -99,7 +131,6 @@
     "update": "Update",
     "saving": "Saving..."
   },
-
   "dialog": {
     "deleteConfirm": "Confirm Deletion",
     "deleteMessage": "This action cannot be undone. Are you sure you want to delete this item?"
