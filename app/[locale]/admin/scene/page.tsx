@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Scene } from '@/generated/prisma/client'
 import { SceneDialog } from '@/components/ui/scene-dialog'
 import { SceneTable } from '@/components/ui/scene-table'
 import { Button } from '@/components/ui/button'
@@ -10,6 +9,20 @@ import { toast } from '@/components/ui/use-toast'
 import { ConfirmDialog } from '@/components/ui/confirm-dialog'
 import { Toaster } from '@/components/ui/toaster'
 import { useTranslations } from 'next-intl'
+
+interface Scene {
+  id: string
+  name: string
+  nameEn: string
+  description: string
+  prompt: string
+  isActive: boolean
+  subjectId?: string
+  subject?: {
+    id: string
+    name: string
+  }
+}
 
 export default function LocalizedScenePage() {
   const [scenes, setScenes] = useState<Scene[]>([])
@@ -85,10 +98,10 @@ export default function LocalizedScenePage() {
     }
   }
 
-  const handleSave = async (scene: Scene) => {
+  const handleSave = async (sceneData: { id?: string; name: string; nameEn: string; description: string; prompt: string; isActive: boolean; subjectId?: string }) => {
     try {
-      const isUpdate = !!scene.id
-      const url = isUpdate ? `/api/config/scenes?id=${scene.id}` : '/api/config/scenes'
+      const isUpdate = !!sceneData.id
+      const url = isUpdate ? `/api/config/scenes?id=${sceneData.id}` : '/api/config/scenes'
       const method = isUpdate ? 'PUT' : 'POST'
 
       const response = await fetch(url, {
@@ -96,7 +109,7 @@ export default function LocalizedScenePage() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(scene),
+        body: JSON.stringify(sceneData),
       })
 
       if (!response.ok) {

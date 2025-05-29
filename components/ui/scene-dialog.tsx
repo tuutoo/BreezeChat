@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { toast } from '@/components/ui/use-toast'
 import { useTranslations } from 'next-intl'
 
@@ -19,13 +20,16 @@ interface SceneDialogProps {
     description: string
     prompt: string
     isActive: boolean
+    subjectId?: string
   }
   onSubmit: (data: {
+    id?: string
     name: string
     nameEn: string
     description: string
     prompt: string
     isActive: boolean
+    subjectId?: string
   }) => Promise<void>
 }
 
@@ -35,9 +39,28 @@ export function SceneDialog({ open, onOpenChange, scene, onSubmit }: SceneDialog
   const [description, setDescription] = useState(scene?.description || '')
   const [prompt, setPrompt] = useState(scene?.prompt || '')
   const [isActive, setIsActive] = useState(scene?.isActive ?? true)
+  const [subjectId, setSubjectId] = useState(scene?.subjectId || 'none')
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [subjects, setSubjects] = useState<{ id: string; name: string }[]>([])
 
   const t = useTranslations()
+
+  useEffect(() => {
+    // 加载主题列表
+    const loadSubjects = async () => {
+      try {
+        const response = await fetch('/api/config/subjects')
+        const data = await response.json()
+        setSubjects(data.map((subject: { id: string; name: string }) => ({ id: subject.id, name: subject.name })))
+      } catch (error) {
+        console.error('Failed to load subjects:', error)
+      }
+    }
+
+    if (open) {
+      loadSubjects()
+    }
+  }, [open])
 
   useEffect(() => {
     if (scene) {
@@ -46,12 +69,14 @@ export function SceneDialog({ open, onOpenChange, scene, onSubmit }: SceneDialog
       setDescription(scene.description)
       setPrompt(scene.prompt)
       setIsActive(scene.isActive)
+      setSubjectId(scene.subjectId || 'none')
     } else {
       setName('')
       setNameEn('')
       setDescription('')
       setPrompt('')
       setIsActive(true)
+      setSubjectId('none')
     }
   }, [scene])
 
@@ -59,7 +84,15 @@ export function SceneDialog({ open, onOpenChange, scene, onSubmit }: SceneDialog
     e.preventDefault()
     setIsSubmitting(true)
     try {
-      await onSubmit({ name, nameEn, description, prompt, isActive })
+      await onSubmit({
+        ...(scene && { id: scene.id }),
+        name,
+        nameEn,
+        description,
+        prompt,
+        isActive,
+        subjectId: subjectId === 'none' ? undefined : subjectId
+      })
       toast({
         title: t('common.success'),
         description: scene ? t('scene.saveSuccess') : t('scene.saveSuccess'),
@@ -112,6 +145,22 @@ export function SceneDialog({ open, onOpenChange, scene, onSubmit }: SceneDialog
               onChange={(e) => setDescription(e.target.value)}
               required
             />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="subject">{t('scene.subject')}</Label>
+            <Select value={subjectId} onValueChange={setSubjectId}>
+              <SelectTrigger>
+                <SelectValue placeholder={t('scene.selectSubject')} />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="none">{t('scene.noSubject')}</SelectItem>
+                {subjects.map((subject) => (
+                  <SelectItem key={subject.id} value={subject.id}>
+                    {subject.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
           <div className="space-y-2">
             <Label htmlFor="prompt">{t('scene.prompt')}</Label>

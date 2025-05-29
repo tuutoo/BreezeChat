@@ -5,6 +5,14 @@ import { prisma } from '@/lib/prisma'
 export async function GET() {
   try {
     const scenes = await prisma.scene.findMany({
+      include: {
+        subject: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
       orderBy: {
         createdAt: 'desc',
       },
@@ -30,6 +38,15 @@ export async function POST(request: Request) {
         description: data.description,
         prompt: data.prompt,
         isActive: true,
+        subjectId: data.subjectId || null,
+      },
+      include: {
+        subject: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
       },
     })
     return NextResponse.json(scene)
@@ -54,6 +71,15 @@ export async function PUT(request: Request) {
         description: data.description,
         prompt: data.prompt,
         isActive: data.isActive,
+        subjectId: data.subjectId || null,
+      },
+      include: {
+        subject: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
       },
     })
     return NextResponse.json(scene)

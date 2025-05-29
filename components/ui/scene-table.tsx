@@ -23,7 +23,6 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Switch } from '@/components/ui/switch'
 import { useState, useEffect } from 'react'
-import { Scene } from '@/generated/prisma/client'
 import { ArrowUpDown, ChevronLeft, ChevronRight, Search, Pencil, Trash2, ArrowUp, ArrowDown } from 'lucide-react'
 import {
   Select,
@@ -51,6 +50,20 @@ function useDebounce<T>(value: T, delay: number): T {
   return debouncedValue
 }
 
+interface Scene {
+  id: string
+  name: string
+  nameEn: string
+  description: string
+  prompt: string
+  isActive: boolean
+  subjectId?: string
+  subject?: {
+    id: string
+    name: string
+  }
+}
+
 interface SceneTableProps {
   scenes: Scene[]
   onEdit: (scene: Scene) => void
@@ -59,7 +72,12 @@ interface SceneTableProps {
 }
 
 export function SceneTable({ scenes, onEdit, onDelete, onToggleActive }: SceneTableProps) {
-  const [sorting, setSorting] = useState<SortingState>([])
+  const [sorting, setSorting] = useState<SortingState>([
+    {
+      id: 'subject',
+      desc: false
+    }
+  ])
   const [searchValue, setSearchValue] = useState('')
   const [globalFilter, setGlobalFilter] = useState('')
   const [pagination, setPagination] = useState<PaginationState>({
@@ -79,6 +97,48 @@ export function SceneTable({ scenes, onEdit, onDelete, onToggleActive }: SceneTa
 
   const columns: ColumnDef<Scene>[] = [
     {
+      accessorKey: 'subject',
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => {
+              const currentSort = column.getIsSorted()
+              if (!currentSort) {
+                column.toggleSorting(false)
+              } else if (currentSort === 'asc') {
+                column.toggleSorting(true)
+              } else {
+                column.clearSorting()
+              }
+            }}
+            className="w-[120px] justify-start"
+          >
+            {t('scene.subject')}
+            {column.getIsSorted() ? (
+              column.getIsSorted() === 'asc' ? (
+                <ArrowUp className="ml-2 h-4 w-4" />
+              ) : (
+                <ArrowDown className="ml-2 h-4 w-4" />
+              )
+            ) : (
+              <ArrowUpDown className="ml-2 h-4 w-4 opacity-50" />
+            )}
+          </Button>
+        )
+      },
+      cell: ({ row }) => (
+        <div className="w-[120px] truncate" title={row.original.subject?.name || ''}>
+          {row.original.subject?.name || t('scene.noSubject')}
+        </div>
+      ),
+      sortingFn: (rowA, rowB) => {
+        const aValue = rowA.original.subject?.name || ''
+        const bValue = rowB.original.subject?.name || ''
+        return aValue.localeCompare(bValue)
+      },
+    },
+    {
       accessorKey: 'name',
       header: ({ column }) => {
         return (
@@ -94,7 +154,7 @@ export function SceneTable({ scenes, onEdit, onDelete, onToggleActive }: SceneTa
                 column.clearSorting()
               }
             }}
-            className="w-[150px] justify-start"
+            className="w-[120px] justify-start"
           >
             {t('scene.chineseName')}
             {column.getIsSorted() ? (
@@ -110,7 +170,7 @@ export function SceneTable({ scenes, onEdit, onDelete, onToggleActive }: SceneTa
         )
       },
       cell: ({ row }) => (
-        <div className="w-[150px] truncate" title={row.getValue('name')}>
+        <div className="w-[120px] truncate" title={row.getValue('name')}>
           {row.getValue('name')}
         </div>
       ),
