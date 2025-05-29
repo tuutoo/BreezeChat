@@ -1,6 +1,5 @@
 import { PrismaClient } from '../generated/prisma'
 import { SCENES } from '../lib/scenes'
-import { nanoid } from 'nanoid'
 
 const prisma = new PrismaClient()
 
@@ -8,6 +7,7 @@ async function main() {
   // 清除现有数据
   await prisma.model.deleteMany()
   await prisma.scene.deleteMany()
+  await prisma.subject.deleteMany()
 
   // 创建模型
   await prisma.model.createMany({
@@ -43,16 +43,21 @@ async function main() {
     ],
   })
 
-  // 创建场景
-  await prisma.scene.createMany({
-    data: SCENES.map(scene => ({
-      name: scene.name,
-      nameEn: scene.name_en,
-      description: scene.description,
-      prompt: scene.prompt,
-      isActive: true,
-    })),
-  })
+  // 创建场景（不关联任何主题）
+  const scenesData = SCENES.map((scene) => ({
+    name: scene.name,
+    nameEn: scene.name_en,
+    description: scene.description,
+    prompt: scene.prompt,
+    isActive: true,
+    subjectId: null, // 所有场景都不关联主题
+  }))
+
+  for (const sceneData of scenesData) {
+    await prisma.scene.create({
+      data: sceneData,
+    })
+  }
 
   console.log('Seed completed successfully')
 }

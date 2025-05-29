@@ -5,7 +5,6 @@ import { openai } from '@ai-sdk/openai'
 import { PROVIDERS } from '@/lib/providers'
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { createSystemPrompt } from '@/lib/systemPrompt'
 
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30
@@ -42,9 +41,12 @@ export async function POST(req: Request) {
       return createErrorResponse('Model not found', 404)
     }
 
-    // 获取场景信息
+    // 获取场景信息，包括关联的主题
     const sceneData = await prisma.scene.findUnique({
       where: { name: scene },
+      include: {
+        subject: true, // 包含关联的主题信息
+      },
     })
 
     if (!sceneData) {
@@ -91,8 +93,20 @@ export async function POST(req: Request) {
         return createErrorResponse('Unsupported provider', 400)
     }
 
-    const systemPrompt = await createSystemPrompt() + sceneData.prompt;
-    console.log(systemPrompt);
+    // 构建系统提示词
+    let systemPrompt = ''
+
+    // 如果场景有关联的激活主题，使用主题提示词 + 场景提示词
+    if (sceneData.subject && sceneData.subject.isActive) {
+      systemPrompt = sceneData.subject.prompt + '\n\n' + sceneData.prompt
+      console.log('Using subject-based prompt for:', sceneData.subject.name)
+    } else {
+      // 没有关联主题时，直接使用场景的提示词
+      systemPrompt = sceneData.prompt
+      console.log('Using scene prompt without subject')
+    }
+
+    console.log('Final system prompt:', systemPrompt)
 
     const result = streamText({
       model: aiProvider,
