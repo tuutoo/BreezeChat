@@ -14,6 +14,20 @@ generator client {
   output   = "../generated/prisma"
 }
 
+// 主题表
+model Subject {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  description String
+  prompt      String   // 存储baseInstructions内容
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // 一个主题可以有多个场景
+  scenes      Scene[]
+}
+
 // 场景配置
 model Scene {
   id          String   @id @default(cuid())
@@ -24,6 +38,10 @@ model Scene {
   isActive    Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  // 场景可以属于一个主题（可选）
+  subjectId   String?
+  subject     Subject? @relation(fields: [subjectId], references: [id])
 }
 
 // 模型配置

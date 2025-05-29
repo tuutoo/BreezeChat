@@ -32,6 +32,7 @@ export type SceneMinAggregateOutputType = {
   isActive: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
+  subjectId: string | null
 }
 
 export type SceneMaxAggregateOutputType = {
@@ -43,6 +44,7 @@ export type SceneMaxAggregateOutputType = {
   isActive: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
+  subjectId: string | null
 }
 
 export type SceneCountAggregateOutputType = {
@@ -54,6 +56,7 @@ export type SceneCountAggregateOutputType = {
   isActive: number
   createdAt: number
   updatedAt: number
+  subjectId: number
   _all: number
 }
 
@@ -67,6 +70,7 @@ export type SceneMinAggregateInputType = {
   isActive?: true
   createdAt?: true
   updatedAt?: true
+  subjectId?: true
 }
 
 export type SceneMaxAggregateInputType = {
@@ -78,6 +82,7 @@ export type SceneMaxAggregateInputType = {
   isActive?: true
   createdAt?: true
   updatedAt?: true
+  subjectId?: true
 }
 
 export type SceneCountAggregateInputType = {
@@ -89,6 +94,7 @@ export type SceneCountAggregateInputType = {
   isActive?: true
   createdAt?: true
   updatedAt?: true
+  subjectId?: true
   _all?: true
 }
 
@@ -173,6 +179,7 @@ export type SceneGroupByOutputType = {
   isActive: boolean
   createdAt: Date
   updatedAt: Date
+  subjectId: string | null
   _count: SceneCountAggregateOutputType | null
   _min: SceneMinAggregateOutputType | null
   _max: SceneMaxAggregateOutputType | null
@@ -205,6 +212,8 @@ export type SceneWhereInput = {
   isActive?: Prisma.BoolFilter<"Scene"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Scene"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Scene"> | Date | string
+  subjectId?: Prisma.StringNullableFilter<"Scene"> | string | null
+  subject?: Prisma.XOR<Prisma.SubjectNullableScalarRelationFilter, Prisma.SubjectWhereInput> | null
 }
 
 export type SceneOrderByWithRelationInput = {
@@ -216,6 +225,8 @@ export type SceneOrderByWithRelationInput = {
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  subjectId?: Prisma.SortOrderInput | Prisma.SortOrder
+  subject?: Prisma.SubjectOrderByWithRelationInput
 }
 
 export type SceneWhereUniqueInput = Prisma.AtLeast<{
@@ -230,6 +241,8 @@ export type SceneWhereUniqueInput = Prisma.AtLeast<{
   isActive?: Prisma.BoolFilter<"Scene"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Scene"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Scene"> | Date | string
+  subjectId?: Prisma.StringNullableFilter<"Scene"> | string | null
+  subject?: Prisma.XOR<Prisma.SubjectNullableScalarRelationFilter, Prisma.SubjectWhereInput> | null
 }, "id" | "name">
 
 export type SceneOrderByWithAggregationInput = {
@@ -241,6 +254,7 @@ export type SceneOrderByWithAggregationInput = {
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  subjectId?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.SceneCountOrderByAggregateInput
   _max?: Prisma.SceneMaxOrderByAggregateInput
   _min?: Prisma.SceneMinOrderByAggregateInput
@@ -258,6 +272,7 @@ export type SceneScalarWhereWithAggregatesInput = {
   isActive?: Prisma.BoolWithAggregatesFilter<"Scene"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Scene"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Scene"> | Date | string
+  subjectId?: Prisma.StringNullableWithAggregatesFilter<"Scene"> | string | null
 }
 
 export type SceneCreateInput = {
@@ -269,6 +284,7 @@ export type SceneCreateInput = {
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  subject?: Prisma.SubjectCreateNestedOneWithoutScenesInput
 }
 
 export type SceneUncheckedCreateInput = {
@@ -280,6 +296,7 @@ export type SceneUncheckedCreateInput = {
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  subjectId?: string | null
 }
 
 export type SceneUpdateInput = {
@@ -291,6 +308,7 @@ export type SceneUpdateInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  subject?: Prisma.SubjectUpdateOneWithoutScenesNestedInput
 }
 
 export type SceneUncheckedUpdateInput = {
@@ -302,6 +320,7 @@ export type SceneUncheckedUpdateInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  subjectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type SceneCreateManyInput = {
@@ -313,6 +332,7 @@ export type SceneCreateManyInput = {
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  subjectId?: string | null
 }
 
 export type SceneUpdateManyMutationInput = {
@@ -335,6 +355,17 @@ export type SceneUncheckedUpdateManyInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  subjectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type SceneListRelationFilter = {
+  every?: Prisma.SceneWhereInput
+  some?: Prisma.SceneWhereInput
+  none?: Prisma.SceneWhereInput
+}
+
+export type SceneOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
 }
 
 export type SceneCountOrderByAggregateInput = {
@@ -346,6 +377,7 @@ export type SceneCountOrderByAggregateInput = {
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  subjectId?: Prisma.SortOrder
 }
 
 export type SceneMaxOrderByAggregateInput = {
@@ -357,6 +389,7 @@ export type SceneMaxOrderByAggregateInput = {
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  subjectId?: Prisma.SortOrder
 }
 
 export type SceneMinOrderByAggregateInput = {
@@ -368,18 +401,160 @@ export type SceneMinOrderByAggregateInput = {
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  subjectId?: Prisma.SortOrder
 }
 
-export type StringFieldUpdateOperationsInput = {
-  set?: string
+export type SceneCreateNestedManyWithoutSubjectInput = {
+  create?: Prisma.XOR<Prisma.SceneCreateWithoutSubjectInput, Prisma.SceneUncheckedCreateWithoutSubjectInput> | Prisma.SceneCreateWithoutSubjectInput[] | Prisma.SceneUncheckedCreateWithoutSubjectInput[]
+  connectOrCreate?: Prisma.SceneCreateOrConnectWithoutSubjectInput | Prisma.SceneCreateOrConnectWithoutSubjectInput[]
+  createMany?: Prisma.SceneCreateManySubjectInputEnvelope
+  connect?: Prisma.SceneWhereUniqueInput | Prisma.SceneWhereUniqueInput[]
 }
 
-export type BoolFieldUpdateOperationsInput = {
-  set?: boolean
+export type SceneUncheckedCreateNestedManyWithoutSubjectInput = {
+  create?: Prisma.XOR<Prisma.SceneCreateWithoutSubjectInput, Prisma.SceneUncheckedCreateWithoutSubjectInput> | Prisma.SceneCreateWithoutSubjectInput[] | Prisma.SceneUncheckedCreateWithoutSubjectInput[]
+  connectOrCreate?: Prisma.SceneCreateOrConnectWithoutSubjectInput | Prisma.SceneCreateOrConnectWithoutSubjectInput[]
+  createMany?: Prisma.SceneCreateManySubjectInputEnvelope
+  connect?: Prisma.SceneWhereUniqueInput | Prisma.SceneWhereUniqueInput[]
 }
 
-export type DateTimeFieldUpdateOperationsInput = {
-  set?: Date | string
+export type SceneUpdateManyWithoutSubjectNestedInput = {
+  create?: Prisma.XOR<Prisma.SceneCreateWithoutSubjectInput, Prisma.SceneUncheckedCreateWithoutSubjectInput> | Prisma.SceneCreateWithoutSubjectInput[] | Prisma.SceneUncheckedCreateWithoutSubjectInput[]
+  connectOrCreate?: Prisma.SceneCreateOrConnectWithoutSubjectInput | Prisma.SceneCreateOrConnectWithoutSubjectInput[]
+  upsert?: Prisma.SceneUpsertWithWhereUniqueWithoutSubjectInput | Prisma.SceneUpsertWithWhereUniqueWithoutSubjectInput[]
+  createMany?: Prisma.SceneCreateManySubjectInputEnvelope
+  set?: Prisma.SceneWhereUniqueInput | Prisma.SceneWhereUniqueInput[]
+  disconnect?: Prisma.SceneWhereUniqueInput | Prisma.SceneWhereUniqueInput[]
+  delete?: Prisma.SceneWhereUniqueInput | Prisma.SceneWhereUniqueInput[]
+  connect?: Prisma.SceneWhereUniqueInput | Prisma.SceneWhereUniqueInput[]
+  update?: Prisma.SceneUpdateWithWhereUniqueWithoutSubjectInput | Prisma.SceneUpdateWithWhereUniqueWithoutSubjectInput[]
+  updateMany?: Prisma.SceneUpdateManyWithWhereWithoutSubjectInput | Prisma.SceneUpdateManyWithWhereWithoutSubjectInput[]
+  deleteMany?: Prisma.SceneScalarWhereInput | Prisma.SceneScalarWhereInput[]
+}
+
+export type SceneUncheckedUpdateManyWithoutSubjectNestedInput = {
+  create?: Prisma.XOR<Prisma.SceneCreateWithoutSubjectInput, Prisma.SceneUncheckedCreateWithoutSubjectInput> | Prisma.SceneCreateWithoutSubjectInput[] | Prisma.SceneUncheckedCreateWithoutSubjectInput[]
+  connectOrCreate?: Prisma.SceneCreateOrConnectWithoutSubjectInput | Prisma.SceneCreateOrConnectWithoutSubjectInput[]
+  upsert?: Prisma.SceneUpsertWithWhereUniqueWithoutSubjectInput | Prisma.SceneUpsertWithWhereUniqueWithoutSubjectInput[]
+  createMany?: Prisma.SceneCreateManySubjectInputEnvelope
+  set?: Prisma.SceneWhereUniqueInput | Prisma.SceneWhereUniqueInput[]
+  disconnect?: Prisma.SceneWhereUniqueInput | Prisma.SceneWhereUniqueInput[]
+  delete?: Prisma.SceneWhereUniqueInput | Prisma.SceneWhereUniqueInput[]
+  connect?: Prisma.SceneWhereUniqueInput | Prisma.SceneWhereUniqueInput[]
+  update?: Prisma.SceneUpdateWithWhereUniqueWithoutSubjectInput | Prisma.SceneUpdateWithWhereUniqueWithoutSubjectInput[]
+  updateMany?: Prisma.SceneUpdateManyWithWhereWithoutSubjectInput | Prisma.SceneUpdateManyWithWhereWithoutSubjectInput[]
+  deleteMany?: Prisma.SceneScalarWhereInput | Prisma.SceneScalarWhereInput[]
+}
+
+export type NullableStringFieldUpdateOperationsInput = {
+  set?: string | null
+}
+
+export type SceneCreateWithoutSubjectInput = {
+  id?: string
+  name: string
+  nameEn: string
+  description: string
+  prompt: string
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type SceneUncheckedCreateWithoutSubjectInput = {
+  id?: string
+  name: string
+  nameEn: string
+  description: string
+  prompt: string
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type SceneCreateOrConnectWithoutSubjectInput = {
+  where: Prisma.SceneWhereUniqueInput
+  create: Prisma.XOR<Prisma.SceneCreateWithoutSubjectInput, Prisma.SceneUncheckedCreateWithoutSubjectInput>
+}
+
+export type SceneCreateManySubjectInputEnvelope = {
+  data: Prisma.SceneCreateManySubjectInput | Prisma.SceneCreateManySubjectInput[]
+  skipDuplicates?: boolean
+}
+
+export type SceneUpsertWithWhereUniqueWithoutSubjectInput = {
+  where: Prisma.SceneWhereUniqueInput
+  update: Prisma.XOR<Prisma.SceneUpdateWithoutSubjectInput, Prisma.SceneUncheckedUpdateWithoutSubjectInput>
+  create: Prisma.XOR<Prisma.SceneCreateWithoutSubjectInput, Prisma.SceneUncheckedCreateWithoutSubjectInput>
+}
+
+export type SceneUpdateWithWhereUniqueWithoutSubjectInput = {
+  where: Prisma.SceneWhereUniqueInput
+  data: Prisma.XOR<Prisma.SceneUpdateWithoutSubjectInput, Prisma.SceneUncheckedUpdateWithoutSubjectInput>
+}
+
+export type SceneUpdateManyWithWhereWithoutSubjectInput = {
+  where: Prisma.SceneScalarWhereInput
+  data: Prisma.XOR<Prisma.SceneUpdateManyMutationInput, Prisma.SceneUncheckedUpdateManyWithoutSubjectInput>
+}
+
+export type SceneScalarWhereInput = {
+  AND?: Prisma.SceneScalarWhereInput | Prisma.SceneScalarWhereInput[]
+  OR?: Prisma.SceneScalarWhereInput[]
+  NOT?: Prisma.SceneScalarWhereInput | Prisma.SceneScalarWhereInput[]
+  id?: Prisma.StringFilter<"Scene"> | string
+  name?: Prisma.StringFilter<"Scene"> | string
+  nameEn?: Prisma.StringFilter<"Scene"> | string
+  description?: Prisma.StringFilter<"Scene"> | string
+  prompt?: Prisma.StringFilter<"Scene"> | string
+  isActive?: Prisma.BoolFilter<"Scene"> | boolean
+  createdAt?: Prisma.DateTimeFilter<"Scene"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Scene"> | Date | string
+  subjectId?: Prisma.StringNullableFilter<"Scene"> | string | null
+}
+
+export type SceneCreateManySubjectInput = {
+  id?: string
+  name: string
+  nameEn: string
+  description: string
+  prompt: string
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type SceneUpdateWithoutSubjectInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  nameEn?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  prompt?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type SceneUncheckedUpdateWithoutSubjectInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  nameEn?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  prompt?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type SceneUncheckedUpdateManyWithoutSubjectInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  nameEn?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  prompt?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 
@@ -393,6 +568,8 @@ export type SceneSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  subjectId?: boolean
+  subject?: boolean | Prisma.Scene$subjectArgs<ExtArgs>
 }, ExtArgs["result"]["scene"]>
 
 export type SceneSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -404,6 +581,8 @@ export type SceneSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  subjectId?: boolean
+  subject?: boolean | Prisma.Scene$subjectArgs<ExtArgs>
 }, ExtArgs["result"]["scene"]>
 
 export type SceneSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -415,6 +594,8 @@ export type SceneSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  subjectId?: boolean
+  subject?: boolean | Prisma.Scene$subjectArgs<ExtArgs>
 }, ExtArgs["result"]["scene"]>
 
 export type SceneSelectScalar = {
@@ -426,13 +607,25 @@ export type SceneSelectScalar = {
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  subjectId?: boolean
 }
 
-export type SceneOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "nameEn" | "description" | "prompt" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["scene"]>
+export type SceneOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "nameEn" | "description" | "prompt" | "isActive" | "createdAt" | "updatedAt" | "subjectId", ExtArgs["result"]["scene"]>
+export type SceneInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  subject?: boolean | Prisma.Scene$subjectArgs<ExtArgs>
+}
+export type SceneIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  subject?: boolean | Prisma.Scene$subjectArgs<ExtArgs>
+}
+export type SceneIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  subject?: boolean | Prisma.Scene$subjectArgs<ExtArgs>
+}
 
 export type $ScenePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Scene"
-  objects: {}
+  objects: {
+    subject: Prisma.$SubjectPayload<ExtArgs> | null
+  }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     name: string
@@ -442,6 +635,7 @@ export type $ScenePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     isActive: boolean
     createdAt: Date
     updatedAt: Date
+    subjectId: string | null
   }, ExtArgs["result"]["scene"]>
   composites: {}
 }
@@ -836,6 +1030,7 @@ readonly fields: SceneFieldRefs;
  */
 export interface Prisma__SceneClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  subject<T extends Prisma.Scene$subjectArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Scene$subjectArgs<ExtArgs>>): Prisma.Prisma__SubjectClient<runtime.Types.Result.GetResult<Prisma.$SubjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -873,6 +1068,7 @@ export interface SceneFieldRefs {
   readonly isActive: Prisma.FieldRef<"Scene", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"Scene", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Scene", 'DateTime'>
+  readonly subjectId: Prisma.FieldRef<"Scene", 'String'>
 }
     
 
@@ -889,6 +1085,10 @@ export type SceneFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * Omit specific fields from the Scene
    */
   omit?: Prisma.SceneOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SceneInclude<ExtArgs> | null
   /**
    * Filter, which Scene to fetch.
    */
@@ -908,6 +1108,10 @@ export type SceneFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.
    */
   omit?: Prisma.SceneOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SceneInclude<ExtArgs> | null
+  /**
    * Filter, which Scene to fetch.
    */
   where: Prisma.SceneWhereUniqueInput
@@ -925,6 +1129,10 @@ export type SceneFindFirstArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Omit specific fields from the Scene
    */
   omit?: Prisma.SceneOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SceneInclude<ExtArgs> | null
   /**
    * Filter, which Scene to fetch.
    */
@@ -974,6 +1182,10 @@ export type SceneFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.I
    */
   omit?: Prisma.SceneOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SceneInclude<ExtArgs> | null
+  /**
    * Filter, which Scene to fetch.
    */
   where?: Prisma.SceneWhereInput
@@ -1022,6 +1234,10 @@ export type SceneFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    */
   omit?: Prisma.SceneOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SceneInclude<ExtArgs> | null
+  /**
    * Filter, which Scenes to fetch.
    */
   where?: Prisma.SceneWhereInput
@@ -1065,6 +1281,10 @@ export type SceneCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
    */
   omit?: Prisma.SceneOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SceneInclude<ExtArgs> | null
+  /**
    * The data needed to create a Scene.
    */
   data: Prisma.XOR<Prisma.SceneCreateInput, Prisma.SceneUncheckedCreateInput>
@@ -1098,6 +1318,10 @@ export type SceneCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extension
    */
   data: Prisma.SceneCreateManyInput | Prisma.SceneCreateManyInput[]
   skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SceneIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1112,6 +1336,10 @@ export type SceneUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
    * Omit specific fields from the Scene
    */
   omit?: Prisma.SceneOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SceneInclude<ExtArgs> | null
   /**
    * The data needed to update a Scene.
    */
@@ -1164,6 +1392,10 @@ export type SceneUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extension
    * Limit how many Scenes to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SceneIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1178,6 +1410,10 @@ export type SceneUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
    * Omit specific fields from the Scene
    */
   omit?: Prisma.SceneOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SceneInclude<ExtArgs> | null
   /**
    * The filter to search for the Scene to update in case it exists.
    */
@@ -1205,6 +1441,10 @@ export type SceneDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
    */
   omit?: Prisma.SceneOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SceneInclude<ExtArgs> | null
+  /**
    * Filter which Scene to delete.
    */
   where: Prisma.SceneWhereUniqueInput
@@ -1225,6 +1465,25 @@ export type SceneDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Interna
 }
 
 /**
+ * Scene.subject
+ */
+export type Scene$subjectArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Subject
+   */
+  select?: Prisma.SubjectSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Subject
+   */
+  omit?: Prisma.SubjectOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SubjectInclude<ExtArgs> | null
+  where?: Prisma.SubjectWhereInput
+}
+
+/**
  * Scene without action
  */
 export type SceneDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1236,4 +1495,8 @@ export type SceneDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
    * Omit specific fields from the Scene
    */
   omit?: Prisma.SceneOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SceneInclude<ExtArgs> | null
 }

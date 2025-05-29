@@ -7,6 +7,7 @@
  *
  * 🟢 You can import this file directly.
  */
+export type * from './models/Subject'
 export type * from './models/Scene'
 export type * from './models/Model'
 export type * from './commonInputTypes'

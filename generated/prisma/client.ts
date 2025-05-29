@@ -26,8 +26,8 @@ export * as $Enums from './enums'
  * @example
  * ```
  * const prisma = new PrismaClient()
- * // Fetch zero or more Scenes
- * const scenes = await prisma.scene.findMany()
+ * // Fetch zero or more Subjects
+ * const subjects = await prisma.subject.findMany()
  * ```
  * 
  * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client).
@@ -37,7 +37,15 @@ export type PrismaClient<ClientOptions extends Prisma.PrismaClientOptions = Pris
 export { Prisma }
 
 
+// file annotations for bundling tools to include these files
+path.join(__dirname, "libquery_engine-debian-openssl-1.1.x.so.node")
+path.join(process.cwd(), "generated/prisma/libquery_engine-debian-openssl-1.1.x.so.node")
 
+/**
+ * Model Subject
+ * 
+ */
+export type Subject = Prisma.SubjectModel
 /**
  * Model Scene
  * 
