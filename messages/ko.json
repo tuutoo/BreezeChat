@@ -181,7 +181,21 @@
     "contact": "이 약관에 대한 질문이 있으시면 다음으로 연락해 주세요:"
   },
   "chat": {
-    "inputPlaceholder": "번역할 내용을 입력하세요..."
+    "inputPlaceholder": "번역할 내용을 입력하세요...",
+    "config": {
+      "title": "채팅 설정",
+      "description": "주제, 추가 프롬프트, 시나리오를 선택하여 대화 경험을 맞춤화하세요",
+      "subject": "주제",
+      "selectSubject": "주제 선택",
+      "noSubject": "주제 없음 (자유 대화)",
+      "additionalPrompts": "추가 프롬프트",
+      "additionalPromptsDescription": "카테고리당 하나만 선택 가능, 같은 카테고리 옵션들은 상호 배타적",
+      "selectOne": "하나 선택",
+      "scene": "시나리오",
+      "selectScene": "시나리오 선택",
+      "noScene": "시나리오 없음",
+      "currentConfig": "현재 설정"
+    }
   },
   "additionalPrompt": {
     "title": "추가 프롬프트 관리",

@@ -26,7 +26,7 @@ function createErrorResponse(message: string, status: number, details?: unknown)
 export async function POST(req: Request) {
   try {
     const body = await req.json()
-    const { messages, model: modelName, scene } = body
+    const { messages, model: modelName, scene, subject, additionalPrompts = [] } = body
 
     if (!messages || !modelName) {
       return createErrorResponse('Messages and model name are required', 400)
@@ -41,17 +41,62 @@ export async function POST(req: Request) {
       return createErrorResponse('Model not found', 404)
     }
 
-    // 获取场景信息，包括关联的主题
-    const sceneData = await prisma.scene.findUnique({
-      where: { name: scene },
-      include: {
-        subject: true, // 包含关联的主题信息
-      },
-    })
+    // 构建系统提示词
+    let systemPrompt = ''
 
-    if (!sceneData) {
-      return createErrorResponse('Scene not found', 404)
+    // 如果有配置的主题，使用主题提示词
+    if (subject) {
+      systemPrompt = subject.prompt
+      console.log('Using configured subject:', subject.name)
+
+      // 如果还有配置的场景，添加场景提示词
+      if (scene) {
+        const sceneData = await prisma.scene.findUnique({
+          where: { name: scene },
+        })
+
+        if (sceneData) {
+          systemPrompt += '\n\n' + sceneData.prompt
+          console.log('Adding scene prompt:', scene)
+        }
+      }
+    } else if (scene) {
+      console.log('scene', scene)
+      // 没有配置主题但有场景时，获取场景信息，包括关联的主题
+      const sceneData = await prisma.scene.findUnique({
+        where: { name: scene },
+        include: {
+          subject: true, // 包含关联的主题信息
+        },
+      })
+
+      if (!sceneData) {
+        return createErrorResponse('Scene not found', 404)
+      }
+
+      // 如果场景有关联的激活主题，使用主题提示词 + 场景提示词
+      if (sceneData.subject && sceneData.subject.isActive) {
+        systemPrompt = sceneData.subject.prompt + '\n\n' + sceneData.prompt
+        console.log('Using subject-based prompt for:', sceneData.subject.name)
+      } else {
+        // 没有关联主题时，直接使用场景的提示词
+        systemPrompt = sceneData.prompt
+        console.log('Using scene prompt without subject')
+      }
     }
+
+    // 添加附加提示词
+    if (additionalPrompts.length > 0) {
+      const additionalPromptTexts = additionalPrompts.map((prompt: { prompt: string }) => prompt.prompt).join('\n')
+      if (systemPrompt) {
+        systemPrompt += '\n\n' + additionalPromptTexts
+      } else {
+        systemPrompt = additionalPromptTexts
+      }
+      console.log('Added additional prompts:', additionalPrompts.map((p: { name: string }) => p.name).join(', '))
+    }
+
+    console.log('Final system prompt:', systemPrompt || '(No system prompt - free chat)')
 
     // 获取提供商配置
     const providerConfig = PROVIDERS.find(p => p.providerName === model.providerName)
@@ -93,24 +138,9 @@ export async function POST(req: Request) {
         return createErrorResponse('Unsupported provider', 400)
     }
 
-    // 构建系统提示词
-    let systemPrompt = ''
-
-    // 如果场景有关联的激活主题，使用主题提示词 + 场景提示词
-    if (sceneData.subject && sceneData.subject.isActive) {
-      systemPrompt = sceneData.subject.prompt + '\n\n' + sceneData.prompt
-      console.log('Using subject-based prompt for:', sceneData.subject.name)
-    } else {
-      // 没有关联主题时，直接使用场景的提示词
-      systemPrompt = sceneData.prompt
-      console.log('Using scene prompt without subject')
-    }
-
-    console.log('Final system prompt:', systemPrompt)
-
     const result = streamText({
       model: aiProvider,
-      system: systemPrompt,
+      ...(systemPrompt && { system: systemPrompt }),
       temperature: 0.2,
       topP: 0.9,
       messages,

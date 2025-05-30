@@ -181,7 +181,21 @@
     "contact": "If you have any questions about these Terms, please contact us at:"
   },
   "chat": {
-    "inputPlaceholder": "Enter content to translate..."
+    "inputPlaceholder": "Enter content to translate...",
+    "config": {
+      "title": "Chat Configuration",
+      "description": "Select subject, additional prompts, and scene to customize your conversation experience",
+      "subject": "Subject",
+      "selectSubject": "Select Subject",
+      "noSubject": "No Subject (Free Chat)",
+      "additionalPrompts": "Additional Prompts",
+      "additionalPromptsDescription": "Only one option per category, options within the same category are mutually exclusive",
+      "selectOne": "select one",
+      "scene": "Scene",
+      "selectScene": "Select Scene",
+      "noScene": "No Scene",
+      "currentConfig": "Current Configuration"
+    }
   },
   "additionalPrompt": {
     "title": "Additional Prompt Management",

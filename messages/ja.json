@@ -181,7 +181,21 @@
     "contact": "これらの規約についてご質問がある場合は、以下までご連絡ください："
   },
   "chat": {
-    "inputPlaceholder": "翻訳したい内容を入力してください..."
+    "inputPlaceholder": "翻訳したい内容を入力してください...",
+    "config": {
+      "title": "チャット設定",
+      "description": "サブジェクト、追加プロンプト、シーンを選択して会話体験をカスタマイズ",
+      "subject": "サブジェクト",
+      "selectSubject": "サブジェクトを選択",
+      "noSubject": "サブジェクトなし（自由会話）",
+      "additionalPrompts": "追加プロンプト",
+      "additionalPromptsDescription": "カテゴリごとに1つのみ選択可能、同カテゴリのオプションは排他的",
+      "selectOne": "1つ選択",
+      "scene": "シーン",
+      "selectScene": "シーンを選択",
+      "noScene": "シーンなし",
+      "currentConfig": "現在の設定"
+    }
   },
   "additionalPrompt": {
     "title": "追加プロンプト管理",
