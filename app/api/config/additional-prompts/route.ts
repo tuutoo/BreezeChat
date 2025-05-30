@@ -33,7 +33,6 @@ export async function POST(request: Request) {
         sort: data.sort || 0,
         isActive: data.isActive ?? true,
         isDefault: data.isDefault ?? false,
-        applicableScenes: data.applicableScenes || [],
       },
     })
     return NextResponse.json(additionalPrompt)
@@ -59,7 +58,6 @@ export async function PUT(request: Request) {
         sort: data.sort,
         isActive: data.isActive,
         isDefault: data.isDefault,
-        applicableScenes: data.applicableScenes,
       },
     })
     return NextResponse.json(additionalPrompt)

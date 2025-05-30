@@ -802,7 +802,6 @@ export const AdditionalPromptScalarFieldEnum = {
   sort: 'sort',
   isActive: 'isActive',
   isDefault: 'isDefault',
-  applicableScenes: 'applicableScenes',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

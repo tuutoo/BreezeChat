@@ -76,7 +76,6 @@ export function AdditionalPromptDialog({ open, onOpenChange, prompt, onSave }: A
         sort: parseInt(sort),
         isActive,
         isDefault,
-        applicableScenes: prompt?.applicableScenes || []
       })
       onOpenChange(false)
     } catch (error) {

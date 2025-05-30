@@ -65,7 +65,6 @@ export type AdditionalPromptCountAggregateOutputType = {
   sort: number
   isActive: number
   isDefault: number
-  applicableScenes: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -112,7 +111,6 @@ export type AdditionalPromptCountAggregateInputType = {
   sort?: true
   isActive?: true
   isDefault?: true
-  applicableScenes?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -212,7 +210,6 @@ export type AdditionalPromptGroupByOutputType = {
   sort: number
   isActive: boolean
   isDefault: boolean
-  applicableScenes: string[]
   createdAt: Date
   updatedAt: Date
   _count: AdditionalPromptCountAggregateOutputType | null
@@ -248,7 +245,6 @@ export type AdditionalPromptWhereInput = {
   sort?: Prisma.IntFilter<"AdditionalPrompt"> | number
   isActive?: Prisma.BoolFilter<"AdditionalPrompt"> | boolean
   isDefault?: Prisma.BoolFilter<"AdditionalPrompt"> | boolean
-  applicableScenes?: Prisma.StringNullableListFilter<"AdditionalPrompt">
   createdAt?: Prisma.DateTimeFilter<"AdditionalPrompt"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"AdditionalPrompt"> | Date | string
 }
@@ -261,7 +257,6 @@ export type AdditionalPromptOrderByWithRelationInput = {
   sort?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   isDefault?: Prisma.SortOrder
-  applicableScenes?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -277,7 +272,6 @@ export type AdditionalPromptWhereUniqueInput = Prisma.AtLeast<{
   sort?: Prisma.IntFilter<"AdditionalPrompt"> | number
   isActive?: Prisma.BoolFilter<"AdditionalPrompt"> | boolean
   isDefault?: Prisma.BoolFilter<"AdditionalPrompt"> | boolean
-  applicableScenes?: Prisma.StringNullableListFilter<"AdditionalPrompt">
   createdAt?: Prisma.DateTimeFilter<"AdditionalPrompt"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"AdditionalPrompt"> | Date | string
 }, "id" | "name">
@@ -290,7 +284,6 @@ export type AdditionalPromptOrderByWithAggregationInput = {
   sort?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   isDefault?: Prisma.SortOrder
-  applicableScenes?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.AdditionalPromptCountOrderByAggregateInput
@@ -311,7 +304,6 @@ export type AdditionalPromptScalarWhereWithAggregatesInput = {
   sort?: Prisma.IntWithAggregatesFilter<"AdditionalPrompt"> | number
   isActive?: Prisma.BoolWithAggregatesFilter<"AdditionalPrompt"> | boolean
   isDefault?: Prisma.BoolWithAggregatesFilter<"AdditionalPrompt"> | boolean
-  applicableScenes?: Prisma.StringNullableListFilter<"AdditionalPrompt">
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"AdditionalPrompt"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"AdditionalPrompt"> | Date | string
 }
@@ -324,7 +316,6 @@ export type AdditionalPromptCreateInput = {
   sort?: number
   isActive?: boolean
   isDefault?: boolean
-  applicableScenes?: Prisma.AdditionalPromptCreateapplicableScenesInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -337,7 +328,6 @@ export type AdditionalPromptUncheckedCreateInput = {
   sort?: number
   isActive?: boolean
   isDefault?: boolean
-  applicableScenes?: Prisma.AdditionalPromptCreateapplicableScenesInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -350,7 +340,6 @@ export type AdditionalPromptUpdateInput = {
   sort?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  applicableScenes?: Prisma.AdditionalPromptUpdateapplicableScenesInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -363,7 +352,6 @@ export type AdditionalPromptUncheckedUpdateInput = {
   sort?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  applicableScenes?: Prisma.AdditionalPromptUpdateapplicableScenesInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -376,7 +364,6 @@ export type AdditionalPromptCreateManyInput = {
   sort?: number
   isActive?: boolean
   isDefault?: boolean
-  applicableScenes?: Prisma.AdditionalPromptCreateapplicableScenesInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -389,7 +376,6 @@ export type AdditionalPromptUpdateManyMutationInput = {
   sort?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  applicableScenes?: Prisma.AdditionalPromptUpdateapplicableScenesInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -402,17 +388,8 @@ export type AdditionalPromptUncheckedUpdateManyInput = {
   sort?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  applicableScenes?: Prisma.AdditionalPromptUpdateapplicableScenesInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-}
-
-export type StringNullableListFilter<$PrismaModel = never> = {
-  equals?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel> | null
-  has?: string | Prisma.StringFieldRefInput<$PrismaModel> | null
-  hasEvery?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
-  hasSome?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
-  isEmpty?: boolean
 }
 
 export type AdditionalPromptCountOrderByAggregateInput = {
@@ -423,7 +400,6 @@ export type AdditionalPromptCountOrderByAggregateInput = {
   sort?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   isDefault?: Prisma.SortOrder
-  applicableScenes?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -460,10 +436,6 @@ export type AdditionalPromptSumOrderByAggregateInput = {
   sort?: Prisma.SortOrder
 }
 
-export type AdditionalPromptCreateapplicableScenesInput = {
-  set: string[]
-}
-
 export type EnumPromptCategoryFieldUpdateOperationsInput = {
   set?: $Enums.PromptCategory
 }
@@ -476,11 +448,6 @@ export type IntFieldUpdateOperationsInput = {
   divide?: number
 }
 
-export type AdditionalPromptUpdateapplicableScenesInput = {
-  set?: string[]
-  push?: string | string[]
-}
-
 
 
 export type AdditionalPromptSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -491,7 +458,6 @@ export type AdditionalPromptSelect<ExtArgs extends runtime.Types.Extensions.Inte
   sort?: boolean
   isActive?: boolean
   isDefault?: boolean
-  applicableScenes?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["additionalPrompt"]>
@@ -504,7 +470,6 @@ export type AdditionalPromptSelectCreateManyAndReturn<ExtArgs extends runtime.Ty
   sort?: boolean
   isActive?: boolean
   isDefault?: boolean
-  applicableScenes?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["additionalPrompt"]>
@@ -517,7 +482,6 @@ export type AdditionalPromptSelectUpdateManyAndReturn<ExtArgs extends runtime.Ty
   sort?: boolean
   isActive?: boolean
   isDefault?: boolean
-  applicableScenes?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["additionalPrompt"]>
@@ -530,12 +494,11 @@ export type AdditionalPromptSelectScalar = {
   sort?: boolean
   isActive?: boolean
   isDefault?: boolean
-  applicableScenes?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type AdditionalPromptOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "prompt" | "category" | "sort" | "isActive" | "isDefault" | "applicableScenes" | "createdAt" | "updatedAt", ExtArgs["result"]["additionalPrompt"]>
+export type AdditionalPromptOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "prompt" | "category" | "sort" | "isActive" | "isDefault" | "createdAt" | "updatedAt", ExtArgs["result"]["additionalPrompt"]>
 
 export type $AdditionalPromptPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "AdditionalPrompt"
@@ -548,7 +511,6 @@ export type $AdditionalPromptPayload<ExtArgs extends runtime.Types.Extensions.In
     sort: number
     isActive: boolean
     isDefault: boolean
-    applicableScenes: string[]
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["additionalPrompt"]>
@@ -981,7 +943,6 @@ export interface AdditionalPromptFieldRefs {
   readonly sort: Prisma.FieldRef<"AdditionalPrompt", 'Int'>
   readonly isActive: Prisma.FieldRef<"AdditionalPrompt", 'Boolean'>
   readonly isDefault: Prisma.FieldRef<"AdditionalPrompt", 'Boolean'>
-  readonly applicableScenes: Prisma.FieldRef<"AdditionalPrompt", 'String[]'>
   readonly createdAt: Prisma.FieldRef<"AdditionalPrompt", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"AdditionalPrompt", 'DateTime'>
 }

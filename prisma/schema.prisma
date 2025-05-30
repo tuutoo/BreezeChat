@@ -73,9 +73,6 @@ model AdditionalPrompt {
   isActive    Boolean        @default(true) // 是否激活
   isDefault   Boolean        @default(false) // 是否为默认选项
 
-  // 可选：关联到特定场景（如果某些条件只适用于特定场景）
-  applicableScenes String[] // 存储适用场景的ID数组，空数组表示适用于所有场景
-
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
