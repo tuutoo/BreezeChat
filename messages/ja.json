@@ -41,9 +41,11 @@
     "logoutError": "ログアウトに失敗しました",
     "modelManagement": "モデル管理",
     "subjectManagement": "サブジェクト管理",
+    "additionalPromptManagement": "追加プロンプト管理",
     "sceneManagement": "シーン管理",
     "modelDescription": "AIモデル構成を管理します（モデル名、プロバイダー、ステータスなど）",
     "subjectDescription": "サブジェクト構成を管理します（基本指示と関連シーンを含む）",
+    "additionalPromptDescription": "追加プロンプト条件を管理します（トーン、スタイル、ドメイン関連の指示を含む）",
     "sceneDescription": "シーン構成を管理します（シーン名、説明、ステータスなど）"
   },
   "model": {
@@ -173,5 +175,41 @@
   },
   "chat": {
     "inputPlaceholder": "翻訳したい内容を入力してください..."
+  },
+  "additionalPrompt": {
+    "title": "追加プロンプト管理",
+    "add": "追加プロンプトを追加",
+    "edit": "追加プロンプトを編集",
+    "delete": "追加プロンプトを削除",
+    "category": "カテゴリ",
+    "sort": "並び順",
+    "prompt": "プロンプト内容",
+    "isActive": "有効",
+    "isDefault": "デフォルトオプション",
+    "defaultBadge": "デフォルト",
+    "enabled": "追加プロンプトが有効になりました",
+    "disabled": "追加プロンプトが無効になりました",
+    "namePlaceholder": "プロンプト名を入力",
+    "promptPlaceholder": "具体的なプロンプト指示内容を入力",
+    "selectCategory": "カテゴリを選択",
+    "searchPlaceholder": "追加プロンプトを検索...",
+    "noData": "データがありません",
+    "rowsPerPage": "1ページあたりの行数",
+    "pageInfo": "{total}ページ中{current}ページ",
+    "fetchError": "追加プロンプトの取得に失敗しました",
+    "createSuccess": "追加プロンプトが正常に作成されました",
+    "createError": "追加プロンプトの作成に失敗しました",
+    "updateSuccess": "追加プロンプトが正常に更新されました",
+    "updateError": "追加プロンプトの更新に失敗しました",
+    "deleteSuccess": "追加プロンプトが正常に削除されました",
+    "deleteError": "追加プロンプトの削除に失敗しました",
+    "deleteConfirmTitle": "削除の確認",
+    "deleteConfirmDescription": "追加プロンプト「{name}」を削除してもよろしいですか？この操作は元に戻せません。",
+    "requiredFields": "必須フィールドを入力してください",
+    "categories": {
+      "tone": "トーン",
+      "style": "スタイル",
+      "domain": "ドメイン"
+    }
   }
 }

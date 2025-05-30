@@ -41,9 +41,11 @@
     "logoutError": "로그아웃 실패",
     "modelManagement": "모델 관리",
     "subjectManagement": "주제 관리",
+    "additionalPromptManagement": "추가 프롬프트 관리",
     "sceneManagement": "장면 관리",
     "modelDescription": "AI 모델 구성 관리 (모델 이름, 공급자 및 상태 포함)",
     "subjectDescription": "주제 구성 관리 (기본 지침 및 관련 장면 포함)",
+    "additionalPromptDescription": "추가 프롬프트 조건 관리 (어조, 스타일, 도메인 관련 지침 포함)",
     "sceneDescription": "장면 구성 관리 (장면 이름, 설명 및 상태 포함)"
   },
   "model": {
@@ -173,5 +175,41 @@
   },
   "chat": {
     "inputPlaceholder": "번역할 내용을 입력하세요..."
+  },
+  "additionalPrompt": {
+    "title": "추가 프롬프트 관리",
+    "add": "추가 프롬프트 추가",
+    "edit": "추가 프롬프트 편집",
+    "delete": "추가 프롬프트 삭제",
+    "category": "카테고리",
+    "sort": "정렬 순서",
+    "prompt": "프롬프트 내용",
+    "isActive": "활성화",
+    "isDefault": "기본 옵션",
+    "defaultBadge": "기본",
+    "enabled": "추가 프롬프트가 활성화되었습니다",
+    "disabled": "추가 프롬프트가 비활성화되었습니다",
+    "namePlaceholder": "프롬프트 이름 입력",
+    "promptPlaceholder": "구체적인 프롬프트 지시 내용 입력",
+    "selectCategory": "카테고리 선택",
+    "searchPlaceholder": "추가 프롬프트 검색...",
+    "noData": "데이터 없음",
+    "rowsPerPage": "페이지당 행 수",
+    "pageInfo": "{total}페이지 중 {current}페이지",
+    "fetchError": "추가 프롬프트 가져오기 실패",
+    "createSuccess": "추가 프롬프트가 성공적으로 생성되었습니다",
+    "createError": "추가 프롬프트 생성 실패",
+    "updateSuccess": "추가 프롬프트가 성공적으로 업데이트되었습니다",
+    "updateError": "추가 프롬프트 업데이트 실패",
+    "deleteSuccess": "추가 프롬프트가 성공적으로 삭제되었습니다",
+    "deleteError": "추가 프롬프트 삭제 실패",
+    "deleteConfirmTitle": "삭제 확인",
+    "deleteConfirmDescription": "추가 프롬프트 \"{name}\"을(를) 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.",
+    "requiredFields": "필수 필드를 입력해주세요",
+    "categories": {
+      "tone": "어조",
+      "style": "스타일",
+      "domain": "도메인"
+    }
   }
 }

@@ -41,9 +41,11 @@
     "logoutError": "登出失败",
     "modelManagement": "模型管理",
     "subjectManagement": "主题管理",
+    "additionalPromptManagement": "附加提示管理",
     "sceneManagement": "场景管理",
     "modelDescription": "管理 AI 模型配置，包括模型名称、提供商和状态等",
     "subjectDescription": "管理主题配置，包括基础指令和相关场景等",
+    "additionalPromptDescription": "管理附加提示条件，包括语气、风格和领域相关的指令",
     "sceneDescription": "管理场景配置，包括场景名称、描述和状态等"
   },
   "model": {
@@ -173,5 +175,41 @@
   },
   "chat": {
     "inputPlaceholder": "输入想要翻译的内容..."
+  },
+  "additionalPrompt": {
+    "title": "附加提示管理",
+    "add": "添加附加提示",
+    "edit": "编辑附加提示",
+    "delete": "删除附加提示",
+    "category": "分类",
+    "sort": "排序",
+    "prompt": "提示内容",
+    "isActive": "是否启用",
+    "isDefault": "默认选项",
+    "defaultBadge": "默认",
+    "enabled": "附加提示已启用",
+    "disabled": "附加提示已禁用",
+    "namePlaceholder": "请输入提示名称",
+    "promptPlaceholder": "请输入具体的提示指令内容",
+    "selectCategory": "请选择分类",
+    "searchPlaceholder": "搜索附加提示...",
+    "noData": "暂无数据",
+    "rowsPerPage": "每页显示",
+    "pageInfo": "第 {current} 页，共 {total} 页",
+    "fetchError": "获取附加提示列表失败",
+    "createSuccess": "附加提示创建成功",
+    "createError": "创建附加提示失败",
+    "updateSuccess": "附加提示更新成功",
+    "updateError": "更新附加提示失败",
+    "deleteSuccess": "附加提示删除成功",
+    "deleteError": "删除附加提示失败",
+    "deleteConfirmTitle": "确认删除",
+    "deleteConfirmDescription": "确定要删除附加提示\"{name}\"吗？此操作无法撤销。",
+    "requiredFields": "请填写必填字段",
+    "categories": {
+      "tone": "语气",
+      "style": "风格",
+      "domain": "领域"
+    }
   }
 }

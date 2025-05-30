@@ -41,9 +41,11 @@
     "logoutError": "Logout failed",
     "modelManagement": "Model Management",
     "subjectManagement": "Subject Management",
+    "additionalPromptManagement": "Additional Prompt Management",
     "sceneManagement": "Scene Management",
     "modelDescription": "Manage AI model configurations, including model names, providers, and status",
     "subjectDescription": "Manage subject configurations, including base instructions and related scenes",
+    "additionalPromptDescription": "Manage additional prompt conditions, including tone, style, and domain-related instructions",
     "sceneDescription": "Manage scene configurations, including scene names, descriptions, and status"
   },
   "model": {
@@ -173,5 +175,41 @@
   },
   "chat": {
     "inputPlaceholder": "Enter content to translate..."
+  },
+  "additionalPrompt": {
+    "title": "Additional Prompt Management",
+    "add": "Add Additional Prompt",
+    "edit": "Edit Additional Prompt",
+    "delete": "Delete Additional Prompt",
+    "category": "Category",
+    "sort": "Sort Order",
+    "prompt": "Prompt Content",
+    "isActive": "Is Active",
+    "isDefault": "Default Option",
+    "defaultBadge": "Default",
+    "enabled": "Additional prompt enabled",
+    "disabled": "Additional prompt disabled",
+    "namePlaceholder": "Enter prompt name",
+    "promptPlaceholder": "Enter specific prompt instruction content",
+    "selectCategory": "Select category",
+    "searchPlaceholder": "Search additional prompts...",
+    "noData": "No data",
+    "rowsPerPage": "Rows per page",
+    "pageInfo": "Page {current} of {total}",
+    "fetchError": "Failed to fetch additional prompts",
+    "createSuccess": "Additional prompt created successfully",
+    "createError": "Failed to create additional prompt",
+    "updateSuccess": "Additional prompt updated successfully",
+    "updateError": "Failed to update additional prompt",
+    "deleteSuccess": "Additional prompt deleted successfully",
+    "deleteError": "Failed to delete additional prompt",
+    "deleteConfirmTitle": "Confirm Delete",
+    "deleteConfirmDescription": "Are you sure you want to delete the additional prompt \"{name}\"? This action cannot be undone.",
+    "requiredFields": "Please fill in required fields",
+    "categories": {
+      "tone": "Tone",
+      "style": "Style",
+      "domain": "Domain"
+    }
   }
 }
