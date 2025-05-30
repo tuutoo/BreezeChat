@@ -73,6 +73,24 @@ async function main() {
   // 创建附加提示条件
   await prisma.additionalPrompt.createMany({
     data: [
+      // 语言类条件
+      {
+        name: '英语',
+        prompt: '请使用英语回答用户的问题',
+        category: 'LANGUAGE',
+        sort: 1,
+        isActive: true,
+        isDefault: false,
+      },
+      {
+        name: '中文',
+        prompt: '请使用中文回答用户的问题',
+        category: 'LANGUAGE',
+        sort: 2,
+        isActive: true,
+        isDefault: false,
+      },
+
       // 语气类条件
       {
         name: '正式语气',
@@ -81,7 +99,6 @@ async function main() {
         sort: 1,
         isActive: true,
         isDefault: false,
-        applicableScenes: []
       },
       {
         name: '友好随意',
@@ -90,7 +107,6 @@ async function main() {
         sort: 2,
         isActive: true,
         isDefault: false,
-        applicableScenes: []
       },
       {
         name: '客气礼貌',
@@ -99,7 +115,6 @@ async function main() {
         sort: 3,
         isActive: true,
         isDefault: false,
-        applicableScenes: []
       },
 
       // 风格类条件
@@ -110,7 +125,6 @@ async function main() {
         sort: 1,
         isActive: true,
         isDefault: false,
-        applicableScenes: []
       },
       {
         name: '详细完整',
@@ -119,7 +133,6 @@ async function main() {
         sort: 2,
         isActive: true,
         isDefault: false,
-        applicableScenes: []
       },
 
       // 领域类条件
@@ -130,7 +143,6 @@ async function main() {
         sort: 1,
         isActive: true,
         isDefault: false,
-        applicableScenes: []
       },
       {
         name: '商务用语',
@@ -139,7 +151,6 @@ async function main() {
         sort: 2,
         isActive: true,
         isDefault: false,
-        applicableScenes: []
       }
     ]
   })

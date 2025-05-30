@@ -16,9 +16,11 @@ generator client {
 
 // 提示条件分类枚举
 enum PromptCategory {
+  LANGUAGE // 语言类
   TONE    // 语气类
   STYLE   // 风格类
   DOMAIN  // 领域类
+  OTHER  // 其他类
 }
 
 // 主题表

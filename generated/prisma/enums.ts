@@ -8,9 +8,11 @@
 * 🟢 You can import this file directly.
 */
 export const PromptCategory = {
+  LANGUAGE: 'LANGUAGE',
   TONE: 'TONE',
   STYLE: 'STYLE',
-  DOMAIN: 'DOMAIN'
+  DOMAIN: 'DOMAIN',
+  OTHER: 'OTHER'
 } as const
 
 export type PromptCategory = (typeof PromptCategory)[keyof typeof PromptCategory]
