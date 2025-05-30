@@ -217,9 +217,11 @@
     "deleteConfirmDescription": "Are you sure you want to delete the additional prompt \"{name}\"? This action cannot be undone.",
     "requiredFields": "Please fill in required fields",
     "categories": {
+      "language": "Language",
       "tone": "Tone",
       "style": "Style",
-      "domain": "Domain"
+      "domain": "Domain",
+      "other": "Other"
     }
   }
 }

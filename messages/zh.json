@@ -217,9 +217,11 @@
     "deleteConfirmDescription": "确定要删除附加提示\"{name}\"吗？此操作无法撤销。",
     "requiredFields": "请填写必填字段",
     "categories": {
+      "language": "语言",
       "tone": "语气",
       "style": "风格",
-      "domain": "领域"
+      "domain": "领域",
+      "other": "其他"
     }
   }
 }

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { AdditionalPrompt, PromptCategory } from '@/generated/prisma/client'
+import { PromptCategory as PromptCategoryEnum } from '@/generated/prisma/enums'
 import {
   Dialog,
   DialogContent,
@@ -85,11 +86,14 @@ export function AdditionalPromptDialog({ open, onOpenChange, prompt, onSave }: A
     }
   }
 
-  const categoryOptions = [
-    { value: 'TONE', label: t('additionalPrompt.categories.tone') },
-    { value: 'STYLE', label: t('additionalPrompt.categories.style') },
-    { value: 'DOMAIN', label: t('additionalPrompt.categories.domain') },
-  ]
+  const getCategoryOptions = () => {
+    return Object.keys(PromptCategoryEnum).map(key => ({
+      value: key as PromptCategory,
+      label: t(`additionalPrompt.categories.${key.toLowerCase()}`)
+    }))
+  }
+
+  const categoryOptions = getCategoryOptions()
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

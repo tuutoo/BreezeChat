@@ -217,9 +217,11 @@
     "deleteConfirmDescription": "추가 프롬프트 \"{name}\"을(를) 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.",
     "requiredFields": "필수 필드를 입력해주세요",
     "categories": {
-      "tone": "어조",
+      "language": "언어",
+      "tone": "톤",
       "style": "스타일",
-      "domain": "도메인"
+      "domain": "도메인",
+      "other": "기타"
     }
   }
 }

@@ -83,19 +83,19 @@ export function AdditionalPromptTable({ data, onEdit, onDelete, onToggleActive }
   }, [debouncedSearchValue])
 
   const getCategoryLabel = (category: PromptCategory) => {
-    const categoryMap = {
-      TONE: t('additionalPrompt.categories.tone'),
-      STYLE: t('additionalPrompt.categories.style'),
-      DOMAIN: t('additionalPrompt.categories.domain'),
-    }
-    return categoryMap[category] || category
+    // 动态生成分类标签映射
+    const categoryKey = category.toLowerCase()
+    return t(`additionalPrompt.categories.${categoryKey}`)
   }
 
   const getCategoryColor = (category: PromptCategory) => {
-    const colorMap = {
+    // 为不同分类分配颜色
+    const colorMap: Record<PromptCategory, string> = {
+      LANGUAGE: 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300',
       TONE: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300',
       STYLE: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300',
       DOMAIN: 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300',
+      OTHER: 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300',
     }
     return colorMap[category] || 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300'
   }

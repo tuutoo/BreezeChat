@@ -217,9 +217,11 @@
     "deleteConfirmDescription": "追加プロンプト「{name}」を削除してもよろしいですか？この操作は元に戻せません。",
     "requiredFields": "必須フィールドを入力してください",
     "categories": {
+      "language": "言語",
       "tone": "トーン",
       "style": "スタイル",
-      "domain": "ドメイン"
+      "domain": "ドメイン",
+      "other": "その他"
     }
   }
 }
