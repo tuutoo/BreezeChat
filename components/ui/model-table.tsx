@@ -11,6 +11,7 @@ import {
   getSortedRowModel,
   ColumnFiltersState,
   getFilteredRowModel,
+  PaginationState,
 } from '@tanstack/react-table'
 import {
   Table,
@@ -23,9 +24,16 @@ import {
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Switch } from '@/components/ui/switch'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import { Model } from '@/generated/prisma/client'
 import { PROVIDERS } from '@/lib/providers'
-import { Edit2, Trash2 } from 'lucide-react'
+import { Edit2, Trash2, ChevronLeft, ChevronRight } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 
 interface ModelTableProps {
@@ -43,6 +51,10 @@ export function ModelTable({
 }: ModelTableProps) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 5,
+  })
 
   const t = useTranslations()
 
@@ -114,14 +126,16 @@ export function ModelTable({
     getSortedRowModel: getSortedRowModel(),
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
+    onPaginationChange: setPagination,
     state: {
       sorting,
       columnFilters,
+      pagination,
     },
   })
 
   return (
-    <div>
+    <div className="space-y-4">
       <div className="flex items-center py-4">
         <Input
           placeholder={t('model.searchPlaceholder')}
@@ -182,23 +196,102 @@ export function ModelTable({
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          {t('model.previousPage')}
-        </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          {t('model.nextPage')}
-        </Button>
+
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <p className="text-sm text-muted-foreground">
+            {t('model.itemsPerPage')}
+          </p>
+          <Select
+            value={pagination.pageSize.toString()}
+            onValueChange={(value) => {
+              table.setPageSize(Number(value))
+            }}
+          >
+            <SelectTrigger className="h-8 w-[80px]">
+              <SelectValue placeholder={pagination.pageSize} />
+            </SelectTrigger>
+            <SelectContent side="top">
+              {[5, 10, 25, 50, 100].map((size) => (
+                <SelectItem key={size} value={size.toString()}>
+                  {size}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <p className="text-sm text-muted-foreground">
+            {t('model.records')}
+          </p>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1">
+            <p className="text-sm font-medium">{t('model.goToPage')}</p>
+            <Input
+              type="number"
+              min={1}
+              max={table.getPageCount()}
+              value={table.getState().pagination.pageIndex + 1}
+              onChange={(e) => {
+                const page = e.target.value ? Number(e.target.value) - 1 : 0
+                table.setPageIndex(page)
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'ArrowUp') {
+                  e.preventDefault()
+                  const nextPage = Math.min(table.getState().pagination.pageIndex + 1, table.getPageCount() - 1)
+                  table.setPageIndex(nextPage)
+                } else if (e.key === 'ArrowDown') {
+                  e.preventDefault()
+                  const prevPage = Math.max(table.getState().pagination.pageIndex - 1, 0)
+                  table.setPageIndex(prevPage)
+                }
+              }}
+              className="h-8 w-16"
+            />
+            <p className="text-sm font-medium">{t('model.page')}</p>
+          </div>
+          <div className="flex items-center gap-1">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => table.setPageIndex(0)}
+              disabled={!table.getCanPreviousPage()}
+            >
+              {'<<'}
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage()}
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage()}
+            >
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+              disabled={!table.getCanNextPage()}
+            >
+              {'>>'}
+            </Button>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            {t('model.pageOf', {
+              current: table.getState().pagination.pageIndex + 1,
+              total: table.getPageCount()
+            })}
+          </p>
+        </div>
       </div>
     </div>
   )

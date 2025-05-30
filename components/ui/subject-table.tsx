@@ -24,15 +24,13 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Switch } from '@/components/ui/switch'
 import {
-  ArrowUpDown,
-  ArrowUp,
-  ArrowDown,
-  Edit,
+  Edit2,
   Trash2,
   ChevronLeft,
   ChevronRight,
-  ChevronsLeft,
-  ChevronsRight,
+  ArrowUpDown,
+  ArrowUp,
+  ArrowDown,
 } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import {
@@ -169,7 +167,7 @@ export function SubjectTable({ subjects, onEdit, onDelete, onToggleActive }: Sub
               size="sm"
               onClick={() => onEdit(subject)}
             >
-              <Edit className="h-4 w-4" />
+              <Edit2 className="h-4 w-4" />
             </Button>
             <Button
               variant="ghost"
@@ -263,74 +261,100 @@ export function SubjectTable({ subjects, onEdit, onDelete, onToggleActive }: Sub
       </div>
 
       {/* 分页 */}
-      <div className="flex items-center justify-between space-x-2 py-4">
-        <div className="flex items-center space-x-2">
-          <p className="text-sm font-medium">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <p className="text-sm text-muted-foreground">
             {t('subject.itemsPerPage')}
           </p>
           <Select
-            value={`${table.getState().pagination.pageSize}`}
+            value={pagination.pageSize.toString()}
             onValueChange={(value) => {
               table.setPageSize(Number(value))
             }}
           >
-            <SelectTrigger className="h-8 w-[70px]">
-              <SelectValue placeholder={table.getState().pagination.pageSize} />
+            <SelectTrigger className="h-8 w-[80px]">
+              <SelectValue placeholder={pagination.pageSize} />
             </SelectTrigger>
             <SelectContent side="top">
-              {[5, 10, 20, 30, 40, 50].map((pageSize) => (
-                <SelectItem key={pageSize} value={`${pageSize}`}>
-                  {pageSize}
+              {[5, 10, 25, 50, 100].map((size) => (
+                <SelectItem key={size} value={size.toString()}>
+                  {size}
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
+          <p className="text-sm text-muted-foreground">
+            {t('subject.records')}
+          </p>
         </div>
-        <div className="flex items-center space-x-6 lg:space-x-8">
-          <div className="flex w-[100px] items-center justify-center text-sm font-medium">
-            {t('subject.pageOf', {
-              current: table.getState().pagination.pageIndex + 1,
-              total: table.getPageCount(),
-            })}
+
+        <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1">
+            <p className="text-sm font-medium">{t('subject.goToPage')}</p>
+            <Input
+              type="number"
+              min={1}
+              max={table.getPageCount()}
+              value={table.getState().pagination.pageIndex + 1}
+              onChange={(e) => {
+                const page = e.target.value ? Number(e.target.value) - 1 : 0
+                table.setPageIndex(page)
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'ArrowUp') {
+                  e.preventDefault()
+                  const nextPage = Math.min(table.getState().pagination.pageIndex + 1, table.getPageCount() - 1)
+                  table.setPageIndex(nextPage)
+                } else if (e.key === 'ArrowDown') {
+                  e.preventDefault()
+                  const prevPage = Math.max(table.getState().pagination.pageIndex - 1, 0)
+                  table.setPageIndex(prevPage)
+                }
+              }}
+              className="h-8 w-16"
+            />
+            <p className="text-sm font-medium">{t('subject.page')}</p>
           </div>
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center gap-1">
             <Button
               variant="outline"
-              className="hidden h-8 w-8 p-0 lg:flex"
+              size="sm"
               onClick={() => table.setPageIndex(0)}
               disabled={!table.getCanPreviousPage()}
             >
-              <span className="sr-only">Go to first page</span>
-              <ChevronsLeft className="h-4 w-4" />
+              {'<<'}
             </Button>
             <Button
               variant="outline"
-              className="h-8 w-8 p-0"
+              size="sm"
               onClick={() => table.previousPage()}
               disabled={!table.getCanPreviousPage()}
             >
-              <span className="sr-only">Go to previous page</span>
               <ChevronLeft className="h-4 w-4" />
             </Button>
             <Button
               variant="outline"
-              className="h-8 w-8 p-0"
+              size="sm"
               onClick={() => table.nextPage()}
               disabled={!table.getCanNextPage()}
             >
-              <span className="sr-only">Go to next page</span>
               <ChevronRight className="h-4 w-4" />
             </Button>
             <Button
               variant="outline"
-              className="hidden h-8 w-8 p-0 lg:flex"
+              size="sm"
               onClick={() => table.setPageIndex(table.getPageCount() - 1)}
               disabled={!table.getCanNextPage()}
             >
-              <span className="sr-only">Go to last page</span>
-              <ChevronsRight className="h-4 w-4" />
+              {'>>'}
             </Button>
           </div>
+          <p className="text-sm text-muted-foreground">
+            {t('subject.pageOf', {
+              current: table.getState().pagination.pageIndex + 1,
+              total: table.getPageCount()
+            })}
+          </p>
         </div>
       </div>
     </div>
