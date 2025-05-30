@@ -14,6 +14,13 @@ generator client {
   output   = "../generated/prisma"
 }
 
+// 提示条件分类枚举
+enum PromptCategory {
+  TONE    // 语气类
+  STYLE   // 风格类
+  DOMAIN  // 领域类
+}
+
 // 主题表
 model Subject {
   id          String   @id @default(uuid())
@@ -54,4 +61,23 @@ model Model {
   isActive     Boolean  @default(true)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+}
+
+// 附加提示条件表
+model AdditionalPrompt {
+  id          String         @id @default(uuid())
+  name        String         @unique // 条件名称，如"语气要求"、"专业术语"等
+  prompt      String         // 具体的提示内容
+  category    PromptCategory // 分类，使用枚举
+  sort        Int            @default(0) // 排序，用于排序
+  isActive    Boolean        @default(true) // 是否激活
+  isDefault   Boolean        @default(false) // 是否为默认选项
+
+  // 可选：关联到特定场景（如果某些条件只适用于特定场景）
+  applicableScenes String[] // 存储适用场景的ID数组，空数组表示适用于所有场景
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("additional_prompts")
 }

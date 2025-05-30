@@ -396,7 +396,8 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 export const ModelName = {
   Subject: 'Subject',
   Scene: 'Scene',
-  Model: 'Model'
+  Model: 'Model',
+  AdditionalPrompt: 'AdditionalPrompt'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -412,7 +413,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "subject" | "scene" | "model"
+    modelProps: "subject" | "scene" | "model" | "additionalPrompt"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -638,6 +639,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    AdditionalPrompt: {
+      payload: Prisma.$AdditionalPromptPayload<ExtArgs>
+      fields: Prisma.AdditionalPromptFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AdditionalPromptFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdditionalPromptPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AdditionalPromptFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdditionalPromptPayload>
+        }
+        findFirst: {
+          args: Prisma.AdditionalPromptFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdditionalPromptPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AdditionalPromptFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdditionalPromptPayload>
+        }
+        findMany: {
+          args: Prisma.AdditionalPromptFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdditionalPromptPayload>[]
+        }
+        create: {
+          args: Prisma.AdditionalPromptCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdditionalPromptPayload>
+        }
+        createMany: {
+          args: Prisma.AdditionalPromptCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.AdditionalPromptCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdditionalPromptPayload>[]
+        }
+        delete: {
+          args: Prisma.AdditionalPromptDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdditionalPromptPayload>
+        }
+        update: {
+          args: Prisma.AdditionalPromptUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdditionalPromptPayload>
+        }
+        deleteMany: {
+          args: Prisma.AdditionalPromptDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AdditionalPromptUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.AdditionalPromptUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdditionalPromptPayload>[]
+        }
+        upsert: {
+          args: Prisma.AdditionalPromptUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdditionalPromptPayload>
+        }
+        aggregate: {
+          args: Prisma.AdditionalPromptAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAdditionalPrompt>
+        }
+        groupBy: {
+          args: Prisma.AdditionalPromptGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AdditionalPromptGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AdditionalPromptCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AdditionalPromptCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -719,6 +794,22 @@ export const ModelScalarFieldEnum = {
 export type ModelScalarFieldEnum = (typeof ModelScalarFieldEnum)[keyof typeof ModelScalarFieldEnum]
 
 
+export const AdditionalPromptScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  prompt: 'prompt',
+  category: 'category',
+  sort: 'sort',
+  isActive: 'isActive',
+  isDefault: 'isDefault',
+  applicableScenes: 'applicableScenes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AdditionalPromptScalarFieldEnum = (typeof AdditionalPromptScalarFieldEnum)[keyof typeof AdditionalPromptScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -785,6 +876,20 @@ export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaM
 
 
 /**
+ * Reference to a field of type 'PromptCategory'
+ */
+export type EnumPromptCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PromptCategory'>
+    
+
+
+/**
+ * Reference to a field of type 'PromptCategory[]'
+ */
+export type ListEnumPromptCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PromptCategory[]'>
+    
+
+
+/**
  * Reference to a field of type 'Int'
  */
 export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -795,6 +900,20 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'In
  * Reference to a field of type 'Int[]'
  */
 export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Float'
+ */
+export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+/**
+ * Reference to a field of type 'Float[]'
+ */
+export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
 
 /**
@@ -875,6 +994,7 @@ export type GlobalOmitConfig = {
   subject?: Prisma.SubjectOmit
   scene?: Prisma.SceneOmit
   model?: Prisma.ModelOmit
+  additionalPrompt?: Prisma.AdditionalPromptOmit
 }
 
 /* Types for Logging */

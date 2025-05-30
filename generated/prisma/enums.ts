@@ -7,7 +7,10 @@
 *
 * 🟢 You can import this file directly.
 */
+export const PromptCategory = {
+  TONE: 'TONE',
+  STYLE: 'STYLE',
+  DOMAIN: 'DOMAIN'
+} as const
 
-
-// This file is empty because there are no enums in the schema.
-export {}
+export type PromptCategory = (typeof PromptCategory)[keyof typeof PromptCategory]

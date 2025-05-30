@@ -10,4 +10,5 @@
 export type * from './models/Subject'
 export type * from './models/Scene'
 export type * from './models/Model'
+export type * from './models/AdditionalPrompt'
 export type * from './commonInputTypes'

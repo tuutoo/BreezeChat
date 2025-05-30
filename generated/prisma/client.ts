@@ -56,5 +56,11 @@ export type Scene = Prisma.SceneModel
  * 
  */
 export type Model = Prisma.ModelModel
+/**
+ * Model AdditionalPrompt
+ * 
+ */
+export type AdditionalPrompt = Prisma.AdditionalPromptModel
 
-
+export type PromptCategory = $Enums.PromptCategory
+export const PromptCategory = $Enums.PromptCategory
