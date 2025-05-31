@@ -10,14 +10,17 @@ export default function LocalizedHome() {
     subject?: Subject
     additionalPrompts: AdditionalPrompt[]
     scene?: Scene
+    keepHistory: boolean
   }>({
-    additionalPrompts: []
+    additionalPrompts: [],
+    keepHistory: false
   })
 
   const handleConfigChange = useCallback((config: {
     subject?: Subject
     additionalPrompts: AdditionalPrompt[]
     scene?: Scene
+    keepHistory: boolean
   }) => {
     setChatConfig(config)
   }, [])

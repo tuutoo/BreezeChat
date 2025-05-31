@@ -194,7 +194,9 @@
       "scene": "シーン",
       "selectScene": "シーンを選択",
       "noScene": "シーンなし",
-      "currentConfig": "現在の設定"
+      "currentConfig": "現在の設定",
+      "keepHistory": "履歴を保持",
+      "keepHistoryDescription": "新しいメッセージに以前の会話履歴を含めるかどうか"
     }
   },
   "additionalPrompt": {

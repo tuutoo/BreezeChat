@@ -194,7 +194,9 @@
       "scene": "시나리오",
       "selectScene": "시나리오 선택",
       "noScene": "시나리오 없음",
-      "currentConfig": "현재 설정"
+      "currentConfig": "현재 설정",
+      "keepHistory": "기록 보관",
+      "keepHistoryDescription": "새 메시지에 이전 대화 기록을 포함할지 여부"
     }
   },
   "additionalPrompt": {

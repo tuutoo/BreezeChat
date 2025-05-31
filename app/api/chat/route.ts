@@ -26,7 +26,7 @@ function createErrorResponse(message: string, status: number, details?: unknown)
 export async function POST(req: Request) {
   try {
     const body = await req.json()
-    const { messages, model: modelName, scene, subject, additionalPrompts = [] } = body
+    const { messages, model: modelName, scene, subject, additionalPrompts = [], keepHistory = false } = body
 
     if (!messages || !modelName) {
       return createErrorResponse('Messages and model name are required', 400)
@@ -98,6 +98,19 @@ export async function POST(req: Request) {
 
     console.log('Final system prompt:', systemPrompt || '(No system prompt - free chat)')
 
+    // 根据 keepHistory 参数处理消息
+    let processedMessages = messages
+    if (!keepHistory && messages.length > 1) {
+      // 如果不保留历史记录，只保留最后一条用户消息
+      const lastMessage = messages[messages.length - 1]
+      if (lastMessage.role === 'user') {
+        processedMessages = [lastMessage]
+        console.log('History disabled: Using only the last user message')
+      } else {
+        processedMessages = messages
+      }
+    }
+
     // 获取提供商配置
     const providerConfig = PROVIDERS.find(p => p.providerName === model.providerName)
     if (!providerConfig) {
@@ -143,7 +156,7 @@ export async function POST(req: Request) {
       ...(systemPrompt && { system: systemPrompt }),
       temperature: 0.2,
       topP: 0.9,
-      messages,
+      messages: processedMessages,
     });
 
     try {

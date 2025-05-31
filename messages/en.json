@@ -194,7 +194,9 @@
       "scene": "Scene",
       "selectScene": "Select Scene",
       "noScene": "No Scene",
-      "currentConfig": "Current Configuration"
+      "currentConfig": "Current Configuration",
+      "keepHistory": "Keep History",
+      "keepHistoryDescription": "Whether to include previous conversation history in new messages"
     }
   },
   "additionalPrompt": {

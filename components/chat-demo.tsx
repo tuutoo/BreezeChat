@@ -31,6 +31,7 @@ type ChatDemoProps = {
     subject?: Subject
     additionalPrompts: AdditionalPrompt[]
     scene?: Scene
+    keepHistory: boolean
   }
 }
 
@@ -145,6 +146,7 @@ export default function ChatDemo(props: ChatDemoProps) {
       scene: effectiveScene,
       subject: props.config?.subject,
       additionalPrompts: props.config?.additionalPrompts || [],
+      keepHistory: props.config?.keepHistory ?? false,
     },
     onError: (error: ChatError) => {
       console.error('Chat error:', error)

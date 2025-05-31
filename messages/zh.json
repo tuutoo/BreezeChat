@@ -194,7 +194,9 @@
       "scene": "场景",
       "selectScene": "选择场景",
       "noScene": "无场景",
-      "currentConfig": "当前配置"
+      "currentConfig": "当前配置",
+      "keepHistory": "保留历史记录",
+      "keepHistoryDescription": "是否在新消息中包含之前的对话历史"
     }
   },
   "additionalPrompt": {

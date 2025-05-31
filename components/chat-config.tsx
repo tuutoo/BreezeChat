@@ -13,6 +13,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Switch } from '@/components/ui/switch'
 import { X } from 'lucide-react'
 
 interface ChatConfigProps {
@@ -20,6 +21,7 @@ interface ChatConfigProps {
     subject?: Subject
     additionalPrompts: AdditionalPrompt[]
     scene?: Scene
+    keepHistory: boolean
   }) => void
 }
 
@@ -34,6 +36,7 @@ export function ChatConfig({ onConfigChange }: ChatConfigProps) {
   const [selectedSubject, setSelectedSubject] = useState<Subject | undefined>()
   const [selectedAdditionalPrompts, setSelectedAdditionalPrompts] = useState<AdditionalPrompt[]>([])
   const [selectedScene, setSelectedScene] = useState<Scene | undefined>()
+  const [keepHistory, setKeepHistory] = useState<boolean>(false) // 默认不保留历史记录
 
   const [isLoading, setIsLoading] = useState(true)
   const [isInitialized, setIsInitialized] = useState(false)
@@ -85,8 +88,9 @@ export function ChatConfig({ onConfigChange }: ChatConfigProps) {
     const savedSubjectId = localStorage.getItem('selectedSubjectId')
     const savedAdditionalPromptIds = localStorage.getItem('selectedAdditionalPromptIds')
     const savedSceneId = localStorage.getItem('selectedSceneId')
+    const savedKeepHistory = localStorage.getItem('keepHistory')
 
-    console.log('Saved values:', { savedSubjectId, savedAdditionalPromptIds, savedSceneId })
+    console.log('Saved values:', { savedSubjectId, savedAdditionalPromptIds, savedSceneId, savedKeepHistory })
 
     if (savedSubjectId && savedSubjectId !== 'none' && subjects.length > 0) {
       const subject = subjects.find(s => s.id === savedSubjectId)
@@ -111,6 +115,13 @@ export function ChatConfig({ onConfigChange }: ChatConfigProps) {
       const scene = scenes.find(s => s.id === savedSceneId)
       console.log('Setting scene:', scene)
       setSelectedScene(scene)
+    }
+
+    // 加载保留历史记录设置，如果没有保存的值，默认为false
+    if (savedKeepHistory !== null) {
+      const keepHistoryValue = savedKeepHistory === 'true'
+      console.log('Setting keepHistory:', keepHistoryValue)
+      setKeepHistory(keepHistoryValue)
     }
 
     setIsInitialized(true)
@@ -140,6 +151,13 @@ export function ChatConfig({ onConfigChange }: ChatConfigProps) {
     localStorage.setItem('selectedSceneId', value)
   }, [selectedScene, isInitialized])
 
+  useEffect(() => {
+    if (!isInitialized) return
+    const value = keepHistory.toString()
+    console.log('Saving keepHistory to localStorage:', value)
+    localStorage.setItem('keepHistory', value)
+  }, [keepHistory, isInitialized])
+
   // 根据选择的主题过滤场景
   useEffect(() => {
     if (selectedSubject) {
@@ -168,8 +186,9 @@ export function ChatConfig({ onConfigChange }: ChatConfigProps) {
       subject: selectedSubject,
       additionalPrompts: selectedAdditionalPrompts,
       scene: selectedScene,
+      keepHistory,
     })
-  }, [selectedSubject, selectedAdditionalPrompts, selectedScene, onConfigChange, isInitialized])
+  }, [selectedSubject, selectedAdditionalPrompts, selectedScene, keepHistory, onConfigChange, isInitialized])
 
   const handleSubjectChange = (subjectId: string) => {
     if (subjectId === 'none') {
@@ -251,6 +270,24 @@ export function ChatConfig({ onConfigChange }: ChatConfigProps) {
         <CardDescription>{t('chat.config.description')}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
+        {/* 保留历史记录 */}
+        <div className="space-y-2">
+          <label className="text-sm font-medium">{t('chat.config.keepHistory')}</label>
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="keep-history"
+              checked={keepHistory}
+              onCheckedChange={setKeepHistory}
+            />
+            <label
+              htmlFor="keep-history"
+              className="text-sm text-muted-foreground cursor-pointer"
+            >
+              {t('chat.config.keepHistoryDescription')}
+            </label>
+          </div>
+        </div>
+
         {/* 主题选择 */}
         <div className="space-y-2">
           <label className="text-sm font-medium">{t('chat.config.subject')}</label>
@@ -330,7 +367,7 @@ export function ChatConfig({ onConfigChange }: ChatConfigProps) {
         )}
 
         {/* 当前配置摘要 */}
-        {(selectedSubject || selectedAdditionalPrompts.length > 0 || selectedScene) && (
+        {(selectedSubject || selectedAdditionalPrompts.length > 0 || selectedScene || keepHistory) && (
           <>
             <div className="space-y-2">
               <div className="text-sm font-medium">{t('chat.config.currentConfig')}</div>
@@ -355,6 +392,10 @@ export function ChatConfig({ onConfigChange }: ChatConfigProps) {
                     <span className="font-medium">{selectedScene.name}</span>
                   </div>
                 )}
+                <div>
+                  <span className="text-muted-foreground">{t('chat.config.keepHistory')}:</span>{' '}
+                  <span className="font-medium">{keepHistory ? t('common.enabled') : t('common.disabled')}</span>
+                </div>
               </div>
             </div>
           </>
