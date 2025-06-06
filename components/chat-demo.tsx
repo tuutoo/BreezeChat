@@ -19,6 +19,8 @@ import { Badge } from "@/components/ui/badge"
 import { Model, Scene, Subject, AdditionalPrompt } from "@/generated/prisma/client"
 import { useTranslations } from 'next-intl'
 import { useToast } from "@/components/ui/use-toast"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { ChevronDown, ChevronRight } from "lucide-react"
 
 // 定义错误类型
 interface ChatError extends Error {
@@ -47,6 +49,7 @@ export default function ChatDemo(props: ChatDemoProps) {
   const [count, setCount] = useState(0)
   const [current, setCurrent] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
+  const [isPromptExpanded, setIsPromptExpanded] = useState(true)
 
   // 从配置中获取场景，如果没有配置则使用选择的场景ID找到对应场景
   const getEffectiveSceneName = () => {
@@ -216,6 +219,46 @@ export default function ChatDemo(props: ChatDemoProps) {
     }
   }
 
+  // 构建最终的系统提示词（模拟后端逻辑）
+  const buildFinalPrompt = () => {
+    let systemPrompt = ''
+
+    // 如果有配置的主题，使用主题提示词
+    if (props.config?.subject) {
+      systemPrompt = props.config.subject.prompt
+
+      // 如果还有配置的场景或选择的场景，添加场景提示词
+      if (props.config.scene) {
+        systemPrompt += '\n\n' + props.config.scene.prompt
+      } else if (effectiveScene) {
+        const scene = scenes.find(s => s.name === effectiveScene)
+        if (scene) {
+          systemPrompt += '\n\n' + scene.prompt
+        }
+      }
+    } else if (effectiveScene) {
+      // 没有配置主题但有场景时，直接使用场景的提示词
+      const scene = scenes.find(s => s.name === effectiveScene)
+      if (scene) {
+        systemPrompt = scene.prompt
+      }
+    }
+
+    // 添加附加提示词
+    if (props.config?.additionalPrompts && props.config.additionalPrompts.length > 0) {
+      const additionalPromptTexts = props.config.additionalPrompts.map(prompt => prompt.prompt).join('\n')
+      if (systemPrompt) {
+        systemPrompt += '\n\n' + additionalPromptTexts
+      } else {
+        systemPrompt = additionalPromptTexts
+      }
+    }
+
+    return systemPrompt || '(无系统提示词 - 自由对话模式)'
+  }
+
+  const finalPrompt = buildFinalPrompt()
+
   return (
     <div className={cn("flex", "flex-col", "w-full")}>
       <div className={cn("flex", "justify-end", "mb-2")}>
@@ -260,6 +303,28 @@ export default function ChatDemo(props: ChatDemoProps) {
           "Können Sie mir bitte den Fehlercode senden?",
         ]}
       />
+
+      {/* 实时显示当前的最终提示词 */}
+      <Card className="mt-4">
+        <CardHeader>
+          <CardTitle
+            className="text-sm font-medium cursor-pointer flex items-center gap-2"
+            onClick={() => setIsPromptExpanded(!isPromptExpanded)}
+          >
+            {isPromptExpanded ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
+            当前系统提示词
+          </CardTitle>
+        </CardHeader>
+        {isPromptExpanded && (
+          <CardContent className="pt-0">
+            <div className="bg-muted rounded-md p-3 text-sm max-h-64 overflow-y-auto">
+              <pre className="whitespace-pre-wrap font-mono text-xs leading-relaxed">
+                {finalPrompt}
+              </pre>
+            </div>
+          </CardContent>
+        )}
+      </Card>
 
       {/* 只有在没有配置时才显示场景选择器 */}
       {!props.config && (
