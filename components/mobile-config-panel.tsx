@@ -22,13 +22,19 @@ interface MobileConfigPanelProps {
     scene?: Scene
     keepHistory: boolean
   }) => void
+  configData?: {
+    subjects: Subject[]
+    additionalPrompts: AdditionalPrompt[]
+    scenes: Scene[]
+    isLoading: boolean
+  }
 }
 
-export function MobileConfigPanel({ onConfigChange }: MobileConfigPanelProps) {
+export function MobileConfigPanel({ onConfigChange, configData }: MobileConfigPanelProps) {
   const t = useTranslations()
   const [isOpen, setIsOpen] = useState(false)
 
-    return (
+  return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button
@@ -41,7 +47,10 @@ export function MobileConfigPanel({ onConfigChange }: MobileConfigPanelProps) {
           {t('chat.config.title')}
         </Button>
       </DialogTrigger>
-      <DialogContent className="w-full max-w-md sm:max-w-lg max-h-[90vh] overflow-y-auto">
+      <DialogContent
+        className="w-full max-w-md sm:max-w-lg max-h-[90vh] overflow-y-auto"
+        onOpenAutoFocus={(e) => e.preventDefault()}
+      >
         <DialogHeader>
           <DialogTitle>{t('chat.config.title')}</DialogTitle>
           <DialogDescription>
@@ -49,7 +58,10 @@ export function MobileConfigPanel({ onConfigChange }: MobileConfigPanelProps) {
           </DialogDescription>
         </DialogHeader>
         <div className="mt-6">
-          <ChatConfig onConfigChange={onConfigChange} />
+          <ChatConfig
+            onConfigChange={onConfigChange}
+            configData={configData}
+          />
         </div>
       </DialogContent>
     </Dialog>

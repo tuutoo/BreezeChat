@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { Subject, AdditionalPrompt, Scene } from '@/generated/prisma/client';
 import ChatDemo from "@/components/chat-demo";
 import { ChatConfig } from "@/components/chat-config";
@@ -17,6 +17,51 @@ export default function LocalizedHome() {
     keepHistory: false
   })
 
+  // 预加载配置数据
+  const [configData, setConfigData] = useState<{
+    subjects: Subject[]
+    additionalPrompts: AdditionalPrompt[]
+    scenes: Scene[]
+    isLoading: boolean
+  }>({
+    subjects: [],
+    additionalPrompts: [],
+    scenes: [],
+    isLoading: true
+  })
+
+  // 在组件挂载时立即加载配置数据
+  useEffect(() => {
+    const fetchConfigData = async () => {
+      try {
+        // 并行获取所有配置数据
+        const [subjectsResponse, promptsResponse, scenesResponse] = await Promise.all([
+          fetch('/api/config/subjects'),
+          fetch('/api/config/additional-prompts'),
+          fetch('/api/scenes')
+        ])
+
+        const [subjectsData, promptsData, scenesData] = await Promise.all([
+          subjectsResponse.ok ? subjectsResponse.json() : [],
+          promptsResponse.ok ? promptsResponse.json() : [],
+          scenesResponse.ok ? scenesResponse.json() : []
+        ])
+
+        setConfigData({
+          subjects: subjectsData,
+          additionalPrompts: promptsData.filter((p: AdditionalPrompt) => p.isActive),
+          scenes: scenesData,
+          isLoading: false
+        })
+      } catch (error) {
+        console.error('Error fetching config data:', error)
+        setConfigData(prev => ({ ...prev, isLoading: false }))
+      }
+    }
+
+    fetchConfigData()
+  }, [])
+
   const handleConfigChange = useCallback((config: {
     subject?: Subject
     additionalPrompts: AdditionalPrompt[]
@@ -30,7 +75,10 @@ export default function LocalizedHome() {
     <div className="h-full max-w-7xl mx-auto w-full">
       {/* 移动端配置按钮 */}
       <div className="mb-4 lg:hidden">
-        <MobileConfigPanel onConfigChange={handleConfigChange} />
+        <MobileConfigPanel
+          onConfigChange={handleConfigChange}
+          configData={configData}
+        />
       </div>
 
       {/* 主要内容区域 */}
@@ -42,7 +90,10 @@ export default function LocalizedHome() {
 
         {/* 桌面端配置区域 */}
         <div className="hidden lg:block w-80 flex-shrink-0">
-          <ChatConfig onConfigChange={handleConfigChange} />
+          <ChatConfig
+            onConfigChange={handleConfigChange}
+            configData={configData}
+          />
         </div>
       </div>
     </div>

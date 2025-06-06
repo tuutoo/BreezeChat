@@ -23,9 +23,15 @@ interface ChatConfigProps {
     scene?: Scene
     keepHistory: boolean
   }) => void
+  configData?: {
+    subjects: Subject[]
+    additionalPrompts: AdditionalPrompt[]
+    scenes: Scene[]
+    isLoading: boolean
+  }
 }
 
-export function ChatConfig({ onConfigChange }: ChatConfigProps) {
+export function ChatConfig({ onConfigChange, configData }: ChatConfigProps) {
   const t = useTranslations()
 
   const [subjects, setSubjects] = useState<Subject[]>([])
@@ -41,41 +47,50 @@ export function ChatConfig({ onConfigChange }: ChatConfigProps) {
   const [isLoading, setIsLoading] = useState(true)
   const [isInitialized, setIsInitialized] = useState(false)
 
-  // 加载数据
+  // 使用传入的configData或加载数据
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setIsLoading(true)
+    if (configData) {
+      // 如果有传入的configData，直接使用
+      setSubjects(configData.subjects)
+      setAdditionalPrompts(configData.additionalPrompts)
+      setScenes(configData.scenes)
+      setIsLoading(configData.isLoading)
+    } else {
+      // 如果没有传入configData，则自己加载（向后兼容）
+      const fetchData = async () => {
+        try {
+          setIsLoading(true)
 
-        // 获取主题列表
-        const subjectsResponse = await fetch('/api/config/subjects')
-        if (subjectsResponse.ok) {
-          const subjectsData = await subjectsResponse.json()
-          setSubjects(subjectsData)
-        }
+          // 获取主题列表
+          const subjectsResponse = await fetch('/api/config/subjects')
+          if (subjectsResponse.ok) {
+            const subjectsData = await subjectsResponse.json()
+            setSubjects(subjectsData)
+          }
 
-        // 获取附加提示列表
-        const promptsResponse = await fetch('/api/config/additional-prompts')
-        if (promptsResponse.ok) {
-          const promptsData = await promptsResponse.json()
-          setAdditionalPrompts(promptsData.filter((p: AdditionalPrompt) => p.isActive))
-        }
+          // 获取附加提示列表
+          const promptsResponse = await fetch('/api/config/additional-prompts')
+          if (promptsResponse.ok) {
+            const promptsData = await promptsResponse.json()
+            setAdditionalPrompts(promptsData.filter((p: AdditionalPrompt) => p.isActive))
+          }
 
-        // 获取场景列表
-        const scenesResponse = await fetch('/api/scenes')
-        if (scenesResponse.ok) {
-          const scenesData = await scenesResponse.json()
-          setScenes(scenesData)
+          // 获取场景列表
+          const scenesResponse = await fetch('/api/scenes')
+          if (scenesResponse.ok) {
+            const scenesData = await scenesResponse.json()
+            setScenes(scenesData)
+          }
+        } catch (error) {
+          console.error('Error fetching config data:', error)
+        } finally {
+          setIsLoading(false)
         }
-      } catch (error) {
-        console.error('Error fetching config data:', error)
-      } finally {
-        setIsLoading(false)
       }
-    }
 
-    fetchData()
-  }, [])
+      fetchData()
+    }
+  }, [configData])
 
   // 从localStorage加载保存的配置
   useEffect(() => {
