@@ -25,24 +25,24 @@ const geistMono = Geist_Mono({
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: "LinguaLens 翻译助手",
-  description: "LinguaLens 智能双向翻译助手，支持多场景风格切换",
-  keywords: ['LinguaLens', '翻译', 'AI 翻译', '多场景翻译'],
+  title: "BreezeChat - AI智能对话助手",
+  description: "BreezeChat 智能AI对话助手，支持多场景风格切换",
+  keywords: ['BreezeChat', 'AI对话', 'AI Chat', '多场景对话'],
   robots: {
     index: true,
     follow: true,
   },
   openGraph: {
-    title: 'LinguaLens 翻译助手',
-    description: 'LinguaLens 智能双向翻译助手，支持多场景风格切换',
-    url: 'https://lingualens.blazorserver.com',
-    siteName: 'LinguaLens',
+    title: 'BreezeChat - AI智能对话助手',
+    description: 'BreezeChat 智能AI对话助手，支持多场景风格切换',
+    url: 'https://breezechat.sohot.app',
+    siteName: 'BreezeChat',
     type: 'website',
   },
   twitter: {
     card: 'summary',
-    title: 'LinguaLens 翻译助手',
-    description: '智能双向翻译助手，支持多场景风格切换',
+    title: 'BreezeChat - AI智能对话助手',
+    description: '智能AI对话助手，支持多场景风格切换',
   }
 };
 

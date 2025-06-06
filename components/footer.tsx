@@ -22,8 +22,8 @@ interface FooterProps {
 export const Footer: React.FC<FooterProps> = ({
   logo = {
     src: '/github-mark.svg',
-    alt: 'LinguaLens Logo',
-    title: 'LinguaLens',
+            alt: 'BreezeChat Logo',
+        title: 'BreezeChat',
     url: '/',
   },
 }: FooterProps) => {
@@ -33,15 +33,15 @@ export const Footer: React.FC<FooterProps> = ({
     {
       title: t('footer.features'),
       links: [
-        { text: t('footer.translation'), url: 'https://github.com/neozhu/lingualens' },
+        { text: t('footer.translation'), url: 'https://github.com/tuutoo/breezechat' },
         { text: t('footer.sceneModes'), url: '/scene' },
       ],
     },
     {
       title: t('footer.support'),
       links: [
-        { text: t('footer.faq'), url: 'https://github.com/neozhu/lingualens' },
-        { text: t('footer.contactMe'), url: 'https://blazorserver.com/contact' },
+        { text: t('footer.faq'), url: 'https://github.com/tuutoo/breezechat' },
+        { text: t('footer.contactMe'), url: 'https://sohot.app/contact' },
       ],
     },
     {

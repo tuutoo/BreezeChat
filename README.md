@@ -1,6 +1,6 @@
-# **LinguaLens - Multilingual AI Intelligent Conversation Assistant**
+# **BreezeChat - Multilingual AI Intelligent Conversation Assistant**
 
-**LinguaLens** is an advanced multilingual AI conversation assistant that supports both free chat and scenario-based configuration modes. Through flexible themes, scenes, and additional prompt configurations, it provides users with personalized AI conversation experiences. Supporting Chinese, English, Japanese, and Korean interface languages, it's suitable for various work scenarios including translation, technical support, meeting communication, and more.
+**BreezeChat** is an advanced multilingual AI conversation assistant that supports both free chat and scenario-based configuration modes. Through flexible themes, scenes, and additional prompt configurations, it provides users with personalized AI conversation experiences. Supporting Chinese, English, Japanese, and Korean interface languages, it's suitable for various work scenarios including translation, technical support, meeting communication, and more.
 
 ![](/public/screen.png)
 
@@ -52,8 +52,8 @@
 ### **1. Clone the Project**
 
 ```bash
-git clone https://github.com/neozhu/lingualens.git
-cd lingualens
+git clone https://github.com/tuutoo/BreezeChat.git
+cd BreezeChat
 ```
 
 ### **2. Install Dependencies**
@@ -77,7 +77,7 @@ NEXT_PUBLIC_GA_ID=your_google_analytics_id
 ADMIN_PASSWORD=your_admin_password
 
 # Database Configuration
-DATABASE_URL=postgresql://username:password@localhost:5432/lingualens?schema=public
+DATABASE_URL=postgresql://username:password@localhost:5432/breezechat?schema=public
 
 # AI API Keys
 GOOGLE_GENERATIVE_AI_API_KEY=your_google_api_key
@@ -115,14 +115,14 @@ Visit `http://localhost:3000` to start using the application.
 version: '3.8'
 
 services:
-  lingualens:
-    image: lingualens:latest
+  breezechat:
+    image: breezechat:latest
     ports:
       - "3000:3000"
     environment:
       - NODE_ENV=production
       - ADMIN_PASSWORD=your_admin_password
-      - DATABASE_URL=postgresql://postgres:password@db:5432/lingualens?schema=public
+      - DATABASE_URL=postgresql://postgres:password@db:5432/breezechat?schema=public
       - GOOGLE_GENERATIVE_AI_API_KEY=your_google_api_key
       - GROQ_API_KEY=your_groq_api_key
       - OPENAI_API_KEY=your_openai_api_key
@@ -134,7 +134,7 @@ services:
   db:
     image: postgres:15
     environment:
-      - POSTGRES_DB=lingualens
+      - POSTGRES_DB=breezechat
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=password
     volumes:
