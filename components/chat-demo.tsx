@@ -260,10 +260,11 @@ export default function ChatDemo(props: ChatDemoProps) {
   const finalPrompt = buildFinalPrompt()
 
   return (
-    <div className={cn("flex", "flex-col", "w-full")}>
-      <div className={cn("flex", "justify-end", "mb-2")}>
+    <div className={cn("flex", "flex-col", "w-full", "h-full")}>
+      <div className={cn("flex", "justify-between", "lg:justify-end", "items-center", "mb-2", "gap-2")}>
+        <h2 className="text-lg font-semibold lg:hidden">BreezeChat</h2>
         <Select value={selectedModel} onValueChange={setSelectedModel} disabled={isLoading}>
-          <SelectTrigger className="w-[220px]">
+          <SelectTrigger className="w-full max-w-[220px] lg:w-[220px]">
             <SelectValue placeholder={isLoading ? t('common.loading') : t('model.select')}>
               {models.find((m) => m.name === selectedModel)?.name || ''}
             </SelectValue>
@@ -285,28 +286,30 @@ export default function ChatDemo(props: ChatDemoProps) {
         </Select>
       </div>
 
-      <Chat
-        className="w-full"
-        messages={messages as unknown as Message[]}
-        handleSubmit={handleSubmit}
-        input={input}
-        handleInputChange={handleInputChange}
-        isGenerating={status === "streaming"}
-        stop={stop}
-        append={append}
-        setMessages={setMessages}
-        transcribeAudio={transcribeAudio}
-        placeholder={t('chat.inputPlaceholder')}
-        suggestions={[
-          "你好，今天的会议在哪里举行？",
-          "Please confirm your availability for the upcoming meeting.",
-          "Können Sie mir bitte den Fehlercode senden?",
-        ]}
-      />
+      <div className="flex-1 min-h-0">
+        <Chat
+          className="w-full h-full"
+          messages={messages as unknown as Message[]}
+          handleSubmit={handleSubmit}
+          input={input}
+          handleInputChange={handleInputChange}
+          isGenerating={status === "streaming"}
+          stop={stop}
+          append={append}
+          setMessages={setMessages}
+          transcribeAudio={transcribeAudio}
+          placeholder={t('chat.inputPlaceholder')}
+          suggestions={[
+            "你好，今天的会议在哪里举行？",
+            "Please confirm your availability for the upcoming meeting.",
+            "Können Sie mir bitte den Fehlercode senden?",
+          ]}
+        />
+      </div>
 
       {/* 实时显示当前的最终提示词 */}
       <Card className="mt-4">
-        <CardHeader>
+        <CardHeader className="pb-2">
           <CardTitle
             className="text-sm font-medium cursor-pointer flex items-center gap-2"
             onClick={() => setIsPromptExpanded(!isPromptExpanded)}
@@ -317,7 +320,7 @@ export default function ChatDemo(props: ChatDemoProps) {
         </CardHeader>
         {isPromptExpanded && (
           <CardContent className="pt-0">
-            <div className="bg-muted rounded-md p-3 text-sm max-h-64 overflow-y-auto">
+            <div className="bg-muted rounded-md p-3 text-sm max-h-32 lg:max-h-64 overflow-y-auto">
               <pre className="whitespace-pre-wrap font-mono text-xs leading-relaxed">
                 {finalPrompt}
               </pre>
@@ -327,12 +330,12 @@ export default function ChatDemo(props: ChatDemoProps) {
       </Card>
 
       {/* 只有在没有配置时才显示场景选择器 */}
-      {!props.config && (
+      {!props.config && scenes.length > 0 && (
         <div className="mb-2 relative w-full">
           {/* left fade */}
           <div
             className={cn(
-              "absolute left-12 top-0 bottom-0 w-12 z-10 bg-gradient-to-r from-background to-transparent pointer-events-none",
+              "absolute left-6 lg:left-12 top-0 bottom-0 w-6 lg:w-12 z-10 bg-gradient-to-r from-background to-transparent pointer-events-none",
               current == 1 && "hidden"
             )}
           />
@@ -343,30 +346,30 @@ export default function ChatDemo(props: ChatDemoProps) {
               align: "start",
               dragFree: true,
             }}
-            className="w-full px-12 h-12 flex items-center"
+            className="w-full px-6 lg:px-12 h-12 flex items-center"
           >
             <CarouselContent className="-ml-1">
               {scenes.map((scene) => (
                 <CarouselItem
                   key={scene.name}
-                  className="pl-3 basis-auto flex items-center"
+                  className="pl-2 lg:pl-3 basis-auto flex items-center"
                   onClick={() => handleSceneClick(scene.id)}
                 >
                   <Badge
                     variant={selectedSceneId === scene.id ? "default" : "secondary"}
-                    className="cursor-pointer counded-lg px-3 py-1 white-space-nowrap"
+                    className="cursor-pointer rounded-lg px-2 lg:px-3 py-1 text-xs lg:text-sm whitespace-nowrap"
                   >
                     {scene.name}
                   </Badge>
                 </CarouselItem>
               ))}
             </CarouselContent>
-            <CarouselPrevious className="left-0 z-20" />
-            <CarouselNext className="right-0 z-20" />
+            <CarouselPrevious className="left-0 z-20 h-8 w-8 lg:h-10 lg:w-10" />
+            <CarouselNext className="right-0 z-20 h-8 w-8 lg:h-10 lg:w-10" />
             {/* right fade */}
             <div
               className={cn(
-                "absolute right-12 top-0 bottom-0 w-12 z-10 bg-gradient-to-l from-background to-transparent pointer-events-none",
+                "absolute right-6 lg:right-12 top-0 bottom-0 w-6 lg:w-12 z-10 bg-gradient-to-l from-background to-transparent pointer-events-none",
                 current == count && "hidden"
               )}
             />
