@@ -1,85 +1,83 @@
-# **LinguaLens Translation Assistant**
+# **LinguaLens - Multilingual AI Intelligent Conversation Assistant**
 
-**LinguaLens** is an intelligent translation assistant that supports bidirectional translation between Chinese and other languages. It adapts to different contexts and scenarios such as email, online meetings, technical support, and more. The tool intelligently selects the tone, formality, and style of the translation based on the chosen scene, ensuring accurate and contextually appropriate translations.
+**LinguaLens** is an advanced multilingual AI conversation assistant that supports both free chat and scenario-based configuration modes. Through flexible themes, scenes, and additional prompt configurations, it provides users with personalized AI conversation experiences. Supporting Chinese, English, Japanese, and Korean interface languages, it's suitable for various work scenarios including translation, technical support, meeting communication, and more.
 
 ![](/public/screen.png)
 
-## **Features**
+## **🌟 Core Features**
 
-* **Bidirectional Translation**: Automatically translates Chinese to English and any non-Chinese language (e.g., English, French, German) to Chinese.
-* **Scene-based Context**: Tailors translations based on the context of specific work-related scenarios like online meetings, emails, Teams chats, and technical support.
-* **Multilingual Support**: Currently supports translations between Chinese and several other languages, including English, French, German, etc.
-* **Customizable User Interface**: Easily switch between different scenes for translations, ensuring the tone and style fit the specific use case.
-* **User-Friendly Design**: Built with **Next.js** and **ShadCN UI**, making the interface simple and intuitive.
-* **Supports Gemini 2.5 Flash Preview 04-17**: You can choose the Gemini 2.5 Flash Preview 04-17 model, which provides excellent translation quality.
+### **💬 Dual-Mode Conversation System**
+- **Free Chat Mode**: Open AI conversations without configuration constraints
+- **Scenario-Based Configuration Mode**: Professional conversations based on themes, scenes, and additional prompts
 
-## **Tech Stack**
+### **🌍 Multilingual Support**
+- **Interface Languages**: Supports Chinese, English, Japanese, and Korean interface languages
+- **AI Conversations**: Supports intelligent conversations and translations in multiple languages
 
-* **Frontend**: Next.js 15 (App Router)
-* **UI Components**: Shadcn/UI
-* **State Management**: Zustand (for lightweight state management and history tracking)
-* **AI Translation Service**: Powered by **Google Gemini** or any other AI model, providing accurate translations based on the context and input language.
-* **Backend**: API integration with AI services for streaming responses up to 30 seconds.
-* **CSS**: Tailwind CSS for styling
-* **Language Detection**: Automatically detects the language of input text and translates it to the appropriate target language.
+### **⚙️ Flexible Configuration System**
+- **Theme Configuration**: Set basic conversation instructions and styles
+- **Scene Management**: Professional configurations for specific work scenarios
+- **Additional Prompts**: Add extra instructions by category (Language, Tone, Style, Domain)
+- **Conversation History Management**: Optional retention of current conversation history
 
-## **How It Works**
+### **💾 Data Persistence**
+- **Database Storage**: All configurations saved in PostgreSQL database
+- **Configuration Management**: Support for CRUD operations on models, themes, scenes, and additional prompts
 
-1. **Language Detection**: The AI detects the language of the input text. If the input is in **Chinese**, it translates it into **English**. If the input is in any other language (e.g., **English**, **French**, **German**), it translates it into **Chinese**.
-2. **Scene Selection**: Users can select the translation scene (e.g., **Email**, **Online Meeting**, **Technical Support**). The AI adjusts the tone and formality of the translation based on the selected scene.
-3. **Real-Time Translation**: The translation process takes place in real-time, providing instant feedback for quick and accurate translations.
+### **🔐 User Authentication**
+- **Login Protection**: Simple password protection for admin interface
+- **Session Management**: Support for login/logout functionality
 
-## **Scenes**
+### **🎨 User Experience**
+- **Theme Switching**: Support for light/dark theme switching
+- **Real-time Prompt Display**: Visual display of currently active system prompts
+- **Responsive Design**: Adapts to various device screens
 
-Below are the translation scenes I believe are most commonly used in the workplace:
+## **🏗️ Technical Architecture**
 
-- **Daily Communication**: Casual, friendly exchanges between colleagues or friends, using common vocabulary and simple grammar.
-- **Email**: For professional business email communication.
-- **News Article**: For translating news reports or informational articles. Maintains objectivity, neutrality, and accuracy.
-- **Word Explanation**: For simple, memorable explanations and practical example sentences of a word or phrase, in both English and Chinese.
-- **Technical Documentation**: For translating developer technical documentation or API references. Uses a professional tone, consistent terminology, and clear, structured presentation.
-- **Social Media Post (X/Reddit)**: For engaging posts on X (Twitter) or Reddit.
-- **Technical Support**: For technical support communication in systems like TOPdesk, focusing on Salesforce, JavaScript, .NET, or SAP.
-- **Meeting Invitation**: For formal meeting invitation messages.
-- **Requirement Discussion**: For discussions about## **Scenes**
+- **Frontend Framework**: Next.js 15 (App Router) + TypeScript
+- **UI Component Library**: Shadcn/UI + Tailwind CSS
+- **Internationalization**: next-intl (Chinese, Japanese, English, Korean)
+- **Database**: PostgreSQL + Prisma ORM
+- **AI Integration**: Supports multiple AI providers
+  - Google Gemini
+  - OpenAI GPT
+  - Groq (Llama)
+  - Mistral AI
+- **State Management**: React Hooks + localStorage
+- **Deployment**: Docker + Docker Compose
 
-## **Getting Started**
+## **🚀 Quick Start**
 
-To run **LinguaLens** locally, follow these steps:
-
-### **1. Clone the repository**
+### **1. Clone the Project**
 
 ```bash
 git clone https://github.com/neozhu/lingualens.git
 cd lingualens
 ```
 
-### **2. Install dependencies**
-
-Use `pnpm` or `npm` to install the project dependencies.
+### **2. Install Dependencies**
 
 ```bash
 pnpm install
-# Or if you're using npm:
+# Or use npm
 npm install
 ```
 
-### **3. Set up environment variables**
+### **3. Configure Environment Variables**
 
-Create a `.env.local` file in the root directory and add your environment-specific variables. You can use the provided `sample.env` file as a template.
-
-> **Note:** These API keys can be obtained for free by registering an account, or you can use a paid account if you need higher usage limits.
+Create a `.env.local` file, refer to the `sample.env` template:
 
 ```bash
 # Environment Configuration
-NODE_ENV=production
+NODE_ENV=development
 NEXT_PUBLIC_GA_ID=your_google_analytics_id
 
 # Admin Configuration
 ADMIN_PASSWORD=your_admin_password
 
 # Database Configuration
-DATABASE_URL=postgresql://<username>:<password>@<host>:<port>/<database>?schema=public
+DATABASE_URL=postgresql://username:password@localhost:5432/lingualens?schema=public
 
 # AI API Keys
 GOOGLE_GENERATIVE_AI_API_KEY=your_google_api_key
@@ -88,114 +86,125 @@ OPENAI_API_KEY=your_openai_api_key
 MISTRAL_API_KEY=your_mistral_api_key
 ```
 
-#### **Environment Variables Explanation:**
+### **4. Initialize Database**
 
-- **`NODE_ENV`**: Set to `production` for production deployment or `development` for local development
-- **`NEXT_PUBLIC_GA_ID`**: Your Google Analytics tracking ID for website analytics
-- **`ADMIN_PASSWORD`**: Password for admin access to certain features
-- **`DATABASE_URL`**: PostgreSQL database connection string
-  - `<username>`：数据库用户名
-  - `<password>`：数据库密码
-  - `<host>`：数据库主机地址（如 `localhost` 或容器名）
-  - `<port>`：数据库端口（PostgreSQL 默认 5432）
-  - `<database>`：数据库名称
-- **AI API Keys**: API keys for different AI translation services
-  - **`GOOGLE_GENERATIVE_AI_API_KEY`**: Google Gemini API key
-  - **`GROQ_API_KEY`**: Groq API key for fast inference
-  - **`OPENAI_API_KEY`**: OpenAI API key for GPT models
-  - **`MISTRAL_API_KEY`**: Mistral AI API key
+```bash
+# Generate Prisma client
+pnpm prisma generate
 
-**示例：**
-```env
-DATABASE_URL=postgresql://postgres:mysecretpassword@localhost:5432/lingualens?schema=public
+# Run database migrations
+pnpm prisma db push
+
+# (Optional) Seed example data
+pnpm prisma db seed
 ```
 
-### **4. Run the project**
-
-After setting up the environment variables, you can start the development server:
+### **5. Start Development Server**
 
 ```bash
 pnpm dev
-# Or if you're using npm:
-npm run dev
 ```
 
-Visit `http://localhost:3000` in your browser to access the app.
+Visit `http://localhost:3000` to start using the application.
 
-## **Docker Deployment**
+## **🐳 Docker Deployment**
 
-You can deploy **LinguaLens** using Docker for easy setup and consistent environments.
-
-### **1. Pull the latest code**
-
-```bash
-git pull
-```
-
-### **2. Build the Docker image**
-
-```bash
-sudo docker build . -t lingualens:ver
-```
-
-Replace `ver` with your desired version tag (e.g., `v0.24`).
-
-### **3. (Optional) Use Docker Compose**
-
-Below is an example `docker-compose.yml` file for running LinguaLens:
+### **Using Docker Compose**
 
 ```yaml
 version: '3.8'
 
 services:
   lingualens:
-    image: lingualens:v0.24
-    # Map external port 4010 to internal port 3000
+    image: lingualens:latest
     ports:
-      - "4010:3000"
-    # Set environment variables
+      - "3000:3000"
     environment:
       - NODE_ENV=production
-      - NEXT_PUBLIC_GA_ID=your_google_analytics_id
       - ADMIN_PASSWORD=your_admin_password
-      - DATABASE_URL=postgresql://postgres:mysecretpassword@db:5432/lingualens?schema=public
+      - DATABASE_URL=postgresql://postgres:password@db:5432/lingualens?schema=public
       - GOOGLE_GENERATIVE_AI_API_KEY=your_google_api_key
       - GROQ_API_KEY=your_groq_api_key
       - OPENAI_API_KEY=your_openai_api_key
       - MISTRAL_API_KEY=your_mistral_api_key
+    depends_on:
+      - db
     restart: unless-stopped
+
+  db:
+    image: postgres:15
+    environment:
+      - POSTGRES_DB=lingualens
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
 ```
 
-### **4. Start the service**
+Start the services:
 
 ```bash
-sudo docker compose up -d
+docker-compose up -d
 ```
 
-Visit `http://localhost:4010` in your browser to access the app running in Docker.
+## **📖 User Guide**
 
-## **Usage**
+### **Admin Functions**
+1. **Login**: Use the configured admin password to log in
+2. **Model Management**: Configure AI models and their providers
+3. **Theme Management**: Set basic conversation instructions
+4. **Scene Management**: Create specific work scenario configurations
+5. **Additional Prompt Management**: Manage extra instructions by category
 
-1. **Select a Scene**: Choose the context for the translation (e.g., **Online Meeting**, **Email**).
-2. **Input Text**: Type or paste the text you want to translate in either **Chinese** or another language.
-3. **Receive Translation**: The AI will process the translation and output the result in the target language (English for Chinese input, or Chinese for other language inputs).
+### **User Functions**
+1. **Choose Mode**:
+   - Configuration Mode: Select themes, scenes, and additional prompts
+   - Free Mode: Start conversations directly
+2. **Conversation Settings**:
+   - Select AI model
+   - Set whether to retain conversation history
+   - Switch interface language
+3. **Real-time Prompt Viewing**: Expand to view the complete system prompts currently in effect
 
-## **Contributing**
+## **🌐 Supported Scenarios**
 
-We welcome contributions to **LinguaLens**! If you'd like to improve the project, please follow these steps:
+- **Daily Communication**: Casual, friendly exchanges between colleagues or friends
+- **Email Communication**: Professional business email communication
+- **Technical Documentation**: Developer technical documentation or API reference translation
+- **Technical Support**: System technical support communication
+- **Meeting Invitations**: Formal meeting invitation messages
+- **News Articles**: News reports or informational article translation
+- **Word Explanations**: Simple explanations of words or phrases
+- **Social Media**: Engaging posts for X (Twitter) or Reddit
+- **Requirement Discussions**: Discussions about project requirements
 
-1. Fork the repository.
-2. Create a new branch for your feature or bug fix.
-3. Submit a pull request with a clear explanation of the changes.
+## **🤝 Contributing**
 
-## **License**
+We welcome community contributions! If you want to improve this project:
+
+1. Fork this repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## **📄 License**
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## **Acknowledgments**
+## **🙏 Acknowledgments**
 
-* Thanks to the **AI SDK** for providing the AI services used in the project.
-* Inspired by **Shadcn/UI** for building responsive and customizable UI components.
-* Special thanks to the **Google Gemini** team for their AI-powered translation capabilities.
+- Thanks to **Vercel AI SDK** for providing AI service integration
+- Thanks to **Shadcn/UI** for providing excellent UI components
+- Thanks to the **Next.js** team for providing a powerful framework
+- Thanks to all AI providers for their excellent services
+
+---
+
+**🌟 If this project helps you, please give it a Star!**
 
 
