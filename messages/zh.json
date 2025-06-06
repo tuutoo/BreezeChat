@@ -182,6 +182,10 @@
   },
   "chat": {
     "inputPlaceholder": "输入想要翻译的内容...",
+    "systemPrompt": {
+      "title": "当前系统提示词",
+      "noPrompt": "无系统提示词 - 自由对话模式"
+    },
     "config": {
       "title": "聊天配置",
       "description": "选择主题、附加提示和场景来定制您的对话体验",

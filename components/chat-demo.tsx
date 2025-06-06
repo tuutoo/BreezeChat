@@ -254,7 +254,7 @@ export default function ChatDemo(props: ChatDemoProps) {
       }
     }
 
-    return systemPrompt || '(无系统提示词 - 自由对话模式)'
+    return systemPrompt || t('chat.systemPrompt.noPrompt')
   }
 
   const finalPrompt = buildFinalPrompt()
@@ -312,7 +312,7 @@ export default function ChatDemo(props: ChatDemoProps) {
             onClick={() => setIsPromptExpanded(!isPromptExpanded)}
           >
             {isPromptExpanded ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
-            当前系统提示词
+            {t('chat.systemPrompt.title')}
           </CardTitle>
         </CardHeader>
         {isPromptExpanded && (

@@ -182,6 +182,10 @@
   },
   "chat": {
     "inputPlaceholder": "Enter content to translate...",
+    "systemPrompt": {
+      "title": "Current System Prompt",
+      "noPrompt": "No system prompt - Free chat mode"
+    },
     "config": {
       "title": "Chat Configuration",
       "description": "Select subject, additional prompts, and scene to customize your conversation experience",
