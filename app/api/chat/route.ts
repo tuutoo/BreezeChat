@@ -160,7 +160,7 @@ export async function POST(req: Request) {
     });
 
     try {
-      return result.toDataStreamResponse();
+      return result.toUIMessageStreamResponse();
     } catch (error) {
       return createErrorResponse('Internal Server Error', 500, error);
     }

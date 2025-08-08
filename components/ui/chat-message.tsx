@@ -87,7 +87,7 @@ type ToolInvocation = PartialToolCall | ToolCall | ToolResult
 
 interface ReasoningPart {
   type: "reasoning"
-  reasoning: string
+  reasoningText: string
 }
 
 interface ToolInvocationPart {
@@ -295,14 +295,14 @@ const ReasoningBlock = ({ part }: { part: ReasoningPart }) => {
           >
             <div className="p-2">
               <div className="whitespace-pre-wrap text-xs">
-                {part.reasoning}
+                {part.reasoningText}
               </div>
             </div>
           </motion.div>
         </CollapsibleContent>
       </Collapsible>
     </div>
-  )
+  );
 }
 
 function ToolCall({
