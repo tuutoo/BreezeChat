@@ -160,63 +160,66 @@ export function Chat({
   }, [stop, setMessages, messagesRef])
 
   const messageOptions = useCallback(
-    (message: Message) => ({
-      actions: onRateResponse ? (
-        <>
-          <div className="border-r pr-1">
+    (message: Message) => {
+      // Get text content from parts or fallback to legacy content
+      const textContent = message.parts?.find(part => part.type === "text" && "text" in part)?.text || message.content || ""
 
+      return {
+        actions: onRateResponse ? (
+          <>
+            <div className="border-r pr-1">
+              <CopyButton
+                value={textContent}
+                className="
+              h-6 w-6
+              text-zinc-700 hover:bg-zinc-100 hover:text-zinc-900
+              dark:text-zinc-50 dark:hover:bg-zinc-700 dark:hover:text-zinc-50
+              "
+              />
+            </div>
+            <Button
+              size="icon"
+              variant="ghost"
+              className="h-6 w-6"
+              onClick={() => onRateResponse(message.id, "thumbs-up")}
+            >
+              <ThumbsUp className="h-4 w-4" />
+            </Button>
+            <Button
+              size="icon"
+              variant="ghost"
+              className="h-6 w-6"
+              onClick={() => onRateResponse(message.id, "thumbs-down")}
+            >
+              <ThumbsDown className="h-4 w-4" />
+            </Button>
+            <ReadAloudButton
+              text={textContent}
+              className="h-6 w-6 text-zinc-50 hover:bg-zinc-700 hover:text-zinc-50"
+            />
+          </>
+        ) : (
+          <div className="d-flex items-center space-x-2">
             <CopyButton
-              value={message.content}
+              value={textContent}
               className="
-            h-6 w-6
-            text-zinc-700 hover:bg-zinc-100 hover:text-zinc-900
-            dark:text-zinc-50 dark:hover:bg-zinc-700 dark:hover:text-zinc-50
-            "
+              h-6 w-6
+              text-zinc-700 hover:bg-zinc-100 hover:text-zinc-900
+              dark:text-zinc-50 dark:hover:bg-zinc-700 dark:hover:text-zinc-50
+              "
+            />
+            <ReadAloudButton
+              text={textContent}
+              className="
+              h-6 w-6
+              text-zinc-700 hover:bg-zinc-100 hover:text-zinc-900
+              dark:text-zinc-50 dark:hover:bg-zinc-700 dark:hover:text-zinc-50
+              "
             />
           </div>
-          <Button
-            size="icon"
-            variant="ghost"
-            className="h-6 w-6"
-            onClick={() => onRateResponse(message.id, "thumbs-up")}
-          >
-            <ThumbsUp className="h-4 w-4" />
-          </Button>
-          <Button
-            size="icon"
-            variant="ghost"
-            className="h-6 w-6"
-            onClick={() => onRateResponse(message.id, "thumbs-down")}
-          >
-            <ThumbsDown className="h-4 w-4" />
-          </Button>
-          <ReadAloudButton
-            text={message.content}
-            className="h-6 w-6 text-zinc-50 hover:bg-zinc-700 hover:text-zinc-50"
-          />
-        </>
-      ) : (
-        <div className="d-flex items-center space-x-2">
-          <CopyButton
-            value={message.content}
-            className="
-            h-6 w-6
-            text-zinc-700 hover:bg-zinc-100 hover:text-zinc-900
-            dark:text-zinc-50 dark:hover:bg-zinc-700 dark:hover:text-zinc-50
-            "
-          />
-          <ReadAloudButton
-            text={message.content}
-            className="
-            h-6 w-6
-            text-zinc-700 hover:bg-zinc-100 hover:text-zinc-900
-            dark:text-zinc-50 dark:hover:bg-zinc-700 dark:hover:text-zinc-50
-            "
-          />
-        </div>
-
-      ),
-    }),
+        ),
+      }
+    },
     [onRateResponse]
   )
 

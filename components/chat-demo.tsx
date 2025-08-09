@@ -1,7 +1,8 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import { useChat, type UseChatOptions } from "@ai-sdk/react"
+import { useEffect, useState, useMemo, useRef } from "react"
+import { useChat } from "@ai-sdk/react"
+import { DefaultChatTransport } from "ai"
 import { cn } from "@/lib/utils"
 import { transcribeAudio } from "@/lib/utils/audio"
 import { Chat } from "@/components/ui/chat"
@@ -21,6 +22,7 @@ import { useTranslations } from 'next-intl'
 import { useToast } from "@/components/ui/use-toast"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ChevronDown, ChevronRight } from "lucide-react"
+import type { UIMessage } from "ai"
 
 // 定义错误类型
 interface ChatError extends Error {
@@ -28,7 +30,7 @@ interface ChatError extends Error {
 }
 
 type ChatDemoProps = {
-  initialMessages?: UseChatOptions["initialMessages"]
+  initialMessages?: UIMessage[]
   config?: {
     subject?: Subject
     additionalPrompts: AdditionalPrompt[]
@@ -51,6 +53,16 @@ export default function ChatDemo(props: ChatDemoProps) {
   const [isLoading, setIsLoading] = useState(true)
   const [isPromptExpanded, setIsPromptExpanded] = useState(true)
 
+  // Use refs to always get the latest values in the fetch function
+  // This solves the closure issue where static transport would capture stale state
+  const selectedModelRef = useRef<string>("")
+  const effectiveSceneRef = useRef<string>("")
+  const configRef = useRef(props.config)
+
+  // Update refs when state changes
+  selectedModelRef.current = selectedModel
+  configRef.current = props.config
+
   // 从配置中获取场景，如果没有配置则使用选择的场景ID找到对应场景
   const getEffectiveSceneName = () => {
     if (props.config?.scene?.name) {
@@ -64,6 +76,9 @@ export default function ChatDemo(props: ChatDemoProps) {
   }
 
   const effectiveScene = getEffectiveSceneName()
+
+  // Update the ref with the latest effective scene
+  effectiveSceneRef.current = effectiveScene
 
   useEffect(() => {
     const fetchData = async () => {
@@ -132,28 +147,81 @@ export default function ChatDemo(props: ChatDemoProps) {
     setSelectedSceneId(sceneId)
   }
 
+  // Manual input management for AI SDK 5.0
+  const [input, setInput] = useState("")
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setInput(e.target.value)
+  }
+
+  // Create a static transport with dynamic request body enhancement
+  // AI SDK 5.0 requires static transport configuration, but we need dynamic state injection
+  const transport = useMemo(() => {
+    return new DefaultChatTransport({
+      api: "/api/chat",
+      fetch: async (input: RequestInfo | URL, init?: RequestInit) => {
+        if (init?.body) {
+          try {
+            const originalBody = JSON.parse(init.body as string)
+
+            // Convert UIMessage[] to ModelMessage[] format for API compatibility
+            let convertedMessages = originalBody.messages;
+            if (originalBody.messages && Array.isArray(originalBody.messages)) {
+              convertedMessages = originalBody.messages.map((msg: UIMessage) => {
+                if (msg.parts && Array.isArray(msg.parts)) {
+                  // Extract text content from UIMessage parts format
+                  const textParts = msg.parts.filter((part): part is { type: 'text'; text: string } => part.type === 'text');
+                  const content = textParts.map((part) => part.text).join('\n');
+
+                  return {
+                    role: msg.role,
+                    content: content
+                  };
+                }
+                return msg;
+              });
+            }
+
+            // Inject current state values using refs to avoid closure issues
+            const enhancedBody = {
+              ...originalBody,
+              messages: convertedMessages,
+              model: selectedModelRef.current,
+              scene: effectiveSceneRef.current,
+              subject: configRef.current?.subject,
+              additionalPrompts: configRef.current?.additionalPrompts || [],
+              keepHistory: configRef.current?.keepHistory ?? false,
+            }
+
+            const newInit = {
+              ...init,
+              body: JSON.stringify(enhancedBody)
+            }
+
+            return fetch(input, newInit)
+          } catch (e) {
+            console.error('Failed to enhance request body:', e)
+            return fetch(input, init)
+          }
+        }
+
+        return fetch(input, init)
+      }
+    })
+  }, [])
+
   const {
     messages,
-    input,
-    handleInputChange,
-    handleSubmit: originalHandleSubmit,
-    append,
+    sendMessage,
     stop,
     status,
     setMessages,
   } = useChat({
-    ...props,
-    api: "/api/chat",
-    body: {
-      model: selectedModel,
-      scene: effectiveScene,
-      subject: props.config?.subject,
-      additionalPrompts: props.config?.additionalPrompts || [],
-      keepHistory: props.config?.keepHistory ?? false,
-    },
+    messages: props.initialMessages,
+    transport,
     onError: (error: ChatError) => {
       console.error('Chat error:', error)
-      // 尝试解析错误响应中的详细信息
+      // Parse error response for user-friendly messages
       try {
         if (error.message) {
           const errorData = JSON.parse(error.message)
@@ -169,7 +237,7 @@ export default function ChatDemo(props: ChatDemoProps) {
           }
         }
       } catch {
-        // 如果解析失败，直接打印原始错误
+        // If parsing fails, show generic error message
         console.error('Raw error details:', error)
         toast({
           variant: "destructive",
@@ -179,44 +247,41 @@ export default function ChatDemo(props: ChatDemoProps) {
       }
     },
     onFinish: () => {
-      // 清除错误状态当成功完成时
+      // Callback when streaming completes successfully
     },
   })
 
-  // 自定义 handleSubmit 来处理错误
-  const handleSubmit = async (
-    event?: { preventDefault?: () => void },
-    options?: { experimental_attachments?: FileList }
-  ) => {
+  // Handle form submission
+  const handleSubmit = async (event?: { preventDefault?: () => void }) => {
+    event?.preventDefault?.()
+    if (!input.trim()) return
+
+    // Check if model is selected before submitting
+    if (!selectedModel) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: 'Please select a model first'
+      })
+      return
+    }
+
     try {
-      await originalHandleSubmit(event, options)
+      sendMessage({ text: input })
+      setInput("")
     } catch (error) {
       console.error('Submit error:', error)
-      // 尝试解析错误响应中的详细信息
-      try {
-        if (error instanceof Error && error.message) {
-          const errorData = JSON.parse(error.message)
-          if (errorData.showToast) {
-            toast({
-              variant: "destructive",
-              title: "Error",
-              description: errorData.error || 'An error occurred'
-            })
-          }
-          if (errorData.details) {
-            console.error('AI Provider Error Details:', errorData.details)
-          }
-        }
-      } catch {
-        // 如果解析失败，直接打印原始错误
-        console.error('Raw error details:', error)
-        toast({
-          variant: "destructive",
-          title: "Error",
-          description: 'An error occurred while processing your request'
-        })
-      }
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: 'An error occurred while processing your request'
+      })
     }
+  }
+
+  // Handle suggestions
+  const handleSuggestion = (message: { role: "user"; content: string }) => {
+    sendMessage({ text: message.content })
   }
 
   // 构建最终的系统提示词（模拟后端逻辑）
@@ -295,10 +360,10 @@ export default function ChatDemo(props: ChatDemoProps) {
           handleInputChange={handleInputChange}
           isGenerating={status === "streaming"}
           stop={stop}
-          append={append}
+          append={handleSuggestion}
           setMessages={setMessages}
           transcribeAudio={transcribeAudio}
-          placeholder={t('chat.inputPlaceholder')}
+          placeholder={selectedModel ? t('chat.inputPlaceholder') : 'Please select a model first...'}
           suggestions={[
             "你好，今天的会议在哪里举行？",
             "Please confirm your availability for the upcoming meeting.",

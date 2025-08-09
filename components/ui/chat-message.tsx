@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 "use client"
 
 import React, { useMemo, useState } from "react"
@@ -58,12 +56,42 @@ const chatBubbleVariants = cva(
 
 type Animation = VariantProps<typeof chatBubbleVariants>["animation"]
 
+// AI SDK 5.0 compatible message parts
+interface TextPart {
+  type: "text"
+  text: string
+}
+
+interface ReasoningPart {
+  type: "reasoning"
+  text: string // Changed from reasoningText to text in AI SDK 5.0
+}
+
+interface FilePart {
+  type: "file"
+  url: string
+  mediaType: string // Changed from mimeType to mediaType in AI SDK 5.0
+}
+
+// Tool parts with new granular states in AI SDK 5.0
+interface ToolInvocationPart {
+  type: string // Will be specific like "tool-getWeather" in v5
+  state: "input-streaming" | "input-available" | "output-available" | "output-error"
+  input?: unknown
+  output?: unknown
+  errorText?: string
+}
+
+type MessagePart = TextPart | ReasoningPart | FilePart | ToolInvocationPart
+
+// Legacy attachment interface for backward compatibility
 interface Attachment {
   name?: string
   contentType?: string
   url: string
 }
 
+// Legacy tool invocation interface for backward compatibility
 interface PartialToolCall {
   state: "partial-call"
   toolName: string
@@ -79,42 +107,23 @@ interface ToolResult {
   toolName: string
   result: {
     __cancelled?: boolean
-    [key: string]: any
+    [key: string]: unknown
   }
 }
 
 type ToolInvocation = PartialToolCall | ToolCall | ToolResult
 
-interface ReasoningPart {
-  type: "reasoning"
-  reasoningText: string
-}
-
-interface ToolInvocationPart {
-  type: "tool-invocation"
-  toolInvocation: ToolInvocation
-}
-
-interface TextPart {
-  type: "text"
-  text: string
-}
-
-// For compatibility with AI SDK types, not used
-interface SourcePart {
-  type: "source"
-}
-
-type MessagePart = TextPart | ReasoningPart | ToolInvocationPart | SourcePart
-
+// AI SDK 5.0 UIMessage interface
 export interface Message {
   id: string
   role: "user" | "assistant" | (string & {})
-  content: string
+  parts: MessagePart[]
   createdAt?: Date
+
+  // Legacy properties for backward compatibility
+  content?: string
   experimental_attachments?: Attachment[]
   toolInvocations?: ToolInvocation[]
-  parts?: MessagePart[]
 }
 
 export interface ChatMessageProps extends Message {
@@ -125,15 +134,24 @@ export interface ChatMessageProps extends Message {
 
 export const ChatMessage: React.FC<ChatMessageProps> = ({
   role,
-  content,
+  parts = [],
   createdAt,
   showTimeStamp = false,
   animation = "scale",
   actions,
+  // Legacy props for backward compatibility
+  content,
   experimental_attachments,
   toolInvocations,
-  parts,
 }) => {
+  const isUser = role === "user"
+
+  const formattedTime = createdAt?.toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+  })
+
+  // Handle legacy experimental_attachments
   const files = useMemo(() => {
     return experimental_attachments?.map((attachment) => {
       const dataArray = dataUrlToUint8Array(attachment.url)
@@ -142,14 +160,8 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
     })
   }, [experimental_attachments])
 
-  const isUser = role === "user"
-
-  const formattedTime = createdAt?.toLocaleTimeString("en-US", {
-    hour: "2-digit",
-    minute: "2-digit",
-  })
-
-  if (isUser) {
+  // For user messages with legacy content
+  if (isUser && content && parts.length === 0) {
     return (
       <div
         className={cn("flex flex-col", isUser ? "items-end" : "items-start")}
@@ -181,9 +193,10 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
     )
   }
 
+  // Handle AI SDK 5.0 parts structure
   if (parts && parts.length > 0) {
     return parts.map((part, index) => {
-      if (part.type === "text") {
+      if (part.type === "text" && "text" in part) {
         return (
           <div
             className={cn(
@@ -214,28 +227,39 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
             ) : null}
           </div>
         )
-      } else if (part.type === "reasoning") {
+      } else if (part.type === "reasoning" && "text" in part) {
         return <ReasoningBlock key={`reasoning-${index}`} part={part} />
-      } else if (part.type === "tool-invocation") {
+      } else if (part.type === "file" && "url" in part && "mediaType" in part) {
         return (
-          <ToolCall
-            key={`tool-${index}`}
-            toolInvocations={[part.toolInvocation]}
-          />
+          <div key={`file-${index}`} className="mb-1 flex flex-wrap gap-2">
+            {/* File preview component - simplified for now */}
+            <div className="rounded border p-2 text-sm">
+              File: {part.mediaType}
+            </div>
+          </div>
+        )
+      } else if (part.type.startsWith("tool-")) {
+        // Handle new AI SDK 5.0 tool parts - simplified for now
+        return (
+          <div key={`tool-${index}`} className="rounded border bg-muted/50 p-2 text-sm">
+            Tool: {part.type}
+          </div>
         )
       }
       return null
     })
   }
 
+  // Handle legacy toolInvocations
   if (toolInvocations && toolInvocations.length > 0) {
     return <ToolCall toolInvocations={toolInvocations} />
   }
 
+  // Fallback to legacy content rendering
   return (
     <div className={cn("flex flex-col", isUser ? "items-end" : "items-start")}>
       <div className={cn(chatBubbleVariants({ isUser, animation }))}>
-        <MarkdownRenderer>{content}</MarkdownRenderer>
+        <MarkdownRenderer>{content || ""}</MarkdownRenderer>
         {actions ? (
           <div className="absolute -bottom-4 right-2 flex space-x-1 rounded-lg border bg-background p-1 text-foreground opacity-0 transition-opacity group-hover/message:opacity-100">
             {actions}
@@ -295,7 +319,7 @@ const ReasoningBlock = ({ part }: { part: ReasoningPart }) => {
           >
             <div className="p-2">
               <div className="whitespace-pre-wrap text-xs">
-                {part.reasoningText}
+                {part.text}
               </div>
             </div>
           </motion.div>
