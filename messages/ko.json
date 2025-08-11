@@ -78,7 +78,8 @@
     "page": "페이지",
     "pageOf": "페이지 {current} / {total}",
     "selectProvider": "제공업체 선택",
-    "validationError": "제공업체 구성 검증에 실패했습니다"
+    "validationError": "제공업체 구성 검증에 실패했습니다",
+    "saveSuccess": "모델이 성공적으로 저장되었습니다"
   },
   "subject": {
     "management": "주제 관리",

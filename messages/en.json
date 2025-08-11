@@ -78,7 +78,8 @@
     "page": "page",
     "pageOf": "Page {current} of {total}",
     "selectProvider": "Select Provider",
-    "validationError": "Failed to validate provider configuration"
+    "validationError": "Failed to validate provider configuration",
+    "saveSuccess": "Model saved successfully"
   },
   "subject": {
     "management": "Subject Management",

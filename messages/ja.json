@@ -78,7 +78,8 @@
     "page": "ページ",
     "pageOf": "ページ {current} / {total}",
     "selectProvider": "プロバイダーを選択",
-    "validationError": "プロバイダー設定の検証に失敗しました"
+    "validationError": "プロバイダー設定の検証に失敗しました",
+    "saveSuccess": "モデルが正常に保存されました"
   },
   "subject": {
     "management": "サブジェクト管理",
