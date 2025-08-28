@@ -24,6 +24,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ChevronDown, ChevronRight } from "lucide-react"
 import type { UIMessage } from "ai"
 
+
 // 定义错误类型
 interface ChatError extends Error {
   error?: string;
@@ -246,10 +247,16 @@ export default function ChatDemo(props: ChatDemoProps) {
         })
       }
     },
-    onFinish: () => {
-      // Callback when streaming completes successfully
+    onFinish: (message) => {
+      // Check if this is an image generation response
+      const lastUserMessage = messages[messages.length - 1]
+      if (lastUserMessage && lastUserMessage.role === 'user') {
+        // This is handled in the custom sendMessage function below
+      }
     },
   })
+
+
 
   // Handle form submission
   const handleSubmit = async (event?: { preventDefault?: () => void }) => {
@@ -266,9 +273,61 @@ export default function ChatDemo(props: ChatDemoProps) {
       return
     }
 
+    const userInput = input
+    setInput("") // 清空输入框
+
+    // 添加用户消息
+    const userMessage: UIMessage = {
+      id: Date.now().toString(),
+      role: 'user',
+      parts: [{ type: 'text', text: userInput }],
+      createdAt: new Date()
+    }
+    setMessages(prev => [...prev, userMessage])
+
     try {
-      sendMessage({ text: input })
-      setInput("")
+      // 直接调用聊天API检查是否是图片生成
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          messages: [...messages, { role: 'user', content: userInput }],
+          model: selectedModel,
+          scene: effectiveScene,
+          subject: configRef.current?.subject,
+          additionalPrompts: configRef.current?.additionalPrompts || [],
+          keepHistory: configRef.current?.keepHistory ?? false,
+        })
+      })
+
+      const contentType = response.headers.get('content-type')
+
+      if (contentType?.includes('application/json')) {
+        // 可能是图片生成响应
+        const jsonData = await response.json()
+        if (jsonData.type === 'image_generation') {
+          // 添加包含图片的AI响应
+          const assistantMessage: UIMessage = {
+            id: (Date.now() + 1).toString(),
+            role: 'assistant',
+            parts: [
+              { type: 'text', text: jsonData.text },
+              jsonData.image
+            ],
+            createdAt: new Date()
+          }
+          setMessages(prev => [...prev, assistantMessage])
+          return
+        }
+      }
+
+      // 如果不是图片生成，使用常规的流式响应
+      // 先移除刚才添加的用户消息，让useChat重新处理
+      setMessages(prev => prev.slice(0, -1))
+      sendMessage({ text: userInput })
+
     } catch (error) {
       console.error('Submit error:', error)
       toast({
@@ -276,6 +335,15 @@ export default function ChatDemo(props: ChatDemoProps) {
         title: "Error",
         description: 'An error occurred while processing your request'
       })
+
+      // 添加错误消息
+      const errorMessage: UIMessage = {
+        id: (Date.now() + 1).toString(),
+        role: 'assistant',
+        parts: [{ type: 'text', text: 'Sorry, I encountered an error. Please try again.' }],
+        createdAt: new Date()
+      }
+      setMessages(prev => [...prev, errorMessage])
     }
   }
 

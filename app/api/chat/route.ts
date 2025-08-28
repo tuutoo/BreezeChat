@@ -5,6 +5,7 @@ import { openai } from '@ai-sdk/openai'
 import { PROVIDERS } from '@/lib/providers'
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { isImageGenerationRequest, extractImagePrompt } from '@/lib/utils/image-generation'
 
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30
@@ -97,6 +98,57 @@ export async function POST(req: Request) {
     }
 
     console.log('Final system prompt:', systemPrompt || '(No system prompt - free chat)')
+
+    // 检查最后一条消息是否是图片生成请求
+    const lastMessage = messages[messages.length - 1]
+    if (lastMessage.role === 'user' && isImageGenerationRequest(lastMessage.content)) {
+      try {
+        console.log('Detected image generation request:', lastMessage.content)
+
+        // 提取图片生成提示词
+        const imagePrompt = extractImagePrompt(lastMessage.content)
+        console.log('Extracted image prompt:', imagePrompt)
+
+        // 调用图片生成API
+        const baseUrl = process.env.NEXTAUTH_URL || process.env.VERCEL_URL || 'http://localhost:3000'
+        const imageResponse = await fetch(`${baseUrl}/api/generate-image`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            prompt: imagePrompt,
+            numberOfImages: 1,
+            aspectRatio: '1:1'
+          })
+        })
+
+        if (imageResponse.ok) {
+          const imageData = await imageResponse.json()
+
+          if (imageData.success && imageData.images.length > 0) {
+            const generatedImage = imageData.images[0]
+
+            // 返回包含图片的特殊响应
+            return NextResponse.json({
+              type: 'image_generation',
+              text: `I've generated an image based on your request: "${imagePrompt}". You can download it or view it in full size by clicking on the image.`,
+              image: {
+                type: 'image',
+                image: generatedImage.dataUrl,
+                prompt: imagePrompt,
+                createdAt: generatedImage.createdAt
+              }
+            })
+          }
+        }
+
+        console.error('Image generation failed, falling back to text response')
+      } catch (error) {
+        console.error('Error generating image:', error)
+        // 如果图片生成失败，继续使用常规的文本生成
+      }
+    }
 
     // 根据 keepHistory 参数处理消息
     let processedMessages = messages

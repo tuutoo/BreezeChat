@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/collapsible"
 import { FilePreview } from "@/components/ui/file-preview"
 import { MarkdownRenderer } from "@/components/ui/markdown-renderer"
+import { ImageMessage } from "@/components/ui/image-message"
 
 const chatBubbleVariants = cva(
   "group/message relative break-words rounded-lg p-3 text-sm sm:max-w-[70%]",
@@ -73,6 +74,13 @@ interface FilePart {
   mediaType: string // Changed from mimeType to mediaType in AI SDK 5.0
 }
 
+interface ImagePart {
+  type: "image"
+  image: string // base64 data URL
+  prompt?: string
+  createdAt?: string
+}
+
 // Tool parts with new granular states in AI SDK 5.0
 interface ToolInvocationPart {
   type: string // Will be specific like "tool-getWeather" in v5
@@ -82,7 +90,7 @@ interface ToolInvocationPart {
   errorText?: string
 }
 
-type MessagePart = TextPart | ReasoningPart | FilePart | ToolInvocationPart
+type MessagePart = TextPart | ReasoningPart | FilePart | ImagePart | ToolInvocationPart
 
 // Legacy attachment interface for backward compatibility
 interface Attachment {
@@ -229,6 +237,33 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
         )
       } else if (part.type === "reasoning" && "text" in part) {
         return <ReasoningBlock key={`reasoning-${index}`} part={part} />
+      } else if (part.type === "image" && "image" in part) {
+        return (
+          <div
+            className={cn(
+              "flex flex-col",
+              isUser ? "items-end" : "items-start"
+            )}
+            key={`image-${index}`}
+          >
+            <ImageMessage
+              image={part.image}
+              prompt={part.prompt}
+              createdAt={part.createdAt}
+            />
+            {showTimeStamp && createdAt ? (
+              <time
+                dateTime={createdAt.toISOString()}
+                className={cn(
+                  "mt-1 block px-1 text-xs opacity-50",
+                  animation !== "none" && "duration-500 animate-in fade-in-0"
+                )}
+              >
+                {formattedTime}
+              </time>
+            ) : null}
+          </div>
+        )
       } else if (part.type === "file" && "url" in part && "mediaType" in part) {
         return (
           <div key={`file-${index}`} className="mb-1 flex flex-wrap gap-2">
