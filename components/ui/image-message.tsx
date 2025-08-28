@@ -27,36 +27,30 @@ export const ImageMessage: React.FC<ImageMessageProps> = ({
     document.body.removeChild(link)
   }
 
-  const handleOpenInNewTab = () => {
+      const handleOpenInNewTab = () => {
     const newWindow = window.open()
     if (newWindow) {
-      newWindow.document.write(`
-        <html>
-          <head>
-            <title>Generated Image</title>
-            <style>
-              body {
-                margin: 0;
-                padding: 20px;
-                background: #000;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                min-height: 100vh;
-              }
-              img {
-                max-width: 100%;
-                max-height: 100vh;
-                object-fit: contain;
-                border-radius: 8px;
-              }
-            </style>
-          </head>
-          <body>
-            <img src="${image}" alt="Generated Image" />
-          </body>
-        </html>
-      `)
+      newWindow.document.title = 'Generated Image'
+      newWindow.document.head.innerHTML = `
+        <style>
+          body {
+            margin: 0;
+            padding: 20px;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+          }
+          img {
+            max-width: 100%;
+            max-height: 100vh;
+            object-fit: contain;
+            border-radius: 8px;
+          }
+        </style>
+      `
+      newWindow.document.body.innerHTML = `<img src="${image}" alt="Generated Image" />`
     }
   }
 
@@ -96,18 +90,6 @@ export const ImageMessage: React.FC<ImageMessageProps> = ({
             View Full
           </Button>
         </div>
-      </div>
-
-      {/* Image metadata */}
-      <div className="mt-2 text-xs text-muted-foreground">
-        {prompt && (
-          <div className="mb-1 line-clamp-2">
-            <span className="font-medium">Prompt:</span> {prompt}
-          </div>
-        )}
-        {formattedTime && (
-          <div>Generated at {formattedTime}</div>
-        )}
       </div>
     </div>
   )
