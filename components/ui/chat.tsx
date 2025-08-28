@@ -254,7 +254,9 @@ export function Chat({
             value={input}
             placeholder={placeholder}
             onChange={handleInputChange}
-            allowAttachments={false}
+            allowAttachments={true}
+            files={files}
+            setFiles={setFiles}
             stop={handleStop}
             isGenerating={isGenerating}
             transcribeAudio={transcribeAudio}

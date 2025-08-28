@@ -33,32 +33,27 @@ const ImageFilePreview = React.forwardRef<HTMLDivElement, FilePreviewProps>(
     return (
       <motion.div
         ref={ref}
-        className="relative flex max-w-[200px] rounded-md border p-1.5 pr-2 text-xs"
+        className="relative rounded-md border bg-background p-1"
         layout
-        initial={{ opacity: 0, y: "100%" }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: "100%" }}
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.8 }}
       >
-        <div className="flex w-full items-center space-x-2">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            alt={`Attachment ${file.name}`}
-            className="grid h-10 w-10 shrink-0 place-items-center rounded-sm border bg-muted object-cover"
-            src={URL.createObjectURL(file)}
-          />
-          <span className="w-full truncate text-muted-foreground">
-            {file.name}
-          </span>
-        </div>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          alt={`Attachment ${file.name}`}
+          className="h-14 w-14 rounded object-cover"
+          src={URL.createObjectURL(file)}
+        />
 
         {onRemove ? (
           <button
-            className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full border bg-background"
+            className="absolute right-0 top-0 flex h-4 w-4 m-1 items-center justify-center rounded-full bg-background border border-border text-foreground hover:bg-muted shadow-sm transition-colors"
             type="button"
             onClick={onRemove}
             aria-label="Remove attachment"
           >
-            <X className="h-2.5 w-2.5" />
+            <X className="h-3 w-3" />
           </button>
         ) : null}
       </motion.div>

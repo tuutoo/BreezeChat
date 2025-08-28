@@ -12,6 +12,7 @@ import { AudioVisualizer } from "@/components/ui/audio-visualizer"
 import { Button } from "@/components/ui/button"
 import { FilePreview } from "@/components/ui/file-preview"
 import { InterruptPrompt } from "@/components/ui/interrupt-prompt"
+import { useToast } from "@/components/ui/use-toast"
 
 interface MessageInputBaseProps
   extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
@@ -50,6 +51,7 @@ export function MessageInput({
 }: MessageInputProps) {
   const [isDragging, setIsDragging] = useState(false)
   const [showInterruptPrompt, setShowInterruptPrompt] = useState(false)
+  const { toast } = useToast()
 
   const {
     isListening,
@@ -73,17 +75,33 @@ export function MessageInput({
     }
   }, [isGenerating])
 
+      const showAttachmentLimitToast = () => {
+    setTimeout(() => {
+      toast({
+        variant: "destructive",
+        title: "附件数量限制",
+        description: "最多只能上传10个附件"
+      })
+    }, 0)
+  }
+
   const addFiles = (files: File[] | null) => {
-    if (props.allowAttachments) {
+    if (props.allowAttachments && files) {
+      const currentCount = props.files?.length || 0
+      const newFilesCount = files.length
+      const totalCount = currentCount + newFilesCount
+
+      // Check if adding these files would exceed the limit
+      if (totalCount > 10) {
+        showAttachmentLimitToast()
+        return
+      }
+
+      // If within limit, add all files
       props.setFiles((currentFiles) => {
         if (currentFiles === null) {
           return files
         }
-
-        if (files === null) {
-          return currentFiles
-        }
-
         return [...currentFiles, ...files]
       })
     }
@@ -112,27 +130,32 @@ export function MessageInput({
   }
 
   const onPaste = (event: React.ClipboardEvent) => {
+    if (!props.allowAttachments) return
+
     const items = event.clipboardData?.items
     if (!items) return
 
-    const text = event.clipboardData.getData("text")
-    if (text && text.length > 500 && props.allowAttachments) {
-      event.preventDefault()
-      const blob = new Blob([text], { type: "text/plain" })
-      const file = new File([blob], "Pasted text", {
-        type: "text/plain",
-        lastModified: Date.now(),
-      })
-      addFiles([file])
-      return
-    }
-
+    // Check for files first (images, etc.)
     const files = Array.from(items)
       .map((item) => item.getAsFile())
       .filter((file) => file !== null)
 
-    if (props.allowAttachments && files.length > 0) {
+    if (files.length > 0) {
+      event.preventDefault()
       addFiles(files)
+      return
+    }
+
+    // Handle long text as file
+    const text = event.clipboardData.getData("text")
+    if (text && text.length > 500) {
+      event.preventDefault()
+      const blob = new Blob([text], { type: "text/plain" })
+      const file = new File([blob], `Pasted text ${new Date().toLocaleTimeString()}.txt`, {
+        type: "text/plain",
+        lastModified: Date.now(),
+      })
+      addFiles([file])
     }
   }
 
@@ -199,25 +222,16 @@ export function MessageInput({
       />
       <div className="relative flex w-full items-center space-x-2">
         <div className="relative flex-1">
-          <textarea
-            aria-label="Write your prompt here"
-            placeholder={placeholder}
-            ref={textAreaRef}
-            onPaste={onPaste}
-            onKeyDown={onKeyDown}
-            className={cn(
-              "z-10 w-full grow resize-none rounded-xl border border-input bg-background p-3 pr-24 text-sm ring-offset-background transition-[border] placeholder:text-muted-foreground focus-visible:border-primary focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50",
-              showFileList && "pb-16",
-              className
-            )}
-            {...(props.allowAttachments
-              ? omit(props, ["allowAttachments", "files", "setFiles"])
-              : omit(props, ["allowAttachments"]))}
-          />
-
-          {props.allowAttachments && (
-            <div className="absolute inset-x-3 bottom-0 z-20 overflow-x-scroll py-3">
-              <div className="flex space-x-3">
+          {/* File previews inside the input area, at the top */}
+          {props.allowAttachments && showFileList && (
+            <div className="absolute top-3 left-3 right-24 z-20">
+              <div
+                className="flex gap-2 overflow-x-auto [&::-webkit-scrollbar]:hidden"
+                style={{
+                  scrollbarWidth: 'none',
+                  msOverflowStyle: 'none',
+                }}
+              >
                 <AnimatePresence mode="popLayout">
                   {props.files?.map((file) => {
                     return (
@@ -242,6 +256,22 @@ export function MessageInput({
               </div>
             </div>
           )}
+
+          <textarea
+            aria-label="Write your prompt here"
+            placeholder={placeholder}
+            ref={textAreaRef}
+            onPaste={onPaste}
+            onKeyDown={onKeyDown}
+            className={cn(
+              "z-10 w-full grow resize-none rounded-xl border border-input bg-background p-3 pr-24 text-sm ring-offset-background transition-[border] placeholder:text-muted-foreground focus-visible:border-primary focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50",
+              showFileList && "pt-20", // Add top padding when files are present
+              className
+            )}
+            {...(props.allowAttachments
+              ? omit(props, ["allowAttachments", "files", "setFiles"])
+              : omit(props, ["allowAttachments"]))}
+          />
         </div>
       </div>
 
@@ -253,7 +283,13 @@ export function MessageInput({
             variant="outline"
             className="h-8 w-8"
             aria-label="Attach a file"
+            disabled={(props.files?.length || 0) >= 10}
             onClick={async () => {
+              const currentCount = props.files?.length || 0
+              if (currentCount >= 10) {
+                showAttachmentLimitToast()
+                return
+              }
               const files = await showFileUploadDialog()
               addFiles(files)
             }}
