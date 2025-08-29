@@ -342,11 +342,7 @@ export default function ChatDemo(props: ChatDemoProps) {
     let messageParts: Array<any> = []
     const attachmentTexts: string[] = []
 
-    // Add text part if present
-    if (hasText) {
-      messageParts.push({ type: 'text', text: userInput })
-    }
-
+    // First, add all attachments (images and files)
     if (hasFiles && files) {
       const fileArray = Array.from(files)
       for (const file of fileArray) {
@@ -398,6 +394,11 @@ export default function ChatDemo(props: ChatDemoProps) {
           }
         }
       }
+    }
+
+    // Then, add text part at the end (after attachments)
+    if (hasText) {
+      messageParts.push({ type: 'text', text: userInput })
     }
 
     // Create combined text for API (includes file content)
