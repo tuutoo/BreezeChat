@@ -54,7 +54,7 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
   }
 
   const handleRotate = () => {
-    setRotation(prev => (prev + 90) % 360)
+    setRotation(prev => prev + 90)
   }
 
   const handleKeyDown = React.useCallback((e: KeyboardEvent) => {
