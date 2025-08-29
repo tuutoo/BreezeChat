@@ -135,28 +135,19 @@ export function MessageInput({
     const items = event.clipboardData?.items
     if (!items) return
 
-    // Check for files first (images, etc.)
-    const files = Array.from(items)
+    // Only check for image files, ignore text files
+    const imageFiles = Array.from(items)
       .map((item) => item.getAsFile())
-      .filter((file) => file !== null)
+      .filter((file) => file !== null && file.type.startsWith('image/'))
 
-    if (files.length > 0) {
+    if (imageFiles.length > 0) {
       event.preventDefault()
-      addFiles(files)
+      addFiles(imageFiles)
       return
     }
 
-    // Handle long text as file
-    const text = event.clipboardData.getData("text")
-    if (text && text.length > 500) {
-      event.preventDefault()
-      const blob = new Blob([text], { type: "text/plain" })
-      const file = new File([blob], `Pasted text ${new Date().toLocaleTimeString()}.txt`, {
-        type: "text/plain",
-        lastModified: Date.now(),
-      })
-      addFiles([file])
-    }
+    // 不再处理长文本为附件，让文本正常粘贴到输入框
+    // 文本会通过浏览器默认行为粘贴到textarea中
   }
 
   const onKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
