@@ -199,20 +199,21 @@ export default function ChatDemo(props: ChatDemoProps) {
                 return { role: msg.role, content: '' };
               });
 
-                            // 添加包含附件内容的最后一条用户消息（支持多模态）
+                                          // 添加包含附件内容的最后一条用户消息（支持多模态）
               if (pendingUserMessage.parts) {
-                const hasFilesForAI = pendingUserMessage.parts.some((part: any) => part.type === 'file-for-ai');
+                const hasMultimodal = pendingUserMessage.parts.some((part: any) => part.type === 'image' || part.type === 'file');
 
-                if (hasFilesForAI) {
-                  // 多模态消息格式（AI SDK file format）
+                if (hasMultimodal) {
+                  // 多模态消息格式
                   const multimodalContent = pendingUserMessage.parts.map((part: any) => {
                     if (part.type === 'text') {
                       return { type: 'text', text: part.text };
-                    } else if (part.type === 'file-for-ai') {
+                    } else if (part.type === 'image') {
+                      const mimeType = part.image.match(/data:([^;]+)/)?.[1] || 'image/png'
                       return {
                         type: 'file',
-                        data: part.data,
-                        mediaType: part.mediaType
+                        data: part.image,
+                        mediaType: mimeType
                       };
                     }
                     return null;
@@ -379,14 +380,6 @@ export default function ChatDemo(props: ChatDemoProps) {
               image: dataUrl,
               prompt: `Uploaded image: ${file.name}`
             })
-            // For API - use base64 data for AI SDK (will be converted to Buffer in backend)
-            const base64Data = dataUrl.split(',')[1]
-            messageParts.push({
-              type: 'file-for-ai',
-              data: base64Data,
-              mediaType: file.type,
-              name: file.name
-            })
           } catch {
             attachmentTexts.push(`[无法读取图片: ${file.name}]`)
           }
@@ -431,49 +424,37 @@ export default function ChatDemo(props: ChatDemoProps) {
       messageParts.push({ type: 'text', text: userInput })
     }
 
-    // Create message content for API (supports multimodal: text + images)
+        // Create message content for API - let AI SDK handle multimodal natively
+    const hasImages = messageParts.some(part => part.type === 'image')
+
     let apiMessageContent: any;
-
-        // Check if we have files for AI
-    const hasFilesForAI = messageParts.some(part => part.type === 'file-for-ai')
-
-    if (hasFilesForAI) {
-      // Use multimodal format for AI SDK
+    if (hasImages) {
+      // Convert to AI SDK native format
       apiMessageContent = messageParts.map(part => {
         if (part.type === 'text') {
           return { type: 'text', text: part.text }
-        } else if (part.type === 'file-for-ai') {
-          console.log('Preparing file for AI SDK:', {
-            type: part.type,
-            mediaType: part.mediaType,
-            name: part.name,
-            dataLength: part.data?.length
-          })
+                } else if (part.type === 'image') {
+          // Use data URL directly - AI SDK will handle conversion
+          const mimeType = part.image.match(/data:([^;]+)/)?.[1] || 'image/png'
+
           return {
             type: 'file',
-            data: part.data, // base64 string (will be converted to Buffer in backend)
-            mediaType: part.mediaType,
-            name: part.name
+            data: part.image, // AI SDK accepts data URLs
+            mediaType: mimeType
           }
         }
-        // Skip UI-only image parts for API
         return null
       }).filter(Boolean)
 
-      console.log('Multimodal API message content:', JSON.stringify(apiMessageContent, null, 2))
-
-      // Add attachment descriptions for non-image files
+      // Add non-image attachments as text
       if (attachmentTexts.length > 0) {
-        const nonImageAttachments = attachmentTexts.filter(text => !text.includes('[用户上传了图片:'))
-        if (nonImageAttachments.length > 0) {
-          apiMessageContent.push({
-            type: 'text',
-            text: nonImageAttachments.join('\n\n')
-          })
-        }
+        apiMessageContent.push({
+          type: 'text',
+          text: attachmentTexts.join('\n\n')
+        })
       }
     } else {
-      // Use simple text format for API (no images)
+      // Simple text format
       apiMessageContent = [userInput, ...attachmentTexts].filter(Boolean).join("\n\n")
     }
 
@@ -486,7 +467,7 @@ export default function ChatDemo(props: ChatDemoProps) {
     setMessages(prev => [...prev, userMessage])
 
     // 如果有附件，设置待处理的用户消息
-    const hasAttachments = messageParts.length > 1 || messageParts.some(part => part.type !== 'text')
+    const hasAttachments = hasImages || messageParts.some(part => part.type === 'file')
     if (hasAttachments) {
       setPendingUserMessage(userMessage)
     }
@@ -532,7 +513,7 @@ export default function ChatDemo(props: ChatDemoProps) {
 
       // 如果不是图片生成，使用常规的流式响应
       // 检查是否有附件
-      const hasAttachments = messageParts.length > 1 || messageParts.some(part => part.type !== 'text')
+      const hasAttachments = hasImages || messageParts.some(part => part.type === 'file')
 
       if (hasAttachments) {
         // 如果有附件，保持我们的用户消息（包含图片预览）

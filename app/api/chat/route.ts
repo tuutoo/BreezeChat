@@ -203,27 +203,24 @@ export async function POST(req: Request) {
         return createErrorResponse('Unsupported provider', 400)
     }
 
-    // 处理多模态消息（支持文件输入，按照AI SDK规范）
+    // 处理多模态消息 - AI SDK会自动处理文件格式
     const finalMessages = processedMessages.map((msg: any) => {
       if (msg.content && Array.isArray(msg.content)) {
-        // 多模态消息格式 - 转换为AI SDK格式
+        // 多模态消息格式 - 让AI SDK自动处理
         const content = msg.content.map((part: any) => {
           if (part.type === 'text') {
             return { type: 'text', text: part.text };
           } else if (part.type === 'file') {
-            // 处理文件输入 - 按照AI SDK规范
             console.log('Processing file for AI SDK:', {
               mediaType: part.mediaType,
-              name: part.name,
-              dataLength: part.data?.length
+              dataType: typeof part.data,
+              isDataURL: typeof part.data === 'string' && part.data.startsWith('data:')
             });
 
-            // 将base64字符串转换为Buffer
-            const buffer = Buffer.from(part.data, 'base64');
-
+            // AI SDK会自动处理data URL和Buffer
             return {
               type: 'file',
-              data: buffer,
+              data: part.data, // AI SDK自动处理
               mediaType: part.mediaType
             };
           }
