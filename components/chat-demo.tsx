@@ -280,8 +280,7 @@ export default function ChatDemo(props: ChatDemoProps) {
     const userMessage: UIMessage = {
       id: Date.now().toString(),
       role: 'user',
-      parts: [{ type: 'text', text: userInput }],
-      createdAt: new Date()
+      parts: [{ type: 'text', text: userInput }]
     }
     setMessages(prev => [...prev, userMessage])
 
@@ -315,8 +314,7 @@ export default function ChatDemo(props: ChatDemoProps) {
             parts: [
               { type: 'text', text: jsonData.text },
               jsonData.image
-            ],
-            createdAt: new Date()
+            ]
           }
           setMessages(prev => [...prev, assistantMessage])
           return
@@ -340,8 +338,7 @@ export default function ChatDemo(props: ChatDemoProps) {
       const errorMessage: UIMessage = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        parts: [{ type: 'text', text: 'Sorry, I encountered an error. Please try again.' }],
-        createdAt: new Date()
+        parts: [{ type: 'text', text: 'Sorry, I encountered an error. Please try again.' }]
       }
       setMessages(prev => [...prev, errorMessage])
     }

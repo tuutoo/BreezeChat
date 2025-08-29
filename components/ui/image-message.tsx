@@ -3,6 +3,7 @@
 import React from "react"
 import { Download, ExternalLink } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { ImagePreviewModal } from "@/components/ui/image-preview-modal"
 import { cn } from "@/lib/utils"
 
 interface ImageMessageProps {
@@ -18,6 +19,8 @@ export const ImageMessage: React.FC<ImageMessageProps> = ({
   createdAt,
   className
 }) => {
+  const [isPreviewOpen, setIsPreviewOpen] = React.useState(false)
+
   const handleDownload = () => {
     const link = document.createElement('a')
     link.href = image
@@ -27,7 +30,11 @@ export const ImageMessage: React.FC<ImageMessageProps> = ({
     document.body.removeChild(link)
   }
 
-      const handleOpenInNewTab = () => {
+  const handlePreview = () => {
+    setIsPreviewOpen(true)
+  }
+
+  const handleOpenInNewTab = () => {
     const newWindow = window.open()
     if (newWindow) {
       newWindow.document.title = 'Generated Image'
@@ -66,7 +73,7 @@ export const ImageMessage: React.FC<ImageMessageProps> = ({
           src={image}
           alt={prompt || "Generated image"}
           className="w-full h-auto object-cover cursor-pointer transition-opacity hover:opacity-90"
-          onClick={handleOpenInNewTab}
+          onClick={handlePreview}
         />
 
         {/* Overlay controls */}
@@ -83,14 +90,22 @@ export const ImageMessage: React.FC<ImageMessageProps> = ({
           <Button
             variant="secondary"
             size="sm"
-            onClick={handleOpenInNewTab}
+            onClick={handlePreview}
             className="flex items-center gap-1 bg-white/90 hover:bg-white text-black"
           >
             <ExternalLink className="h-4 w-4" />
-            View Full
+            预览
           </Button>
         </div>
       </div>
+
+      {/* 图片预览模态框 */}
+      <ImagePreviewModal
+        image={image}
+        prompt={prompt}
+        isOpen={isPreviewOpen}
+        onClose={() => setIsPreviewOpen(false)}
+      />
     </div>
   )
 }
