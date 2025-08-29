@@ -177,7 +177,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
         {files ? (
           <div className="mb-1 flex flex-wrap gap-2">
             {files.map((file, index) => {
-              return <FilePreview file={file} key={index} />
+              return <FilePreview file={file} key={`${file.name}-${file.lastModified}-${file.size}-${index}`} />
             })}
           </div>
         ) : null}

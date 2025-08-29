@@ -233,10 +233,10 @@ export function MessageInput({
                 }}
               >
                 <AnimatePresence mode="popLayout">
-                  {props.files?.map((file) => {
+                  {props.files?.map((file, index) => {
                     return (
                       <FilePreview
-                        key={file.name + String(file.lastModified)}
+                        key={`${file.name}-${file.lastModified}-${file.size}-${index}`}
                         file={file}
                         onRemove={() => {
                           props.setFiles((files) => {
