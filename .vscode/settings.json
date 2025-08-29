@@ -2,5 +2,11 @@
   "i18n-ally.localesPaths": [
     "i18n",
     "messages"
+  ],
+  "cSpell.words": [
+    "Fehlercode",
+    "Können",
+    "remeda",
+    "senden"
   ]
 }
