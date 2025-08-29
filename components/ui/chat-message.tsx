@@ -265,11 +265,17 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
           </div>
         )
       } else if (part.type === "file" && "url" in part && "mediaType" in part) {
+        const filePart = part as { type: "file"; url: string; mediaType: string; name?: string }
         return (
-          <div key={`file-${index}`} className="mb-1 flex flex-wrap gap-2">
-            {/* File preview component - simplified for now */}
-            <div className="rounded border p-2 text-sm">
-              File: {part.mediaType}
+          <div key={`file-${index}`} className="mb-2">
+            <div className="inline-flex items-center gap-2 rounded-lg border bg-muted/50 px-3 py-2 text-sm">
+              <div className="flex h-8 w-8 items-center justify-center rounded bg-background">
+                📎
+              </div>
+              <div className="flex flex-col">
+                <span className="font-medium">{filePart.name || '附件'}</span>
+                <span className="text-xs text-muted-foreground">{filePart.mediaType}</span>
+              </div>
             </div>
           </div>
         )

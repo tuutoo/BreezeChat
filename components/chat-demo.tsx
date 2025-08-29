@@ -150,10 +150,14 @@ export default function ChatDemo(props: ChatDemoProps) {
 
   // Manual input management for AI SDK 5.0
   const [input, setInput] = useState("")
+  const [pendingUserMessage, setPendingUserMessage] = useState<UIMessage | null>(null)
+  const [shouldPreventUserMessage, setShouldPreventUserMessage] = useState(false)
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInput(e.target.value)
   }
+
+
 
   // Create a static transport with dynamic request body enhancement
   // AI SDK 5.0 requires static transport configuration, but we need dynamic state injection
@@ -182,6 +186,29 @@ export default function ChatDemo(props: ChatDemoProps) {
                 return msg;
               });
             }
+
+            // 如果有待处理的用户消息（包含附件），使用已有的消息历史而不是新消息
+            if (pendingUserMessage) {
+              const currentMessages = [...messages];
+              convertedMessages = currentMessages.map((msg: UIMessage) => {
+                if (msg.parts && Array.isArray(msg.parts)) {
+                  const textParts = msg.parts.filter((part): part is { type: 'text'; text: string } => part.type === 'text');
+                  const content = textParts.map((part) => part.text).join('\n');
+                  return { role: msg.role, content: content };
+                }
+                return { role: msg.role, content: '' };
+              });
+
+              // 添加包含附件内容的最后一条用户消息
+              const textParts = pendingUserMessage.parts?.filter((part): part is { type: 'text'; text: string } => part.type === 'text') || [];
+              const content = textParts.map((part) => part.text).join('\n');
+              convertedMessages.push({ role: 'user', content });
+
+              // 清除待处理消息
+              setPendingUserMessage(null);
+            }
+
+
 
             // Inject current state values using refs to avoid closure issues
             const enhancedBody = {
@@ -256,12 +283,30 @@ export default function ChatDemo(props: ChatDemoProps) {
     },
   })
 
+  // 监控messages变化，阻止sendMessage添加重复的用户消息
+  useEffect(() => {
+    if (shouldPreventUserMessage && messages.length > 0) {
+      const lastMessage = messages[messages.length - 1]
+      // 如果最后一条消息是用户消息且不是我们想要的（包含附件的消息）
+      if (lastMessage.role === 'user' && lastMessage.id !== pendingUserMessage?.id) {
+        // 移除这条重复消息
+        setMessages(prev => prev.slice(0, -1))
+        setShouldPreventUserMessage(false)
+      }
+    }
+  }, [messages, shouldPreventUserMessage, pendingUserMessage, setMessages])
 
 
-  // Handle form submission
-  const handleSubmit = async (event?: { preventDefault?: () => void }) => {
+  // Handle form submission (supports attachments from ChatForm)
+  const handleSubmit = async (
+    event?: { preventDefault?: () => void },
+    options?: { experimental_attachments?: FileList }
+  ) => {
     event?.preventDefault?.()
-    if (!input.trim()) return
+    const hasText = !!input.trim()
+    const files = options?.experimental_attachments
+    const hasFiles = !!files && files.length > 0
+    if (!hasText && !hasFiles) return
 
     // Check if model is selected before submitting
     if (!selectedModel) {
@@ -276,13 +321,101 @@ export default function ChatDemo(props: ChatDemoProps) {
     const userInput = input
     setInput("") // 清空输入框
 
-    // 添加用户消息
+    // Helpers to read files
+    const readFileAsDataUrl = (file: File) =>
+      new Promise<string>((resolve, reject) => {
+        const reader = new FileReader()
+        reader.onload = () => resolve(String(reader.result))
+        reader.onerror = () => reject(reader.error)
+        reader.readAsDataURL(file)
+      })
+
+    const readFileAsText = (file: File) =>
+      new Promise<string>((resolve, reject) => {
+        const reader = new FileReader()
+        reader.onload = () => resolve(String(reader.result))
+        reader.onerror = () => reject(reader.error)
+        reader.readAsText(file)
+      })
+
+    // Prepare attachment parts for UI and inline text for model
+    let messageParts: Array<any> = []
+    const attachmentTexts: string[] = []
+
+    // Add text part if present
+    if (hasText) {
+      messageParts.push({ type: 'text', text: userInput })
+    }
+
+    if (hasFiles && files) {
+      const fileArray = Array.from(files)
+      for (const file of fileArray) {
+                // Handle image files - add as image parts for UI preview
+        if (file.type.startsWith('image/')) {
+          try {
+            const dataUrl = await readFileAsDataUrl(file)
+            messageParts.push({
+              type: 'image',
+              image: dataUrl,
+              prompt: `Uploaded image: ${file.name}`
+            })
+            // For API, just mention the image without including data
+            attachmentTexts.push(`[用户上传了图片: ${file.name}]`)
+          } catch {
+            attachmentTexts.push(`[无法读取图片: ${file.name}]`)
+          }
+        }
+        // Handle text files - inline content
+        else if (file.type.startsWith('text/') || file.name.endsWith('.txt') || file.name.endsWith('.md')) {
+          try {
+            const text = await readFileAsText(file)
+            const maxLen = 8000
+            const truncated = text.length > maxLen
+              ? text.slice(0, maxLen) + "\n...[truncated]"
+              : text
+            attachmentTexts.push(
+              `附件文件: ${file.name}\n\n\`\`\`\n${truncated}\n\`\`\``
+            )
+          } catch {
+            attachmentTexts.push(`[无法读取文件: ${file.name}]`)
+          }
+        }
+        // Handle other files - add as file parts
+        else {
+          try {
+            const dataUrl = await readFileAsDataUrl(file)
+            messageParts.push({
+              type: 'file',
+              url: dataUrl,
+              mediaType: file.type || 'application/octet-stream',
+              name: file.name
+            })
+            const sizeKb = Math.round(file.size / 1024)
+            attachmentTexts.push(`[附件: ${file.name} (${file.type || 'unknown'}, ${sizeKb} KB)]`)
+          } catch {
+            const sizeKb = Math.round(file.size / 1024)
+            attachmentTexts.push(`[附件: ${file.name} (${file.type || 'unknown'}, ${sizeKb} KB) - 读取失败]`)
+          }
+        }
+      }
+    }
+
+    // Create combined text for API (includes file content)
+    const combinedUserText = [userInput, ...attachmentTexts].filter(Boolean).join("\n\n")
+
+    // 添加用户消息（包含文本与文件parts，便于UI展示）
     const userMessage: UIMessage = {
       id: Date.now().toString(),
       role: 'user',
-      parts: [{ type: 'text', text: userInput }]
+      parts: messageParts as any
     }
     setMessages(prev => [...prev, userMessage])
+
+    // 如果有附件，设置待处理的用户消息
+    const hasAttachments = messageParts.length > 1 || messageParts.some(part => part.type !== 'text')
+    if (hasAttachments) {
+      setPendingUserMessage(userMessage)
+    }
 
     try {
       // 直接调用聊天API检查是否是图片生成
@@ -292,7 +425,7 @@ export default function ChatDemo(props: ChatDemoProps) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          messages: [...messages, { role: 'user', content: userInput }],
+          messages: [...messages, { role: 'user', content: combinedUserText }],
           model: selectedModel,
           scene: effectiveScene,
           subject: configRef.current?.subject,
@@ -317,17 +450,30 @@ export default function ChatDemo(props: ChatDemoProps) {
             ]
           }
           setMessages(prev => [...prev, assistantMessage])
+          setPendingUserMessage(null) // 清除待处理消息
+          setShouldPreventUserMessage(false)
           return
         }
       }
 
       // 如果不是图片生成，使用常规的流式响应
-      // 先移除刚才添加的用户消息，让useChat重新处理
-      setMessages(prev => prev.slice(0, -1))
-      sendMessage({ text: userInput })
+      // 检查是否有附件
+      const hasAttachments = messageParts.length > 1 || messageParts.some(part => part.type !== 'text')
 
+      if (hasAttachments) {
+        // 如果有附件，保持我们的用户消息（包含图片预览）
+        // 设置阻止标志，然后调用sendMessage
+        setShouldPreventUserMessage(true)
+        sendMessage({ text: combinedUserText })
+      } else {
+        // 如果没有附件，移除我们手动添加的消息，让sendMessage正常处理
+        setMessages(prev => prev.slice(0, -1))
+        sendMessage({ text: combinedUserText })
+      }
     } catch (error) {
       console.error('Submit error:', error)
+      setPendingUserMessage(null) // 清除待处理消息
+      setShouldPreventUserMessage(false)
       toast({
         variant: "destructive",
         title: "Error",
