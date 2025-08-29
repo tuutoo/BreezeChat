@@ -199,10 +199,33 @@ export default function ChatDemo(props: ChatDemoProps) {
                 return { role: msg.role, content: '' };
               });
 
-              // 添加包含附件内容的最后一条用户消息
-              const textParts = pendingUserMessage.parts?.filter((part): part is { type: 'text'; text: string } => part.type === 'text') || [];
-              const content = textParts.map((part) => part.text).join('\n');
-              convertedMessages.push({ role: 'user', content });
+                            // 添加包含附件内容的最后一条用户消息（支持多模态）
+              if (pendingUserMessage.parts) {
+                const hasFilesForAI = pendingUserMessage.parts.some((part: any) => part.type === 'file-for-ai');
+
+                if (hasFilesForAI) {
+                  // 多模态消息格式（AI SDK file format）
+                  const multimodalContent = pendingUserMessage.parts.map((part: any) => {
+                    if (part.type === 'text') {
+                      return { type: 'text', text: part.text };
+                    } else if (part.type === 'file-for-ai') {
+                      return {
+                        type: 'file',
+                        data: part.data,
+                        mediaType: part.mediaType
+                      };
+                    }
+                    return null;
+                  }).filter(Boolean);
+
+                  convertedMessages.push({ role: 'user', content: multimodalContent });
+                } else {
+                  // 纯文本消息格式
+                  const textParts = pendingUserMessage.parts.filter((part): part is { type: 'text'; text: string } => part.type === 'text');
+                  const content = textParts.map((part) => part.text).join('\n');
+                  convertedMessages.push({ role: 'user', content });
+                }
+              }
 
               // 清除待处理消息
               setPendingUserMessage(null);
@@ -350,13 +373,20 @@ export default function ChatDemo(props: ChatDemoProps) {
         if (file.type.startsWith('image/')) {
           try {
             const dataUrl = await readFileAsDataUrl(file)
+            // For UI display
             messageParts.push({
               type: 'image',
               image: dataUrl,
               prompt: `Uploaded image: ${file.name}`
             })
-            // For API, just mention the image without including data
-            attachmentTexts.push(`[用户上传了图片: ${file.name}]`)
+            // For API - use base64 data for AI SDK (will be converted to Buffer in backend)
+            const base64Data = dataUrl.split(',')[1]
+            messageParts.push({
+              type: 'file-for-ai',
+              data: base64Data,
+              mediaType: file.type,
+              name: file.name
+            })
           } catch {
             attachmentTexts.push(`[无法读取图片: ${file.name}]`)
           }
@@ -401,8 +431,51 @@ export default function ChatDemo(props: ChatDemoProps) {
       messageParts.push({ type: 'text', text: userInput })
     }
 
-    // Create combined text for API (includes file content)
-    const combinedUserText = [userInput, ...attachmentTexts].filter(Boolean).join("\n\n")
+    // Create message content for API (supports multimodal: text + images)
+    let apiMessageContent: any;
+
+        // Check if we have files for AI
+    const hasFilesForAI = messageParts.some(part => part.type === 'file-for-ai')
+
+    if (hasFilesForAI) {
+      // Use multimodal format for AI SDK
+      apiMessageContent = messageParts.map(part => {
+        if (part.type === 'text') {
+          return { type: 'text', text: part.text }
+        } else if (part.type === 'file-for-ai') {
+          console.log('Preparing file for AI SDK:', {
+            type: part.type,
+            mediaType: part.mediaType,
+            name: part.name,
+            dataLength: part.data?.length
+          })
+          return {
+            type: 'file',
+            data: part.data, // base64 string (will be converted to Buffer in backend)
+            mediaType: part.mediaType,
+            name: part.name
+          }
+        }
+        // Skip UI-only image parts for API
+        return null
+      }).filter(Boolean)
+
+      console.log('Multimodal API message content:', JSON.stringify(apiMessageContent, null, 2))
+
+      // Add attachment descriptions for non-image files
+      if (attachmentTexts.length > 0) {
+        const nonImageAttachments = attachmentTexts.filter(text => !text.includes('[用户上传了图片:'))
+        if (nonImageAttachments.length > 0) {
+          apiMessageContent.push({
+            type: 'text',
+            text: nonImageAttachments.join('\n\n')
+          })
+        }
+      }
+    } else {
+      // Use simple text format for API (no images)
+      apiMessageContent = [userInput, ...attachmentTexts].filter(Boolean).join("\n\n")
+    }
 
     // 添加用户消息（包含文本与文件parts，便于UI展示）
     const userMessage: UIMessage = {
@@ -426,7 +499,7 @@ export default function ChatDemo(props: ChatDemoProps) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          messages: [...messages, { role: 'user', content: combinedUserText }],
+          messages: [...messages, { role: 'user', content: apiMessageContent }],
           model: selectedModel,
           scene: effectiveScene,
           subject: configRef.current?.subject,
@@ -465,11 +538,11 @@ export default function ChatDemo(props: ChatDemoProps) {
         // 如果有附件，保持我们的用户消息（包含图片预览）
         // 设置阻止标志，然后调用sendMessage
         setShouldPreventUserMessage(true)
-        sendMessage({ text: combinedUserText })
+        sendMessage({ text: typeof apiMessageContent === 'string' ? apiMessageContent : JSON.stringify(apiMessageContent) })
       } else {
         // 如果没有附件，移除我们手动添加的消息，让sendMessage正常处理
         setMessages(prev => prev.slice(0, -1))
-        sendMessage({ text: combinedUserText })
+        sendMessage({ text: typeof apiMessageContent === 'string' ? apiMessageContent : JSON.stringify(apiMessageContent) })
       }
     } catch (error) {
       console.error('Submit error:', error)
