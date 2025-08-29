@@ -279,6 +279,9 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
             </div>
           </div>
         )
+            } else if (part.type === "step-start" || part.type === "step-finish") {
+        // Skip step parts for now
+        return null;
       } else if (part.type.startsWith("tool-")) {
         // Handle new AI SDK 5.0 tool parts - simplified for now
         return (
@@ -287,6 +290,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
           </div>
         )
       }
+
       return null
     })
   }

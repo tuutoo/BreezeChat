@@ -1,11 +1,12 @@
 import { createGroq } from "@ai-sdk/groq"
-import { streamText } from "ai"
+import { streamText, generateText } from "ai"
 import { google } from '@ai-sdk/google'
 import { openai } from '@ai-sdk/openai'
 import { PROVIDERS } from '@/lib/providers'
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { isImageGenerationRequest, extractImagePrompt } from '@/lib/utils/image-generation'
+
+
 
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30
@@ -99,57 +100,6 @@ export async function POST(req: Request) {
 
     console.log('Final system prompt:', systemPrompt || '(No system prompt - free chat)')
 
-    // 检查最后一条消息是否是图片生成请求
-    const lastMessage = messages[messages.length - 1]
-    if (lastMessage.role === 'user' && isImageGenerationRequest(lastMessage.content)) {
-      try {
-        console.log('Detected image generation request:', lastMessage.content)
-
-        // 提取图片生成提示词
-        const imagePrompt = extractImagePrompt(lastMessage.content)
-        console.log('Extracted image prompt:', imagePrompt)
-
-        // 调用图片生成API
-        const baseUrl = process.env.NEXTAUTH_URL || process.env.VERCEL_URL || 'http://localhost:3000'
-        const imageResponse = await fetch(`${baseUrl}/api/generate-image`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            prompt: imagePrompt,
-            numberOfImages: 1,
-            aspectRatio: '1:1'
-          })
-        })
-
-        if (imageResponse.ok) {
-          const imageData = await imageResponse.json()
-
-          if (imageData.success && imageData.images.length > 0) {
-            const generatedImage = imageData.images[0]
-
-            // 返回包含图片的特殊响应
-            return NextResponse.json({
-              type: 'image_generation',
-              text: `I've generated an image based on your request: "${imagePrompt}". You can download it or view it in full size by clicking on the image.`,
-              image: {
-                type: 'image',
-                image: generatedImage.dataUrl,
-                prompt: imagePrompt,
-                createdAt: generatedImage.createdAt
-              }
-            })
-          }
-        }
-
-        console.error('Image generation failed, falling back to text response')
-      } catch (error) {
-        console.error('Error generating image:', error)
-        // 如果图片生成失败，继续使用常规的文本生成
-      }
-    }
-
     // 根据 keepHistory 参数处理消息
     let processedMessages = messages
     if (!keepHistory && messages.length > 1) {
@@ -242,13 +192,170 @@ export async function POST(req: Request) {
 
     console.log('Final messages for AI:', JSON.stringify(finalMessages, null, 2));
 
-    const result = streamText({
+    // 检查是否为图片生成模型且可能需要图片输出
+    const isImageCapableModel = providerConfig.providerName === 'google' &&
+      (model.modelId.includes('image') || model.modelId.includes('vision') || model.modelId.includes('flash-image'))
+
+    if (isImageCapableModel) {
+      // 尝试使用generateText来处理可能的图片生成
+      try {
+        const lastMessage = messages[messages.length - 1]
+        const content = typeof lastMessage.content === 'string' ? lastMessage.content.toLowerCase() : ''
+
+        // 检测图片生成相关关键词
+        const imageKeywords = ['画', '生成图', 'create', 'picture', 'image', 'draw', 'generate', 'photo', 'illustration', 'design']
+        const mayBeImageRequest = imageKeywords.some(keyword => content.includes(keyword))
+
+        if (mayBeImageRequest) {
+          console.log('Trying generateText for potential image generation with model:', model.modelId)
+
+          const generateConfig: any = {
+            model: aiProvider,
+            ...(systemPrompt && { system: systemPrompt }),
+            temperature: 0.2,
+            topP: 0.9,
+            messages: finalMessages,
+            providerOptions: {
+              google: {
+                responseModalities: ['TEXT', 'IMAGE']
+              }
+            }
+          }
+
+          const result = await generateText(generateConfig)
+          console.log('GenerateText result summary:', {
+            hasSteps: !!result.steps,
+            stepCount: result.steps?.length || 0,
+            hasFiles: !!result.files,
+            fileCount: result.files?.length || 0
+          })
+
+          // 检查steps中是否有图片内容
+          if (result.steps && result.steps.length > 0) {
+            console.log('Checking steps for images...')
+
+            let allParts: any[] = []
+            for (const step of result.steps) {
+              if (step.content && Array.isArray(step.content)) {
+                allParts.push(...step.content)
+              }
+            }
+
+            console.log('All parts from steps:', allParts.map(p => ({ type: p.type, hasImage: !!p.image })))
+
+            // 查找图片部分
+            const imageParts = allParts.filter(part => part.type === 'image' || (part.image && part.type !== 'text'))
+
+            if (imageParts.length > 0) {
+              console.log('Found image parts in steps:', imageParts.length)
+
+              const parts: any[] = []
+
+              // 添加文本部分
+              const textParts = allParts.filter(part => part.type === 'text')
+              if (textParts.length > 0) {
+                parts.push({
+                  type: 'text',
+                  text: textParts.map(p => p.text).join('\n')
+                })
+              }
+
+              // 添加图片部分
+              for (const imagePart of imageParts) {
+                parts.push({
+                  type: 'image',
+                  image: imagePart.image,
+                  prompt: `Generated image`
+                })
+              }
+
+              return NextResponse.json({
+                type: 'complete_generation',
+                parts: parts
+              })
+            }
+          }
+
+          // 检查是否有生成的文件（图片）
+          if (result.files && result.files.length > 0) {
+            const imageFiles = result.files.filter(file => file.mediaType.startsWith('image/'))
+
+            if (imageFiles.length > 0) {
+              console.log('Generated images found:', imageFiles.length)
+
+              // 构造包含文本和图片的响应
+              const parts: any[] = [
+                { type: 'text', text: result.text }
+              ]
+
+              // 添加所有生成的图片
+              for (const file of imageFiles) {
+                const fileData = file as any // 暂时类型转换处理
+                console.log('Processing image file with base64Data:', !!fileData.base64Data)
+
+                let imageUrl: string
+                if (fileData.base64Data) {
+                  // AI SDK 返回的图片数据在 base64Data 属性中
+                  imageUrl = `data:${file.mediaType};base64,${fileData.base64Data}`
+                } else if (fileData.url) {
+                  imageUrl = fileData.url
+                } else {
+                  console.error('No base64Data or url found in file:', Object.keys(fileData))
+                  continue
+                }
+
+                parts.push({
+                  type: 'image',
+                  image: imageUrl,
+                  prompt: `Generated image`
+                })
+              }
+
+              return NextResponse.json({
+                type: 'complete_generation',
+                parts: parts
+              })
+            }
+          }
+
+          // 暂时返回调试信息，让我们看看到底返回了什么
+          console.log('No images found, falling back to text response')
+          console.log('Result object type:', typeof result)
+          console.log('Result properties:', Object.getOwnPropertyNames(result))
+
+          // 如果没有图片但有文本，返回文本响应
+          if (result.text) {
+            return NextResponse.json({
+              type: 'text_generation',
+              text: result.text
+            })
+          }
+        }
+      } catch (error) {
+        console.log('generateText failed, falling back to streamText:', error)
+        // 继续使用streamText作为fallback
+      }
+    }
+
+    // 构建streamText配置
+    const streamConfig: any = {
       model: aiProvider,
       ...(systemPrompt && { system: systemPrompt }),
       temperature: 0.2,
       topP: 0.9,
       messages: finalMessages,
-    });
+    }
+
+    // 为Google provider启用图片输出能力
+    if (providerConfig.providerName === 'google') {
+      streamConfig.providerOptions = {
+        google: {
+          responseModalities: ['TEXT', 'IMAGE']
+        }
+      }
+    }
+
+    const result = streamText(streamConfig);
 
     try {
       return result.toUIMessageStreamResponse();

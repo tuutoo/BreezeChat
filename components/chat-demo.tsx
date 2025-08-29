@@ -473,14 +473,14 @@ export default function ChatDemo(props: ChatDemoProps) {
     }
 
     try {
-      // 直接调用聊天API检查是否是图片生成
+      // 先检查是否是图片生成请求
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          messages: [...messages, { role: 'user', content: apiMessageContent }],
+          messages: [...messages, { role: 'user', content: typeof apiMessageContent === 'string' ? apiMessageContent : JSON.stringify(apiMessageContent) }],
           model: selectedModel,
           scene: effectiveScene,
           subject: configRef.current?.subject,
@@ -492,29 +492,37 @@ export default function ChatDemo(props: ChatDemoProps) {
       const contentType = response.headers.get('content-type')
 
       if (contentType?.includes('application/json')) {
-        // 可能是图片生成响应
+        // 处理AI SDK的generateText响应
         const jsonData = await response.json()
-        if (jsonData.type === 'image_generation') {
-          // 添加包含图片的AI响应
+
+        if (jsonData.type === 'complete_generation') {
+          // 包含文本和图片的完整响应
           const assistantMessage: UIMessage = {
             id: (Date.now() + 1).toString(),
             role: 'assistant',
-            parts: [
-              { type: 'text', text: jsonData.text },
-              jsonData.image
-            ]
+            parts: jsonData.parts
           }
           setMessages(prev => [...prev, assistantMessage])
-          setPendingUserMessage(null) // 清除待处理消息
+          setPendingUserMessage(null)
+          setShouldPreventUserMessage(false)
+          return
+        }
+
+        if (jsonData.type === 'text_generation') {
+          // 纯文本响应
+          const assistantMessage: UIMessage = {
+            id: (Date.now() + 1).toString(),
+            role: 'assistant',
+            parts: [{ type: 'text', text: jsonData.text }]
+          }
+          setMessages(prev => [...prev, assistantMessage])
+          setPendingUserMessage(null)
           setShouldPreventUserMessage(false)
           return
         }
       }
 
       // 如果不是图片生成，使用常规的流式响应
-      // 检查是否有附件
-      const hasAttachments = hasImages || messageParts.some(part => part.type === 'file')
-
       if (hasAttachments) {
         // 如果有附件，保持我们的用户消息（包含图片预览）
         // 设置阻止标志，然后调用sendMessage
