@@ -44,6 +44,7 @@
   - OpenAI GPT
   - Groq (Llama)
   - Mistral AI
+  - OpenRouter (community provider, access 300+ models)
 - **State Management**: React Hooks + localStorage
 - **Deployment**: Docker + Docker Compose
 
@@ -84,6 +85,7 @@ GOOGLE_GENERATIVE_AI_API_KEY=your_google_api_key
 GROQ_API_KEY=your_groq_api_key
 OPENAI_API_KEY=your_openai_api_key
 MISTRAL_API_KEY=your_mistral_api_key
+OPENROUTER_API_KEY=your_openrouter_api_key
 ```
 
 ### **4. Initialize Database**
@@ -127,6 +129,7 @@ services:
       - GROQ_API_KEY=your_groq_api_key
       - OPENAI_API_KEY=your_openai_api_key
       - MISTRAL_API_KEY=your_mistral_api_key
+      - OPENROUTER_API_KEY=your_openrouter_api_key
     depends_on:
       - db
     restart: unless-stopped
